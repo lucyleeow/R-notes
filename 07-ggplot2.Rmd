@@ -80,7 +80,7 @@ ggplot(data = mpg) +
   geom_point(mapping = aes(x = displ, y = hwy, colour = class))
 ```
 
-You can also set aesthetics manually. Do this by mapping aesthetic name outside of the aes() function.
+You can also set aesthetics manually. Do this by mapping aesthetic name *outside of* the `aes()` function.
 
 This makes all the points blue:
 ```{r}
@@ -99,6 +99,13 @@ ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
   geom_point(colour = "black", shape = 21, stroke = 1, size = 4, 
              aes(fill = factor(drv)))
 ```
+
+It is important to note the difference between mapping an aesthetic within `aes()` and outside of `aes()` - 
+
+* within `aes()` you can map a *variable* (or column) to an aesthetic
+* outside of `aes()` (but inside a `geom`) you can only map an aesthetic to a *constant value*
+
+(See [SO](https://stackoverflow.com/questions/41863049/when-does-the-aesthetic-go-inside-or-outside-aes) for more details)
 
 
 ### Syntax
@@ -255,12 +262,12 @@ pairs(iris[,1:4])
 
 The `GGally` package is an extension to `ggplot2` and has a function called `ggpairs()` which offers extra functionality, like letting you use non-continuous variables in your data frames.
 
-```{r, message=FALSE}
+```{r, message=FALSE, cache=TRUE}
 library(GGally)
 ggpairs(iris, aes(colour = Species, alpha = 0.4))
 ```
 
-## Adding lines
+### Adding lines
 
 `geom_line()` allows you to add a simple line that joins all the points:
 
@@ -278,7 +285,6 @@ To change the appearance of the line, `geom_line()` offers the following argumen
 
 Setting `linetype` within `geom_line(aes())` allows you have different line types depending on the factor. See [R cookbook](http://www.cookbook-r.com/Graphs/Bar_and_line_graphs_(ggplot2)/) for more details.
 
-
 `geom_smooth` allows you to fit a smooth line through all the points using various methods. The default is 'auto' which picks one of:
 
 * lm
@@ -295,6 +301,75 @@ ggplot(iris, aes(y = Petal.Width, x = Petal.Length)) +
 ```
 
 More details can be found in the [ggplot2 reference](https://ggplot2.tidyverse.org/reference/geom_smooth.html).
+
+#### Grouping
+
+You may need to specify `aes(group())` within `geom_line()` if you wish to join lines within groups only.
+
+```{r}
+iris %>%
+  group_by(Species) %>%
+  summarise(meanSep = mean(Sepal.Length), meanPet = mean(Petal.Length)) %>%
+  gather(2:3, key = 'type', value = 'mean')
+```
+
+This will give a warning:
+```{r}
+iris %>%
+  group_by(Species) %>%
+  summarise(meanSep = mean(Sepal.Length), meanPet = mean(Petal.Length)) %>%
+  gather(2:3, key = 'type', value = 'mean') %>%
+  ggplot(aes(y = mean, x = Species, colour = type)) + 
+  geom_point() +
+  geom_line()
+```
+
+Default grouping occurs in two ways:
+
+* If `x` or `y` are categorical variables, this will become the default group
+* If `colour`, `shape` or `fill` is used, data will be grouped according to the variable mapped to.
+
+In the above case, `x` was set to `Species` and `colour` to `type` - thus there is only one observation per group, as per the warning message.
+
+There are a few ways to avoid default grouping:
+
+* do not use map in `ggplot(aes())` as this will be applied to all layers
+* override the default grouping with the `group` parameter
+
+Here we have overriden the default grouping in the `geom_line()` geom:
+```{r}
+iris %>%
+  group_by(Species) %>%
+  summarise(meanSep = mean(Sepal.Length), meanPet = mean(Petal.Length)) %>%
+  gather(2:3, key = 'type', value = 'mean') %>%
+  ggplot(aes(y = mean, x = Species, colour = type)) + 
+  geom_point() +
+  geom_line(aes(group = type))
+```
+
+
+You can also remove all grouping by setting `group` to be a constant - any one value, e.g. 1, or 123, or 'aa'. This makes the `geom` treat all the data as one group and draw one line through all the data points. Note also that you can do this within `aes()` or outside of `aes()` as it is a constant (see section \@ref(aesthetics)).
+
+```{r}
+iris %>%
+  group_by(Species) %>%
+  summarise(meanSep = mean(Sepal.Length), meanPet = mean(Petal.Length)) %>%
+  gather(2:3, key = 'type', value = 'mean') %>%
+  ggplot(aes(y = mean, x = Species, colour = type)) + 
+  geom_point() +
+  geom_line(group = 1)
+```
+
+
+
+
+
+
+Finally, note that grouping is for *collective geoms*. Collective geoms are geoms which 'use' more than one row of data. In `geom_point()`, each point is one row of data, thus it is NOT a collective geom. In `geom_boxplo()`, each box uses data from many rows, thus it is a collective geom. Grouping is important for collective geoms but NOT for individual geoms.
+
+(See [link](https://www.gl-li.com/2017/08/13/ggplot2-group-overrides-default-grouping/) for more details)
+
+
 
 ## Bar graphs & histograms
 
@@ -545,3 +620,4 @@ dev.off() # this closes off the current graphic device
 
 
 
+)
