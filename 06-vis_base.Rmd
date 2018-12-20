@@ -1,3 +1,26 @@
 # Base R
 
+## Palette
+
+Colour blind friendly palette - 15 hues:
+
+```{r, eval=FALSE}
+pal <- c("#000000","#004949","#009292","#ff6db6","#ffb6db",
+ "#490092","#006ddb","#b66dff","#6db6ff","#b6dbff",
+ "#920000","#924900","#db6d00","#24ff24","#ffff6d")
+```
+
+Use: 1,6,11,   2,7,12
+
+20 distinct colours ([Link](https://sashat.me/2017/01/11/list-of-20-simple-distinct-colors/)):
+
+```{r}
+pal2 <- c("#000000", "#800000", "#4363d8", "#f58231", "#808000", "#469990","#000075", "#9A6324", "#911eb4", "#3cb44b", "#e6194B", "#f032e6", "#42d4f4", "#bfef45", "#ffe119", "#a9a9a9", "#e6beff", "#fabebe", "#aaffc3", "#ffd8b1")
+```
+
+
+
+
+
+
 
