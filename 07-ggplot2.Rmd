@@ -68,7 +68,7 @@ The specific `mapping = aes()` options vary depending on the type of geom. For g
 * colour - colour of the points.
 * size - where each dot will be different sizes depending on the class it belongs to. You can also control the min and max range of point sizes with: `scale_size_continuous/discrete(range = c(2,4))` - depending on whether the variable is continuous or discrete.
 * alpha - transparency of points.
-* shape - shape of the points. ggplot2 will only use 6 shapes at a time. By default additional groups will be unplotted
+* shape - shape of the points. ggplot2 will only use 6 shapes at a time. By default additional groups will be unplotted.
 
 A different variable can be mapped to each of these aesthetics. ggplot selects a reasonable scale and constructs a legend.
 
