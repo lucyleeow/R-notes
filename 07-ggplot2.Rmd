@@ -561,15 +561,15 @@ For more examples see [R cookbook](http://www.cookbook-r.com/Graphs/Plotting_mea
 
 ## Appearance
 
-* Change axis name and title: `labs(title = "MAIN TITLE", x = "X-AXIS TITLE", y = "Y-AXIS TITLE")`
-* Change position of title: `theme(plot.title = element_text(hjust = 0.5))`
-* Set which categories appear in barplot/boxplot: `xlim("Category1","Category2")`
-* Change colour of `fill` boxplot/bars: `scale_fill_manual(values = c("Colour1", "Colour2"), name = "title of Legend", labels = c("Label1","Label2"))`
-* Change names under each bar/boxplot: `Change names under each bar/boxplot`
-* Change title text style: `theme(title = element_text(face = "bold.italic", color = "blue", size = 16))`
-* Change axis name text style: `theme(axis.title = element_text(face = "bold.italic", color = "red", size = 16))`
-* Legend title/labels: `scale_fill_discrete(name = "Legend name", labels = c())`
-* Angle of labels: `theme(axis.text.x = element_text(angle = 90, hjust = 1))`
+* Change axis name and title: `labs(title = "MAIN TITLE", x = "X-AXIS TITLE", y = "Y-AXIS TITLE")`.
+* Change position of title: `theme(plot.title = element_text(hjust = 0.5))`.
+* Set which categories appear in barplot/boxplot: `xlim("Category1","Category2")`.
+* Change colour of `fill` boxplot/bars: `scale_fill_manual(values = c("Colour1", "Colour2"), name = "title of Legend", labels = c("Label1","Label2"))`.
+* Change names under each bar/boxplot: `scale_x_discrete(labels = c("bar1", "bar2", "bar3", "bar4"))`.
+* Change title text style: `theme(title = element_text(face = "bold.italic", color = "blue", size = 16))`.
+* Change axis name text style: `theme(axis.title = element_text(face = "bold.italic", color = "red", size = 16))`.
+* Legend title/labels: `scale_fill_discrete(name = "Legend name", labels = c())`.
+* Angle of labels: `theme(axis.text.x = element_text(angle = 90, hjust = 1))`.
 
 
 Fonts: [cookbook](http://www.cookbook-r.com/Graphs/Fonts/)
@@ -593,8 +593,8 @@ The output of this is a dataframe where the first column gives the names of the 
 
 To give the plot a title - the name of the group - you can either use:
 
-* `unique(.$Species)` - there will only be 1 species type after `group_by()`
-* `.$Species[1]` - this is the first row of the Species column after `group_by()`
+* `unique(.$Species)` - there will only be 1 species type after `group_by()`.
+* `.$Species[1]` - this is the first row of the Species column after `group_by()`.
 
 ## Saving graphs
 
