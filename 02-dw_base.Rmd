@@ -3,11 +3,13 @@
 ## Useful functions
 
  `floor()` returns the largest integer not greater than the input number(s)
+```{r}
+floor(2.6)
+```
  
  `ceiling()` returns the smallest integer not less than the input number(s)
  
 ```{r}
-floor(2.6)
 ceiling(2.6)
 ```
  
@@ -50,7 +52,40 @@ a[match(a,b)]
 c(1,3,5) %in% 1:3
 ```
 
+`intersect` finds the common elements in two vectors.
+
+`setdiff()` looks for differences between two vectors. Order matters - e.g. `setdiff(a,b)` gives you things that are in `a` BUT not in `b`.
+
+`merge()` joins two dataframes together, by common columns or rownames. Arguments:
+
+* `by` - name of the column(s) to merge by in BOTH dataframes (implies that both dataframes have the same column names).
+* `by.x`, `by.y` - name of the column(s) in the first dataframe (x) and the second dataframe (y) to merge by. Use this if the columns to merge by are named differently in the two dataframes.
+* `all` - should all the rows in both dataframes be kept? If there are rows in one dataframe but not the other, the missing data will be filled with NAs.
+* `all.x`, `all.y` - lets you specify if you want to keep all rows in either the first `x` or second `y` dataframe only.
+
+`merge()` is a generic function in base R. It dispatches to either the merge.data.frame method or merge.data.table method depending on the class of its first argument (see [link](http://127.0.0.1:11316/help/library/data.table/help/merge) for more details)
+
+`aggregate()` 'Splits the data into subsets, computes summary statistics for each, and returns the result in a convenient form'. It requires three things:
+
+* The object to perform function on, e.g a dataframe. Note that if you do not specify the columns of interest, the function will be performed on all columns.
+* What variables to group by. Must give as list e.g. `by = list(df$var1, df$var2)`.
+    - If using a dataframe, the output dataframe will have a column for each grouping variable - to specify which grouping variable each row is. The default column name is group1, group2… If you wish to specify the name of the column use `by = list(mycolname = df$var1, df$var2)`
+* Function to perform. Any other arguments to be passed to function can be given after comma.
+
+Example:
+```{r}
+aggregate(iris[,1:4], by = list(Species2 = iris$Species), 
+          mean, na.rm = TRUE)
+```
+
+
+`complete.case()` gives you a logical vector, the same length as the number of rows of your dataframe/matrix, telling you if there is a NA in your row.
+
+`is.finite()` tells you if it is finite (e.g. will return false for Inf, -Inf, NaN, NA) 
+
+
 ## Subsetting
+
 Useful references: [advanced R](http://adv-r.had.co.nz/Subsetting.html), [R manual](https://cran.r-project.org/doc/manuals/R-lang.html#Indexing)
 
 * `[ ]` - Returns an object that is of the same type as original UNLESS the one exception is when your subset only has one result). The default is to reduce results to the lowest dimension. E.g. taking a subset of 1 column in a df returns a vector. You can override this to return a df by using argument drop=false (`iris[ , "Petal.Length", drop=FALSE ]`). For arrays, it will return array with lowest possible dimensionality.
@@ -65,9 +100,23 @@ a[c(1,2,1,1)]
     
 * `$` Can be used for recursive objects - lists and pairlists. Can only give it a character or symbol as the index
 
-    
+The following are difference ways to subset:
 
+- **Positive integer** returns elements at the specific positions. If index duplicated, will return element twice. If decimal number given, will be silently truncated (NOT rounded) to integer.
+- **Negative integer** omits the specified elements. You can’t mix positive and negative integers, will return an error.
+- **Logical vector** selects for element where corresponding boolean is `TRUE`. Will be recycled if shorter than vector.
+- **Character vector** can be used if the vector is named. Names matched exactly.
+- **NA** - an NA in the index will either return an NA value at a NA index:
 
+```{r}
+iris[c(NA,2,NA,4),1:2]
+```
+
+or if only one NA is used, will return an object the same length, completely filled with NAs. Below there are 150 rows (the same number in the original iris data) and each row is a NA.
+
+```{r}
+iris[NA,1:2]
+```
 
 
 
