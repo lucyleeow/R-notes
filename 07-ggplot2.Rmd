@@ -527,7 +527,7 @@ iris %>%
   summarise(mean = mean(Sepal.Length), sd = sd(Sepal.Length)) 
 ```
 
-To add the error bars, use `geom_eerrobar()`:
+To add the error bars, use `geom_errorbar()`:
 
 ```{r}
 iris %>%
