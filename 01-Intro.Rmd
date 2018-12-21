@@ -1,1 +1,34 @@
 # Introduction
+
+
+matrix
+
+drop
+
+Drop = Drop Redundant Extent Information
+Delete the dimensions of an array which have only one level.
+
+When subsetting to get only 1 row/column (from a matrix/array), you can set drop=TRUE to get a vector.
+If drop=FALSE, you get the same data structure, but with just 1 row
+ref: https://discuss.analyticsvidhya.com/t/what-does-the-drop-f-argument-in-a-matrix-do-in-r/1586/2
+
+### logicals
+
+```{r}
+12 | 3
+```
+
+This is evaluated to be TRUE because if you coerce a number into a logical, any non-zero number will be TRUE and 0 will be FALSE.
+
+```{r}
+as.logical(0)
+```
+
+```{r}
+as.logical(-3)
+```
+
+Thus `12 | 3` is essentially `TRUE | TRUE` which is `TRUE`.
+
+
+
