@@ -1,1 +1,751 @@
 # Data wrangling - tidyverse
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+```
+
+## dplyr
+
+Offers several useful functions. Parameters that go in these functions:
+
+1. The first argument is a data frame.
+2. The subsequent arguments describe what to do with the data frame, using the variable names (without quotes).
+3. The result is a new data frame.
+
+dplyr functions do not alter original tibble but either prints a new tibble or saves it to a new variable. 
+
+### Subsetting
+
+Subsetting with `[ ]` will generally return you with a tibble
+
+```{r}
+mpg_tib <- as.tibble(mpg)
+str(mpg_tib[1,1])
+```
+
+To convert the above into a character:
+
+```{r}
+str(as.character(mpg_tib[1,1]))
+```
+
+### The pipe %>%
+
+The pipe puts the output from the LHS as the first argument of the function on the RHS. It is useful in avoiding 'intermediate' variables.
+
+To avoid this, you can use curly brackets `{ }` which will not automatically put the piped data as the first argument.
+
+```{r, error=TRUE}
+mpg %>%
+  {head()}
+```
+
+```{r}
+mpg %>%
+  {head(.)}
+```
+
+See [SO](https://stackoverflow.com/questions/42385010/using-the-pipe-and-dot-notation) for more details.
+
+### filter
+
+Filters rows. Several conditions can be used but be careful of notation and precedence: 'not', 'and' then 'or' (see [link](https://stat.ethz.ch/R-manual/R-devel/library/base/html/Syntax.html) for more).
+
+For example:
+
+```{r}
+mpg %>%
+  filter(year == 1999 | 2000 )
+```
+
+The result is a dataframe with NO rows filtered. This is because R first evaluates:
+
+```{r}
+1999 | 2000
+```
+
+which is TRUE (see ref(888)). Then it evaulates `year == TRUE` which results in all rows being kept.
+
+Instead use the notation: 
+```{r, eval=FALSE}
+mpg %>%
+  filter(year == 1999 | year == 2000 )
+```
+
+or:
+
+```{r, eval=FALSE}
+mpg %>%
+  filter(year %in% c(1999,2000))
+```
+
+
+### select
+
+Selects for columns.
+
+```{r, eval=FALSE}
+select(mpg, model, displ)   # Selects only the columns model and displ
+select(mpg, model:year)     # Selects all columns from model to year inclusive
+select(mpg, -(model:year))  # Selects all columns EXCEPT model to year inclusive
+```
+
+There are a number of helper functions you can use within `select()`:
+
+* `starts_with("abc")` - matches names that begin with "abc".
+* `ends_with("xyz")` - matches names that end with "xyz".
+* `contains("ijk")` - matches names that contain "ijk".
+For the above functions, you can only input one string (NOT a vector of strings)
+* `matches("(.)\\1")` - selects variables that match a regular expression. This one matches any variables that contain repeated characters. 
+* `num_range("x", 1:3)` - matches columns x1, x2 and x3.
+* `one_of()` - selects column names that are from a vector consisting of characters. 
+* `everything()` - all remaining columns. This is useful for reordering your columns.
+
+See [dplyr reference](https://dplyr.tidyverse.org/reference/select_helpers.html) for more details.
+
+
+### mutate
+
+This allows you to add variables to your dataset. New variables often functions of existing variables. 
+
+```{r}
+mpg[,1:3] %>%
+  mutate(newcol = paste(manufacturer, model),
+         newcol2 = paste(newcol, displ))
+```
+
+Note that the input is a vector and the output is a vector of the same length. Also note how we are allowed to refer to variables that we have just added. 
+
+#### rename
+
+Let's you rename a column.
+
+#### lead & lag & cum*
+
+`lead()` and `lag()` allow you to create another vector which is offset up or down by a certain amount. Using this you can calculate running differences, or find when values change.
+
+Syntax:
+
+`lead(data, lead_amount)` & `lag(data, lag_amount)`
+
+```{r}
+mpg[,3] %>%
+  mutate(lag = lag(displ,1))
+```
+
+When using these two functions with `group_by()` (see below), lag or lead will give you the lag or lead within that group.
+
+
+`cumsum()`, `cumprod()`, `cummin()`, `cummax()` give you running sums, products, mins and maxes respectively.
+dplyr provides `cummean()` for cumulative means.
+
+#### transmutate
+
+If you only want to keep the new column created, use `transmutate()`.
+
+### case_when
+
+This is used to change a column, in place and an alternative to `ifelse()`:
+
+```{r}
+x <- 1:20
+case_when(
+  x %% 35 == 0 ~ "fizz buzz",
+  x %% 5 == 0 ~ "fizz",
+  x %% 7 == 0 ~ "buzz",
+  TRUE ~ as.character(x)
+)
+```
+
+The tilde (`~`), separates RHS and LHS. RHS is the condition (TRUE/FALSE result) and the LHS is what you want the row to be changed to if TRUE.
+
+The last option, TRUE, takes all remaining rows and you can set to what you want. Here, we have set it to be the same value as before (though as.character).
+
+You can also create a new column, using case_when within mutate:
+
+```{r}
+mpg[,1] %>%
+  mutate(newcol = case_when(
+    manufacturer == "audi" ~ "Audi!",
+    TRUE ~ .$manufacturer
+  ))
+```
+
+### summarise
+
+Summarises column(s) using a function that returns one value. E.g.
+
+```{r}
+mpg %>%
+  summarise(meanDispl = mean(displ),
+            meanYear = mean(year))
+```
+
+It is often used with `group_by()` - see below.
+
+
+There are also a useful functions that are wrappers around `summarise()`:
+
+* `count()` - this will give you the number of rows in each group, depending on the column name provided. E.g.
+
+Here it gives you the number of cars (rows) in each manufacturer group.
+```{r}
+mpg %>%
+  count(manufacturer)
+```
+
+It does this by calling `group_by()`, `n()` and then `ungroup()`.
+
+You can also perform a ‘weighted’ count. This means summing the actual values of the variable. The first argument is how it will group and the `wt` is what values will be summed to give you `n`. You cannot assign `wt` to character and factor columns.
+
+```{r}
+mpg %>%
+  count(manufacturer, wt = displ)
+```
+
+* `tally()` is similar to count but does not perform `group_by()` first.
+
+This will give you the total number of rows in the dataframe:
+
+```{r}
+mpg %>%
+  tally() 
+```
+
+If you wanted the row count per group, you need to `group_by()` first.
+
+
+This will give an error:
+
+```{r, error=TRUE}
+mpg %>%
+  tally(manufacturer)
+```
+
+What tally() does when you give it a column name is perform a ‘weighted tally’ which just means that it will sum up all the values in that column. It could not do that for `manufacturer` as this is a charater column.
+
+If you gave it a numeric column instead, it will give you the sum of all the rows of that column.
+
+```{r}
+mpg %>%
+  tally(displ)
+```
+
+If you wanted the sum per group, you need to `group_by()` first.
+
+### group_by
+
+This function groups rows according to one or more variable(s). There are no 'visible' effects of this. The output is a 'grouped tibble'. Use `ungroup()` to ungroup.
+
+Useful when used with `summarise()`:
+
+```{r}
+mpg %>%
+  group_by(manufacturer) %>%
+  summarise(meanDispl = mean(displ))
+```
+
+There are a few things too note:
+
+* The resulting tibble has the same number of rows as there are groups
+* The only columns that remain are the column(s) that were used to group and the summarise columns.
+
+
+You can group by several columns:
+
+```{r}
+mpg %>% 
+  group_by(manufacturer, year) %>%
+  summarise(meanDispl = mean(displ))
+```
+
+It is important to note that `summarise()` will peel away one layer of ‘grouping’. E.g. if you have `group_by(var1, var2) %>% summarise()`
+The resulting tibble will be grouping by 'var1' because `summarise()` peeled away the 'var2' grouping. 
+
+#### do
+
+`do()` is used to perform 'arbitrary computation'. The output will be a dataframe with the first columns being the labels and the results stored as a dataframe or a list (e.g. if you are making plots).
+
+It:
+* always returns a dataframe
+* requires the specification of `.` to refer to the data
+* was conceived to be used with `group_by()` to compute operations within groups
+
+This gives you the `head()` of the whole dataframe:
+```{r}
+mpg %>%
+  group_by(manufacturer) %>%
+  head()
+```
+
+Adding the `.` gives you the `head()` of each group:
+
+```{r}
+mpg %>%
+  group_by(manufacturer) %>%
+  do(head(.))
+```
+
+
+#### Dots
+
+The dot `.` refers to the data being piped in. When used with `group_by()` it will sometimes refer to all the data and sometimes refer to the grouped data.
+
+For example, this works well:
+
+```{r}
+mpg %>%
+  group_by(manufacturer) %>%
+  summarise(col = mean(year))
+```
+
+However,
+
+```{r}
+mpg %>%
+  group_by(manufacturer) %>%
+  summarise(col = mean(.$year))
+```
+
+It has not respected the `group_by()` and gives you the mean of all rows for every group. 
+
+Adding `do()` makes it respect the `group_by()`:
+
+```{r}
+mpg %>%
+  group_by(manufacturer) %>%
+  do(summarise(. , col = mean(.$year)))
+```
+
+Note that you must add `.` as the first argument of summarise!
+
+When using the `.` with `group_by()` and `mutate_at()`/`mutate()` or `summarise_at()`/`summarise()`, the grouping is respected! See [SO](https://stackoverflow.com/questions/48182815/when-to-use-do-function-in-dplyr) for more details.
+
+If you write your own function and add it to the chain after `group_by()`, use `do()`, otherwise the whole dataframe will be sent through. This might be because only functions specifically written to respect `group_by()` will do so (e.g. `mutate()` and `summarise()`).
+
+Explanation from the `%>%` help file:
+
+(The lhs and rhs notation refers to: `lhs %>% rhs`)
+
+**Placing lhs elsewhere in rhs call** - Often you will want lhs to the rhs call at another position than the first. For this purpose you can use the dot (`.`) as placeholder. For example, `y %>% f(x, .)` is equivalent to `f(x, y)` and `z %>% f(x, y, arg = .)` is equivalent to `f(x, y, arg = z)`.
+
+**Using the dot for secondary purposes** - Often, some attribute or property of lhs is desired in the rhs call in addition to the value of lhs itself, e.g. the number of rows or columns. It is perfectly valid to use the dot placeholder several times in the rhs call, but by design the behavior is slightly different when using it inside nested function calls. In particular, if the placeholder is only used in a nested function call, lhs will also be placed as the first argument! The reason for this is that in most use-cases this produces the most readable code. For example, `iris %>% subset(1:nrow(.) %% 2 == 0)` is equivalent to `iris %>% subset(., 1:nrow(.) %% 2 == 0)` but slightly more compact. It is possible to overrule this behavior by enclosing the rhs in braces. For example, `1:10 %>% {c(min(.), max(.))}` is equivalent to `c(min(1:10), max(1:10))`.
+
+(See [SO](https://stackoverflow.com/questions/35272457/what-does-the-dplyr-period-character-reference) for more details)
+
+
+### n_distinct
+
+Gives you the number of distinct rows. It is a 'faster and more concise equivalent of `length(unique(x)`'.
+
+### _at(), _all(), _if() {###at-all-if}
+
+The functions `mutate()`, `summarise()`, `filter()`, `group_by()`, `select()` and some others, all have `_at()` and `_all()` versions.
+
+Useful references:
+
+* [Tidyverse documentation](https://dplyr.tidyverse.org/reference/index.html)
+* Sizan Baert's [blog](https://suzan.rbind.io/categories/tutorial/)
+
+The dataset `iris` will be used as it is good for demonstrating these functions.
+
+#### mutate
+
+`mutate_at()` is used to perform a function on several columns at once. The syntax goes like this:
+
+* Tell it which columns you want to 'transform'. You can use `c("col", "col2")` and refer to column names as strings OR use `vars()` to select columns. 
+    + `vars()` understands the same specifications as `select()` e.g. `-c(col)`, `starts_with()`, `contains()`. There is NO need to quote column names within `vars()` as 'these arguments are automatically quoted and later evaluated in the context of the data frame' - see [non-standard evaluation](https://dplyr.tidyverse.org/articles/programming.html) and [vars](https://dplyr.tidyverse.org/reference/vars.html) for more information.
+* Tell it the function you want to perform.
+
+When you only want to perform one function, it will perform the function 'in place':
+
+```{r}
+iris %>%
+  mutate_at(vars(starts_with("Petal")), log) %>%
+  head()
+```
+
+Here the columns Petal.Length and Petal.Width are now logs of the old columns.
+
+If instead you wanted to add new columns to the end, use `funs()`:
+
+```{r}
+iris %>%
+  mutate_at(vars(starts_with("Petal")), 
+            funs(log = log(.))) %>%
+  head()
+```
+
+Note that we now need to use the `.` notation within `funs()`. The dot is a placeholder and refers to the columns selected using `vars()`.
+
+Using `funs()` you can also perform several functions:
+
+```{r}
+iris %>%
+  mutate_at(vars("Petal.Width"), funs(
+    norm = ./mean(.),
+    log = log(.)
+  )) %>%
+  head()
+```
+
+A complex example involves dividing the selected columns by the median of just the rows (of the selected column) of the `Species` 'setosa`.
+
+```{r}
+iris %>%
+  mutate_at(vars(starts_with("Sepal")),
+            funs(./median(.[Species == "setosa"]))) %>%
+  head()
+```
+
+The above function demonstrates the meaning of the `.` well. Notice the error that we get if we were to use `$` instead:
+
+```{r, error=TRUE}
+iris %>%
+  mutate_at(vars(starts_with("Sepal")),
+            funs(./median(.$Species == "setosa"))) %>%
+  head()
+```
+
+This error says that the `.` is an atomic vector. This means the `.` is referring to one 'selected' columm at a time and that selected column is in the form of an atomic vector and NOT a dataframe/tibble. 
+
+`mutate_if()` - lets you select columns using a condition. Syntax is: `mutate_if(.tbl, .predicate, .funs, ...)`
+
+It is useful for converting all column of one data type to another data type:
+
+```{r}
+iris %>%
+  mutate_if(is.character, as.factor) %>%
+  str()
+```
+
+This has converted the `Species` column from character to factor.
+
+If you have a more complicated function to determine which column(s) to mutate, you can:
+
+1. Wrap the function in an anonymous function. An anonymous function is just one that you have not given a name to (see [advanced R](http://adv-r.had.co.nz/Functional-programming.html#anonymous-functions).
+
+```{r}
+iris %>%
+  select(-Species) %>%
+  mutate_if(function(x) max(x) > 3, log)
+```
+
+2. Use the tilde `~` which does the same thing (
+ref: [SO](https://stackoverflow.com/questions/49764273/mutate-if-syntax-help-how-to-add-in-parameter-for-function-on-predicate-condit)).
+
+
+```{r}
+iris %>%
+  select(-Species) %>%
+  mutate_if( ~ max(.) > 3, log)
+```
+
+
+Note that the `.predicate` argument is passed to `rlang::as_function()`, which is why you can use the function name only without brackets at the end and apparently 'strings representing function names'.
+
+
+In the above example, the columns we are selecting are ones where the max value is greater than
+3. The function we are performing is `log()`.
+
+
+If you want to test multiple conditions, I suggest you write your own function:
+```{r}
+testfun <- function(x){
+  
+  max(x)>3 & min(x) > 1
+  
+}
+
+iris %>%
+  select(-Species) %>%
+  mutate_if(testfun, log) %>%
+  head()
+```
+
+You can also test several functions within the `mutate_if()` using the two syntax described above:
+
+```{r, error=TRUE}
+iris %>%
+  select(-Species) %>%
+  mutate_if(function(x) is.double(x) & is.numeric(x), log)
+```
+
+`mutate_all()` - here no selection of columns required. Your function will be performed on all columns.
+
+```{r}
+iris %>%
+  select(-Species) %>%
+  mutate_all(log) %>%
+  head()
+```
+
+
+#### summarise
+
+`summarise_at()` works similarly to `mutate_at()`:
+
+* again, select the columns you wish to summarise using `c('colname')` or `vars()`
+* specify the function you want performed, using `funs()` when you want several functions or
+
+```{r}
+iris %>%
+  summarise_at(vars(starts_with("Petal")), mean)
+```
+
+Note that you can ONLY use functions which return a single length vector, as the aim of the `summarise-` functions is to summarise into 1 value. For example, you could not use `log()`:
+
+```{r, error=FALSE}
+iris %>%
+  summarise_at(vars(starts_with("Petal")), log)
+```
+
+When you put the function in `funs()`, the names of the output columns are changed to add your column name (specified on the LHS of your function) to the end of your column name.
+
+```{r}
+iris %>%
+  summarise_at(vars(starts_with("Petal")), 
+               funs(mean = mean(.)))
+```
+
+You can also add `group_by()` to the chain:
+```{r}
+iris %>%
+  group_by(Species) %>%
+  summarise_at(vars(starts_with("Petal")), funs(mean, median))
+```
+
+Note how the function name is added to the end of each column to specify which function has been formed on each of your columns.
+
+`summarise_if()` - like above, select your column(s) by specifying a condition and then tell it what function you want to perform.
+
+```{r}
+iris %>%
+  group_by(Species) %>%
+  summarise_if(is.numeric, mean, na.rm = TRUE)
+```
+
+Note that you can pass arguments to your function using the final `...` argument of `summarise_if()`. Also notice how your column names have not changed.
+
+If we use `funs()` AND add a LHS to the function, they will change:
+```{r}
+iris %>%
+  group_by(Species) %>%
+  summarise_if(is.numeric, funs(mean = mean(.)))
+```
+
+`summarise_all()` - again, your function(s) are performed on all your columns.
+
+```{r}
+iris %>%
+  group_by(Species) %>%
+  summarise_all(mean)
+```
+
+#### filter
+
+`filter_at()` - similar to above, select the columns to filter on using `c('colname')` or `vars()`, then specify your condition.
+
+You condition must be wrapped in `all_vars()` or `any_vars()`. This is because, while `filter()` checks only one column to see if it meets your condition, `filter_at()` checks several columns. It then returns the results for every selected column. 
+
+As suggested by the name `all_vars()` returns `TRUE` for a row only if the condition is met in all selected columns and `any_vars()` returns `TRUE` if the condition is met in any of the selected columns.
+
+Let's have a look at the function in action:
+```{r}
+iris %>%
+  filter_at(vars(starts_with("Petal")), 
+            any_vars(. > 2)) %>%
+  head()
+```
+
+
+What the above code does is check each row to see if the value in ANY of the columns starting with 'Petal' is creater than 2. 
+
+Note how we have to use the `.` again. This placeholder refers to the values in each selected column, one at a time.
+
+`filter_if()` - like before, select the columns on which you wish to apply your filtering condition, using your column selecting condition. Then your row filtering condition will be applied to all columns that meet your column selecting condition. 
+
+The functions `all_vars()` or `any_vars()` must be used to specify if the row filtering condition needs to be met in at least one column or all columns before the row is returned.
+
+An example:
+```{r}
+iris %>%
+  filter_if(is.numeric, all_vars(. > 1)) %>%
+  head()
+```
+
+Here we are filtering on all columns that are of the numeric data type. Then we want the row value to be greater than 1 in all of the chosen columns.
+
+`filter_all()` - as above, this uses all the columns. Thus the condition must be met in ALL columns for the row to be returned.
+
+```{r}
+iris %>%
+  select(-Species) %>%
+  filter_all(any_vars(. > 5))
+```
+
+Here we are filtering on every column. In one row, if any value is greater tnan 5, the row will be returned.
+
+### Own functions
+
+You can write your own functions to add to the end of a dplyr chain.
+
+Certain functions (e.g. `mean()`, `sd()`) expect a vector input (and not dataframe). When you have a `group_by()` above your function (e.g. `group_by(a) %>% yourfunction()`), subsetting within your own function with `[ ]` to obtain one column will give you a dataframe and NOT a vector. 
+
+
+```{r}
+# print the structure of the first column
+test_fun <- function(x){
+  print(str(x[,1]))
+}
+
+iris %>%
+  group_by(Species) %>%
+  test_fun()
+```
+
+Using the same subsetting method on a dataframe gives you an atomic vector. This is most likely due to the behaviour of the grouped dataframe.
+
+```{r}
+str(iris[,1])
+```
+
+To obtain an atomic vector, use `[[ ]]` (as a dataframe is a list):
+
+```{r}
+test_fun <- function(x){
+  print(str(x[,1][[1]]))
+}
+
+iris %>%
+  group_by(Species) %>%
+  test_fun()
+```
+
+### Join
+
+Performs the same function as `merge()`. Is faster?
+
+A useful reference can be found in this [guide](http://stat545.com/bit001_dplyr-cheatsheet.html)
+
+* `inner_join(x,y)` 
+    * Columns -  all columns from x and y
+    * Rows - only the rows where there were matching values, in the merging columns
+* `semi_join(x,y)` 
+    * Columns - only columns from x
+    * Rows - only rows from X where there were matching values in y
+* `left_join(x,y)`
+    * Columns - all columns from x and y
+    * Rows - only rows from x
+* `anti_join(x,y)`
+    * Columns - only columns from x
+    * Rows - only rows from x where there are NOT matching values in y
+* `full_join(x,y)` You will get NA values when there are things that do not match
+    * Columns - all columns
+    * Rows - all rows from both x and y. Where there is a row that is not in both x and y, it is kept and NAs fill missing values
+ 
+## tidyr
+
+The two most common problems when cleaning data are that one variable may be spread across multiple columns or one observation may be spread out across multiple rows. The following two functions solve this.
+
+### gather
+
+`gather()` is for when variables are spread across many columns. Goes from wide to long.
+
+Take this dataset from `tidyr`:
+```{r}
+table4a
+```
+
+To convert this into 'tidy' data where each row is one observation we must make it longer!
+
+```{r}
+table4a %>% 
+  gather(`1999`, `2000`, key = "year", value = "cases")
+```
+
+The first arguments are the columns you wish to 'gather'. (Note that the columns 1999 and 2000 when a column name starts with numbers, you need to surround them with backticks). 
+
+The argument `key` tells the function what the column name of 'type' or gathered columns should be called. The argument `value` specifies what the values previously under the `1999` and `2000` columns should be named. 
+
+Since there are only two columns here we can just list them, if there are more columns, you can use notation of `dplyr::select` to select the columns. One useful way is just to give the column numbers (e.g. `gather(1:10, ...)`)
+
+### spread
+
+`spread()` is for when observations are spread across many rows. Goes from long to wide. 
+
+Take this dataset from `tidyr`:
+```{r}
+table2
+```
+
+On observation should have both the cases and population. Thus 
+
+```{r}
+table2 %>%
+  spread(key = type, value = count)
+```
+
+`key` is the column that contains names of the variables that should be spread across several columns and `values` are the values that should go under the new column(s). 
+
+These functions are useful if you need to  transform data as `t()` will NOT work on a tibble.
+
+
+Spread and gather are NOT symmetrical! For spread to work, each row must be UNIQUELY identified (see [issue](https://github.com/tidyverse/tidyr/issues/426)). 
+
+
+```{r}
+iris %>%
+  gather(starts_with("Petal"), key = colname, value = value)
+```
+
+If we try `spread()`: 
+```{r, error=TRUE}
+iris %>%
+  gather(starts_with("Petal"), key = colname, value = value) %>%
+  spread(colname, value)
+```
+
+This is because there are rows (see error) where the values are exactly the same! 
+
+```{r}
+tib <- iris %>%
+  gather(starts_with("Petal"), key = colname, value = value)
+
+tib[c(3,30),]
+```
+
+Fix by adding a unique row id:
+
+```{r}
+iris %>%
+  rowid_to_column() %>%
+  gather(colname, value, starts_with("Petal")) %>%
+  spread(colname, value)
+```
+
+### separate
+
+Separates one column into multiple columns. By default it will split on non-alphanumeric characters (i.e. any character that is not a letter or number, like '/')
+
+Take this dataset from tidyr:
+
+```{r}
+table3
+```
+
+```{r}
+table3 %>%
+separate(rate, into = c("cases", "population"))
+```
+
+`into` lets you specify the new column names.
+`sep` allows you specify on what character to separate. Formally it is a regex.
+`convert` By default the function will leave the datatype of the new columns as what it was originally (in the single column), `convert = TRUE` converts the new columns.
+
+
+
+
+
+
+
