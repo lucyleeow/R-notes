@@ -423,7 +423,7 @@ This has converted the `Species` column from character to factor.
 
 If you have a more complicated function to determine which column(s) to mutate, you can:
 
-1. Wrap the function in an anonymous function. An anonymous function is just one that you have not given a name to (see [advanced R](http://adv-r.had.co.nz/Functional-programming.html#anonymous-functions).
+1. Wrap the function in an anonymous function. An anonymous function is just one that you have not given a name to (see [Advanced R](http://adv-r.had.co.nz/Functional-programming.html#anonymous-functions).
 
 ```{r}
 iris %>%
@@ -739,9 +739,9 @@ table3 %>%
 separate(rate, into = c("cases", "population"))
 ```
 
-`into` lets you specify the new column names.
-`sep` allows you specify on what character to separate. Formally it is a regex.
-`convert` By default the function will leave the datatype of the new columns as what it was originally (in the single column), `convert = TRUE` converts the new columns.
+`into` - lets you specify the new column names.
+`sep` - allows you specify on what character to separate. Formally it is a regex.
+`convert` - by default the function will leave the datatype of the new columns as what it was originally (in the single column), `convert = TRUE` converts the new columns.
 
 
 

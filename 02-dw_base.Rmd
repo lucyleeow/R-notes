@@ -86,7 +86,7 @@ aggregate(iris[,1:4], by = list(Species2 = iris$Species),
 
 ## Subsetting
 
-Useful references: [advanced R](http://adv-r.had.co.nz/Subsetting.html), [R manual](https://cran.r-project.org/doc/manuals/R-lang.html#Indexing)
+Useful references: [Advanced R](http://adv-r.had.co.nz/Subsetting.html), [R manual](https://cran.r-project.org/doc/manuals/R-lang.html#Indexing)
 
 * `[ ]` - Returns an object that is of the same type as original UNLESS the one exception is when your subset only has one result). The default is to reduce results to the lowest dimension. E.g. taking a subset of 1 column in a df returns a vector. You can override this to return a df by using argument drop=false (`iris[ , "Petal.Length", drop=FALSE ]`). For arrays, it will return array with lowest possible dimensionality.
 You can also use it to obtain a vector longer than the original. E.g:
