@@ -4,6 +4,55 @@
 library(tidyverse)
 ```
 
+## Tibbles
+
+Tibbles are a 'modern take on dataframes' and are used extensively in tidyverse. Tibbles are data frames with some behaviours tweaked:
+
+* Does not change the type of input (e.g. never changes strings to factors)
+* Never changes names of variables
+* Never creates row names
+* Possible to have column names that are not valid R variable names e.g. can have spaces. To refer to these variables you need backticks. 
+* When you print a tibble - only the first 10 rows and all the columns that fit on the screen are shown. The type (e.g. int, dbl) of each column also shown. To view more you can use `View()` or specify what you want to display with `print(n = 10, width = Inf)` - which means print 10 rows and all the columns. 
+    * You can also set up default print options using `options(tibble.print_max = n, tibble.print_min = m)` 
+* Subsetting. You can subset in a pipe: Must use “.”
+    * Tibbles will never do partial matching when subsetting.
+
+```{r}
+df <- tibble(        #making the tibble
+  x = runif(5),
+  y = rnorm(5)
+)
+
+df %>% .$x                    
+
+df %>% .[["x"]]
+```
+
+* If you have set a variable (e.g. `var`)to be equal to a column name, and want to refer to the variable during subsetting use `eval()` (e.g. `as_tibble(mtcars) %>% .[[eval(var)]]`)
+
+You can create a tibble using `tibble()`. Vectors of length 1 will be recycled. You can also refer to a variable you just created. E.g.:
+```{r}
+tibble(
+  x = 1:5, 
+  y = 1, 
+  z = x ^ 2 + y
+)
+```
+
+You can convet a dataframe into a tibble with `as_tibble()`.
+
+`tribble()` ('transposed tibble') is another way of creating tibbles. It is good for small amounts of data. Column headings start with ~ and entries separated by commas:
+
+```{r}
+tribble(
+  ~x, ~y, ~z,
+  #--|--|----        # add this to make clear where heading is
+  "a", 2, 3.6,
+  "b", 1, 8.5
+)
+```
+
+
 ## dplyr
 
 Offers several useful functions. Parameters that go in these functions:
