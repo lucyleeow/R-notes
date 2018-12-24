@@ -120,7 +120,7 @@ Note that the input is a vector and the output is a vector of the same length. A
 
 Let's you rename a column.
 
-#### lead & lag & cum*
+#### lead, lag & cum*
 
 `lead()` and `lag()` allow you to create another vector which is offset up or down by a certain amount. Using this you can calculate running differences, or find when values change.
 
@@ -349,7 +349,7 @@ Useful references:
 
 The dataset `iris` will be used as it is good for demonstrating these functions.
 
-#### mutate
+#### mutate {####mutate_ext}
 
 `mutate_at()` is used to perform a function on several columns at once. The syntax goes like this:
 
@@ -481,7 +481,7 @@ iris %>%
 ```
 
 
-#### summarise
+#### summarise {####summarise_ext
 
 `summarise_at()` works similarly to `mutate_at()`:
 
@@ -542,7 +542,7 @@ iris %>%
   summarise_all(mean)
 ```
 
-#### filter
+#### filter {####filter_ext}
 
 `filter_at()` - similar to above, select the columns to filter on using `c('colname')` or `vars()`, then specify your condition.
 
