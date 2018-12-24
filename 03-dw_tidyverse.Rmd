@@ -164,7 +164,7 @@ Note R does not have a good built in class for time data. Thus the hms package i
 
 `write_csv()` and `write_tsv()` always encode strings in UTF-8 and save date-times in ISO8601 format.
 
-`write_excel_csv()` - use this if you want to import the csv to excel as there is a 'byte order mark' telling excel that you are using UTF-8 encoding
+`write_excel_csv()` - use this if you want to import the csv to excel as there is a 'byte order mark' which telss excel that you are using UTF-8 encoding.
 
 
 ## dplyr
