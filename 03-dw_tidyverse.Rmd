@@ -94,7 +94,7 @@ mpg %>%
   {head(.)}
 ```
 
-See [SO](https://stackoverflow.com/questions/42385010/using-the-pipe-and-dot-notation) for more details.
+See [this](https://stackoverflow.com/questions/42385010/using-the-pipe-and-dot-notation) SO question for more details.
 
 ### filter
 
@@ -368,7 +368,7 @@ mpg %>%
 
 Note that you must add `.` as the first argument of summarise!
 
-When using the `.` with `group_by()` and `mutate_at()`/`mutate()` or `summarise_at()`/`summarise()`, the grouping is respected! See [SO](https://stackoverflow.com/questions/48182815/when-to-use-do-function-in-dplyr) for more details.
+When using the `.` with `group_by()` and `mutate_at()`/`mutate()` or `summarise_at()`/`summarise()`, the grouping is respected! See [this](https://stackoverflow.com/questions/48182815/when-to-use-do-function-in-dplyr) SO question for more details.
 
 If you write your own function and add it to the chain after `group_by()`, use `do()`, otherwise the whole dataframe will be sent through. This might be because only functions specifically written to respect `group_by()` will do so (e.g. `mutate()` and `summarise()`).
 
@@ -380,7 +380,7 @@ Explanation from the `%>%` help file:
 
 **Using the dot for secondary purposes** - Often, some attribute or property of lhs is desired in the rhs call in addition to the value of lhs itself, e.g. the number of rows or columns. It is perfectly valid to use the dot placeholder several times in the rhs call, but by design the behavior is slightly different when using it inside nested function calls. In particular, if the placeholder is only used in a nested function call, lhs will also be placed as the first argument! The reason for this is that in most use-cases this produces the most readable code. For example, `iris %>% subset(1:nrow(.) %% 2 == 0)` is equivalent to `iris %>% subset(., 1:nrow(.) %% 2 == 0)` but slightly more compact. It is possible to overrule this behavior by enclosing the rhs in braces. For example, `1:10 %>% {c(min(.), max(.))}` is equivalent to `c(min(1:10), max(1:10))`.
 
-(See [SO](https://stackoverflow.com/questions/35272457/what-does-the-dplyr-period-character-reference) for more details)
+(See [this](https://stackoverflow.com/questions/35272457/what-does-the-dplyr-period-character-reference) SO question for more details)
 
 
 ### n_distinct
