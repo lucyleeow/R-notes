@@ -1,0 +1,92 @@
+# Control flow
+
+## For loops
+
+A for loop can be inefficient in R if you are growing a data structure (e.g. dataframe) because R will recreate the object in memory at each iteration. However, if you create a vector of the correct size (or of a size that you know will be more than enough) outside of the for loop, then fill this vector in your loop, it is more efficient. In this case R will create a structure with enough slots prior to the loop, instead of asking for more space at each iteration. A good reference on this isse is [this](https://kbroman.wordpress.com/2013/04/02/apply-vs-for/) blog
+
+Objects created in a for loop are global. This is as opposed to objects created within a function, which are local.
+
+### Creating empty data structures
+
+Atomic vector can be created with any of these functions. The only argument they take is the length of the vector.
+
+```{r}
+str(logical(10))
+```
+
+Empty logical vectors are filled with FALSE by default.
+
+```{r}
+str(numeric(10))
+str(double(10))
+str(integer(10))
+```
+
+Empty number vectors are filled with 0's by default.
+
+```{r}
+str(character(10))
+```
+
+Empty mumeric vectors are filled with empty strings by default.
+
+You can also create a vector using `vector()`:
+
+```{r}
+str(vector(mode = "character", length = 10))
+```
+
+A list can be created using this function:
+
+```{r}
+str(vector(mode = "list", length = 10))
+```
+
+An empty list is filled with NULLs by default.
+
+An empty matrix can be created thus:
+
+```{r}
+str(
+  matrix(nrow=2, ncol = 2)
+)
+```
+
+An empty matrix is filled with NAs by default.
+
+A dataframe can be created in two ways:
+
+```{r}
+str(
+  data.frame(col1 = numeric(10), col2 = character(10), 
+             stringsAsFactors = FALSE)
+)
+```
+
+It is important to add `stringsAsFactors = FALSE`, otherwise character vectors will be automatically converted into factors.
+
+```{r}
+str(
+  data.frame(matrix(nrow=2, ncol = 2))
+)
+```
+
+Growing a dataframe efficiently in R is difficult. The best option may be to create vectors in the loop and then join the vectors.
+
+```{r, eval=FALSE}
+x <- numeric(n)
+y <- character(n)
+  
+for (i in 1:n) {
+  x[i] <- i
+  y[i] <- i
+}
+
+data.frame(x, y, stringsAsFactors=FALSE)
+```
+
+See [this](https://stackoverflow.com/questions/11486369/growing-a-data-frame-in-a-memory-efficient-manner) question on SO for more. (There is also a data.table method - see [this](https://stackoverflow.com/questions/20689650/how-to-append-rows-to-an-r-data-frame/38052208#38052208) SO question and section 888 for more.)
+
+
+
+
