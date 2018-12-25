@@ -115,10 +115,156 @@ iris[c(NA,2,NA,4),1:2]
 or if only one NA is used, will return an object the same length, completely filled with NAs. Below there are 150 rows (the same number in the original iris data) and each row is a NA.
 
 ```{r}
-iris[NA,1:2]
+head(
+  iris[NA,1:2]
+)
+```
+
+## Apply family
+
+The `apply()` functions do not actually offer improved performance over loops, except `lapply()` which can be a little faster because it does more work in C than in R. 
+
+Use apply family for clarity (NOT performance) and because it has no side effects (e.g. does not alter the the input dataframe). See [this](https://stackoverflow.com/questions/2275896/is-rs-apply-family-more-than-syntactic-sugar) question on SO for more.
+
+[Datacamp](https://www.datacamp.com/community/tutorials/r-tutorial-apply-family#gs.5vHYLC8) has a nice tutorial on the apply family.
+
+* `apply()` - applies a function to either all the rows (`MARGIN = 1`) or all the columns (`MARGIN = 2`).
+    * Returns vector, array or list depending on the output of the function on the row/column. 
+* `by()` - splits a dataframe by row by by the values of one or more factors and applies a function to each subset.
+* `eapply()` applies a function to the named values from an environment and returns results as list. This is primative (internally implemented) function.
+* `lapply()` 'list apply' - returns list of the same length as input function. Each element is result of applying a function to the input object.
+* `sapply()` 'simplify apply' - same as `lapply()` but returns a vector or matrix. (`sapply()` and `lapply()` are essentially the same however, lapply always returns a list and sapply tries to simplify.)
+    * Do not have to specify index as you do in apply
+    * Returns named vector, `USE.NAMES = FALSE` if you don’t want `sapply()` to use character values as names for the result.
+* `vapply()` - returns specified type of value.
+* `mapply()` 'multivariate apply - allows input of more than one argument.
+
+```{r}
+mapply(min, iris$Sepal.Length, iris$Sepal.Width)
+```
+
+The function `min()`, which can take several arguments, is applied to two columns of `iris`. The result is a matrix with one column and the same number of rows as in `iris`.
+
+For more complex functions, this syntax can also be used. Notice how the two arguments to the function are given at the end.
+
+```{r, eval=FALSE}
+mapply(function(x,y){
+  funct(x,y)},
+  input1, input2)
+```
+
+* `rapply()` 'recursive apply' - applies functions to lists in different ways depending on arguments supplied. E.g. apply to each value in the list or apply to each list. 
+
+Arguments to the function can usually be given in two different ways:
+
+```{r, eval=FALSE}
+sapply(data, function(x) my_funct(x, arg = TRUE))
+sapply(data, my_funct, arg = TRUE)
+```
+
+I would suggest to use the first syntax for clarity.
+
+### Uses
+
+`apply()` can be used to perform a function on every 'n' rows of every column in matrix:
+
+```{r}
+iris_sub <- iris[1:4,1:4]
+iris_sub
+```
+
+```{r}
+matrix(iris_sub$Sepal.Length, nrow = 2)
+```
+
+```{r}
+colMeans(matrix(iris_sub$Sepal.Length, nrow = 2))
+```
+
+The mean of every two rows of the `Sepal.Length` column is being calculated. The result of our function is a vector.
+
+```{r}
+apply(iris_sub, 2, function(x) colMeans(matrix(x, nrow = 2)))
+```
+
+`apply()` gives the function a column of the dataframe each 'iteration'. The result of the function is a vector (see above) and `apply()` puts these vectors together into a matrix. See [this](https://stackoverflow.com/questions/25150892/stats-on-every-n-rows-for-each-column?rq=1) SO question for more.
+
+`mapply()` can be used to apply a function to groups of columns.
+
+First, create a list of the columns we want to perform our function on.
+
+```{r}
+x <- list(1:2, 3:4)
+x
+```
+
+Using `iris_sub` from above:
+
+```{r}
+rowMeans( iris_sub[, x[[1]] ] )
+```
+
+This is performing `rowMeans()` the first two columns (`x[[1]]` = 1,2) of `iris_sub` for each row. 
+
+We can use `lapply()` to perform this on the other elements in `x`. `x` is a list of the column indices we wish to perform the function on. The function is performed on columns 1 & 2 and 3 & 4 as per `x`.
+
+```{r}
+lapply(x, function(i) rowMeans( iris_sub[, i ] ))
+```
+
+This can also be combined this together into a matrix (see below for more on `do.call()`).
+```{r}
+do.call(cbind,
+        lapply(x, function(i) rowMeans( iris_sub[, i ] )))
+```
+
+See [this](https://stackoverflow.com/questions/10661295/apply-a-function-over-groups-of-columns) question on SO for more.
+
+## do.call() {#docall}
+
+This function lets you call any function and give it arguments via a list. 
+
+```{r}
+x <- lapply(iris, class)
+str(x)
+```
+
+`lapply()` is performing `class()` on all columns of the dataframe `iris`. The result is a list where each element is the class of each column.
+
+```{r}
+do.call(c, x)
+```
+
+Here the `do.call()` function is giving the `c()` function five arguments, with each argument being an element of the list `x`. The list 'x' is turing into a vector. 
+
+Further, notice how `x` is a named list. The output of `do.call()` was a name vector.
+
+Let’s look at a paste example for clarity.
+
+```{r}
+a <- c(a = "a", b = "b", sep = ".")
+do.call(paste, as.list(a))
+```
+
+What `do.call()` is actually executing is:
+
+```{r, eval=FALSE}
+paste(a = "a", b = "b", sep = ".")
 ```
 
 
+The `what` argument of `do.call()` can take 'either a function or a non-empty character string naming the function to be called'.
+
+When you give it the function name - it will take the default function with that name. If you wish to specify which environment to take the function from - you must give the function name in quotes and specify the environment using the `envir` argument.
+
+See [this](https://www.stat.berkeley.edu/~s133/Docall.html) `do.call()` guide for more.
+
+## do.call vs lapply vs map
+
+**do.call()**|**lapply()**|**Map**
+:--------------------:|:--------------------:|:--------------------:
+There is one function call. Applies a given function to the list as a whole.| There are n function calls, where n is the length of the list/vector.| Simple wrapper to `mapply()`. Does not attempt to simplify the result.
+Often used to assemble lists into simpler structures.| Returns a list of the same length as your list/vector.| 
 
 
 
