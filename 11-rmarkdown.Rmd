@@ -1,0 +1,201 @@
+# Rmarkdown
+
+Useful references:
+
+* [R markdown: the definitive guide](https://bookdown.org/yihui/rmarkdown/)
+* C Shalizi's [R Markdown for Class Reports](http://www.stat.cmu.edu/~cshalizi/rmarkdown/)
+* [Pandoc User's Guide](https://pandoc.org/MANUAL.html#pandocs-markdown)
+
+The difference between markdown and LaTeX, which are both typesetting languages (?).
+
+* Markdown designed for html. Easy to learn and type but you do not have fine control over typesetting.  
+* LaTeX designed for pdf and related outputs. Relatively more difficult to learn but you have control over everything. 
+
+Note that markdown can create both html and pdf output and same for LaTeX. Pandoc can convert markdown to almost everything.
+
+Pages are the source of all (?) problems when the output is not html. In html there are no page breaks and no need to worry about where to place figures, tables and images. Things are able to just appear linearly. 
+
+Pages result in 'floating environments' becase a graph/table cannot be broken over two pages, by default it can float to unexpected places.
+
+Rmarkdown is a variant of Markdown developed by RStudio. Can include embedded code chunks. To convert a Rmarkdown document to html (or any markdown document), you can use the markdown package - which uses pandoc for the actual conversion. RStudio includes pandoc, so if you install RStudio, you won't need to install pandoc separately. 
+
+## Basics
+
+* `--` turns into endash (long line).
+* `---` turns into emdash (longer line).
+    * If you want actual `--` (2 dashes) use \ to escape 2nd dash `-\-`.
+* To output text verbatim, surround with backticks. 
+
+## Knitr
+
+Useful references:
+
+* YiHui's [page](https://yihui.name/knitr/options/) on knitr options
+* K Broman's [knitr in a knutshell](http://kbroman.org/knitr_knutshell/pages/Rmarkdown.html)
+
+### YAMAL header
+
+Text-based format for specifying data. 
+
+Example:
+
+```
+---
+title: "Habits"
+author:
+- auth1
+- auth2
+
+date: March 22, 2005
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+---
+```
+
+* To get your TOC on a new page (after the title page), use `\newpage` after the yaml header.
+* See [this](https://stackoverflow.com/questions/26043807/multiple-authors-and-subtitles-in-rmarkdown-yaml) SO question for more on including multiple authors.
+
+### Chunk options
+
+This goes at the top of the code chunk along in `{r, }`.
+
+* `eval` - Logical: whether or not to evaluate the code chunk.
+    * Or you can tell it to evaluate certain functions only with `eval=c(1,2,3)`. Numbers seem to refer to 'expressions'. Expressions numbered thus:
+      - Start counting from #1 and each complete line(s) of code counted. If code runs over >1 line (e.g. for loops) it still counts as 1 expression.
+      - Each individual empty lines are also counted as onw 'expression'. E.g. if you have two empty lines before your first line of code, your code line is number 3.
+    * Code should still be output (seen) in the file when `eval=FALSE`.
+* `echo` - Logical: Include R source code in output file.
+* `error` - Logical: If you want your error messages to show, turn off error checking using `error=TRUE`.
+* `include` - Logical: Include chunk output in final document. If FALSE, nothing outputs except plots. This is not cached.
+* `results` - Controls text output.
+    * 'Hide' hides normal R output (does not apply to warnings, messages or errors). So the messages that output after library loading will still display. Can suppresses the console output when generating plots but keeps plots.
+    * 'Hold' - without this option, output will print after the each line of code (which produces output) within a chunk. Hold will cause all output to be displayed at the end of the chunk. 
+* `out.width` & `out.height` - Width and height of plots in output.
+    * For LaTeX can be `8\\linewidth`, `3in` or `8cm`.
+    * Can also use percentage `'40%'` (which is translated to 0.4\linewidth, when output is latex).
+* `message` - Logical: stops messages like the ones that output after loading package.
+* `cache` - Cached code chunks are NOT evaluated. Objects created from these chunks are lazy loaded from previously saved databases (it will save it). 
+
+For the problem of code in a code chunk running off the page you can:
+
+1. Set `tidy=FALSE`.
+2. Space your code out how you want to
+
+You can also try `{r, tidy.opts=list(width.cutoff = 30)}`.
+
+
+Plots
+
+* `fig.keep` - Options:
+    * 'high' - only high quality plots.
+    * 'none' - discard all.
+    * 'all' - keep all plots. 
+    * 'first' - only first.
+    * 'last' - only last.
+* `fig.show` - 
+    * 'hold' hold all plots and output them at the end of the chunk. Use this when you have comment/lines after your plotting code. Results = 'hold' does not work for holding plot output until end of chunk!
+* `fig.align` - alignment of figure.
+
+To get figures to show side-by-side set fig.align='center' & fig.show='hold' (https://stackoverflow.com/questions/37115276/control-alignment-of-two-side-by-side-plots-in-knitr)
+
+### Global options
+
+Use `knitr::opts_chunk$set` to set chunk options for all chunks in a document.
+
+For example:
+
+```{r, eval=FALSE}
+opts_chunk$set(fig.width=12, fig.height=8, fig.path='Figs/',
+               echo=TRUE, warning=FALSE, message=FALSE)
+```
+
+
+## Bookdown
+
+Useful references:
+
+* YiHui's [Bookdown](https://bookdown.org/yihui/bookdown)
+* K Ross's getting started [github page](https://github.com/seankross/seankross.github.io/blob/master/_posts/2016-11-16-How-to-Start-a-Bookdown-Book.md) 
+
+Major output formats:
+
+* bookdown::pdf_book
+* bookdown::gitbook
+* bookdown::html_book
+* bookdown::epub_book
+* bookdown::render_book - render multiple Rmd documents into a book using the output format functions
+
+### Rendering
+
+There are 2 approaches to rendering:
+
+1. Merge and knit - merge all chapters into one Rmd file and knitting together. 
+2. Knit and merge - knit each chapter in a separate R session and merge the markdown output of all chapters to render the book.
+
+Differences:
+
+* In M&K the state of the R session from previous chapters are carried over to later chapters (e.g. objects created in previous chapters are carried over). With K&M, all chapters are isolated from each other. If you use M&K, it can be very difficult to restore a running R session to a completely clean state (e.g. even if you detach/unload packages previously loaded, R will not clean up the S3 methods registered by these packages).
+* No duplicate chunk labels allowed in the M&K approach.
+* K&M does not allow Rmd files to be in subdirectories.
+* Default is M&K. To switch: set `new_session = TRUE` when calling `render_book()`, or set `new_session: yes` in the configuration file '_bookdown.yml'.
+
+### Structure
+
+* Bookdown merges Rmd files by order of file names (e.g. 01-chap1, 0.2-chap2...). Names that start with an underscore '_' will be ignored.
+* index.Rmd file will be the 'main' or first file.
+    * This is because the HTML file index.html to be generated from index.Rmd, is usually the default index file.
+    * To override this, include a configuration file called '_bookdown.yml'. Here you can define your list and order of Rmd files - `rmd_files:["index.Rmd", "abstract.Rmd", "intro.Rmd"]`
+    * Underscores and 'index/Rmd' will not be treated differently if 'rmd_files' is included.
+
+### YAMAL header
+
+These options are passed to the GitBook HTML template via Pandoc. They may not have clear visible effects on the HTML output but may be useful when you deploy the HTML output as a website.
+
+* `description` - A character string to be written to the content attribute of the tag `<meta name="description" content="">` in the HTML heading (if missing, the title of the book will be used). This can be useful for search engine optimization (SEO). Note that it should be plain text without any Markdown formatting such as `_italic_` or `**bold**`.
+* `url` - The URL of book's website. E.g. `https\://bookdown.org/yihui/bookdown/` (note the '\' before ':')
+* `github-repo` - The GitHub repository of the book of the form user/repo
+You can add a Github button in the sharing buttons on the toolbar by setting `github:yes` under `sharing` in the gitbook configurations (see bookdown [news](https://github.com/rstudio/bookdown/blob/master/NEWS.md) for more).
+
+## HTML on Github
+
+
+How to render html file on github instead of the raw file - add `http://htmlpreview.github.io/?` to the start of the page url, once you have opened in github:
+
+E.g.
+```
+http://htmlpreview.github.io/?https://github.com/lucyleeow/StatisticalRethinking/blob/master/Chapter2.nb.html
+
+https://github.com/lucyleeow/StatisticalRethinking/blob/master/Chapter2.nb.html
+
+```
+
+Or use `rawgit.com`:
+
+```
+Rendered html:
+https://rawgit.com/lucyleeow/StatisticalRethinking/master/Chapter2.nb.html
+Raw html:
+https://github.com/lucyleeow/StatisticalRethinking/blob/master/Chapter2.nb.html
+```
+Note 'blob' needs to be deleted from the first url as well.
+
+Reference [SO](https://stackoverflow.com/questions/8446218/how-to-see-an-html-page-on-github-as-a-normal-rendered-html-page-to-see-preview).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,301 @@
+# data.table
+
+Useful references:
+
+* [Vignettes and documentation](https://github.com/Rdatatable/data.table/wiki/Getting-started)
+* [cheatsheet](https://s3.amazonaws.com/assets.datacamp.com/blog_assets/datatable_Cheat_Sheet_R.pdf)
+* Stevie's [blog](https://www.r-bloggers.com/intro-to-the-data-table-package/)
+* Franks [tutorial](http://franknarf1.github.io/r-tutorial/_book/tables.html#dt-joins) on joins
+
+The `flights` dataset will be used for examples.
+
+```{r}
+library(nycflights13)
+library(data.table)
+flights_dt <- as.data.table(flights[complete.cases(flights),])
+str(flights_dt)
+```
+
+## fread
+
+Memory mapping - instead of reading in data, map the content of the file to a pointer. Very fast as the data on disk mapped directly to memory without coping. This is more likely to cause bus error though. This is what python does.
+
+* The advantage is that it makes reading in files a lots faster but there may be differences in performance in subsequent wrangling.
+* The memory mapping works row wise (in python and C so probably in `fread()` too).
+* If you are working with the whole dataframe, finding average of column is probably faster if the whole data has been read into memory.
+    * However for very large datasets, it is impossible to read the whole df into memory.
+* If you are filtering rows, it should work at the same speed
+
+## Subsetting
+
+General form: `DT[i, j, by]`
+
+Meaning: Take DT, subset/reorder rows using `i`, then calculate `j`, grouped by `by`.
+
+### Rows
+
+You can subset or reorder the rows.
+
+Example:
+`flights[origin == "JFK" & month == 6L]`
+
+* You can refer to columns by just their name (as if they were variables) like in dplyr. Using `df$` at the start also works though.
+* No need for comma after `i` (the subsetting or ordering condition), like in base R (e.g. `df[col == 'a',]`). Works with comma as well.
+
+#### Sorting
+
+`flights[order(origin, -dest)]`
+
+This will sort rows first according to origin (in ascending order) and THEN according to `dest` in descending order, as incidcated by the `-`.
+
+### Columns
+
+* `flights[, arr_delay]` returns a vector.
+    * If you select two or more columns (`dt[,c(col1, col2)]`) it returns a vector of the two columns joined together (thus length = 2 x length of df).
+* If you provide the column names in the form of a list, a data.table is returned.
+    * You can use either`flights[, list(arr_delay)]` or `flights[, .(arr_delay)]`. 
+    
+**Note** `.()` is short for `list()` in data.table.
+
+You can also rename columns (when using list) like so: 
+
+`flights[, .(delay_arr = arr_delay, delay_dep = dep_delay)]`
+
+#### Column name as variable
+
+To select columns using column names provided in the form of a variable (e.g. argument in a function) there are a few ways.
+
+1. You can use `with = TRUE`. Outputs a data.table.
+
+```{r}
+var1 <- "dep_time"
+var2 <- "arr_time"
+```
+```{r, eval=FALSE}
+dt1 <- flights[,c(var1,var2), with=FALSE]
+```
+
+From documentation:
+
+> with: By default 'with=TRUE' and 'j' is evaluated within the frame of 'x' (the data.table); column names can be used as variables. 
+
+This means, line in dplyr, you can use the column name and do not have to specify the dataframe (e.g. `df$colname`). This is called non-standard evaluation.
+
+> When 'with=FALSE' 'j' is a character vector of column names or a numeric vector of column positions to select, and the value returned is always a 'data.table'. 'with=FALSE' is often useful in 'data.table' to select columns dynamically.
+
+This makes the data.table act like a 'normal' dataframe. Though note that the output is a data.table.
+
+2. You can also use `get()`. Outputs a data.table.
+
+```{r, eval=FALSE}
+dt[ , get(var1)]
+```
+
+`get()` returns the value of a named object (e.g. if you give it the name of a variable, it returns what that variable is assigned to)
+
+Note that running just `get(var1)` will give you an error:
+
+```{r, error=TRUE}
+get(var1)
+```
+
+Only when it is evaluated in the context of the data.table (see with=TRUE above) will it work. In the context of the data.table, the value of the variable is a column name.
+
+3. Use `quote()` and `eval()`. Outputs a vector. 
+
+This is similar to writing functions with dplyr (see section \@ref(writing-dplyr-functions).
+
+```{r, eval=FALSE}
+var1 = quote(colname)
+dt[ , eval(var1)]
+```
+
+Example:
+
+```{r}
+var1 <- quote(arr_time)
+str(var1)
+```
+
+```{r}
+str(
+  flights_dt[,eval(var1)]
+)
+```
+
+Note again how this does not work outside of the context of the data.table.
+
+```{r, error=TRUE}
+eval(var1)
+```
+
+4. Use `quote()` and `eval()`. Outputs a data.table.
+
+```{r, eval=FALSE}
+var1 <- quote(list(x, v))
+DT[ , eval(var1)]
+```
+
+Example:
+
+```{r}
+var1 <- quote(list(dep_time, arr_time))
+str(var1)
+```
+
+```{r}
+str(flights_dt[ , eval(var1)])
+```
+
+See [this](https://stackoverflow.com/questions/12603890/pass-column-name-in-data-table-using-variable) SO question for more.
+
+## Functions
+
+This gives you one number, the number of trips with a arrival and departure delay of 0.
+```{r}
+flights_dt[, sum( (arr_delay + dep_delay) < 0 )]
+```
+
+This filters the rows, then gives you the number of rows left - note that here we could have put any column name in `length()`.
+
+```{r}
+flights_dt[origin == "JFK" & month == 6L, length(dest)]
+```
+
+`:=` is to be used within 'j' only. It adds or updates or removes column(s) by reference. It is much faster.
+
+read this blog: http://brooksandrew.github.io/simpleblog/articles/advanced-data-table/#create-multiple-columns-with--in-one-statement
+
+and this: https://stackoverflow.com/questions/7029944/when-should-i-use-the-operator-in-data-table
+
+
+## Grouping
+
+Use the last (`by`) section to group. If you are grouping by just one variable you can use `by=var1`, otherwise you need to put in list or vector - `by=list(var1,var2)` or `by=.(var1,var2)` or `by=c(var1,var2)`.
+
+You can perform functions on your groups:
+
+```{r, eval=FALSE}
+head(
+  flights_dt[carrier == "AA",
+        .(mean(arr_delay), mean(dep_delay)),
+        by = .(origin, dest, month)]
+)
+```
+
+This returns a data.table with:
+
+* the columns that you grouped by.
+* the two new mean columns. They are named v1 and v2 by default, but you can name then by using `.(name1 = mean(arr_delay), name2 = mean(dep_delay))`.
+
+To get the number of rows (or elements) in each group, you can use `.N`.
+
+```{r}
+head(
+  flights_dt[carrier == "AA", .N, by = .(origin, dest)]
+)
+```
+
+The output is the number of rows in each of your groups.
+
+### Expressions 
+
+`by` can also take expressions.
+
+```{r}
+flights_dt[, .N, .(dep_delay>0, arr_delay>0)]
+```
+
+You get a TRUE and FALSE group for each expression, and all possible combinations of your expressions (here there are four in total). Here the number of rows was also calculated due to the inclusion of `.N`.
+
+### Order
+
+`by` keeps the order of your groups as they appear in the datatable. `keyby` orders the rows by the grouping variables, in increasing order (See section 888 for more on keys.)
+
+### Functions on groups
+
+There is a  `.SD` symbol in data.table and it stands for 'Subset of Data'. When you group by, it gives you each group, in the order as they appear in your data.table.
+
+```{r, eval=FALSE}
+flights_dt[ ,
+            lapply(.SD, mean), 
+            by = month,
+            .SDcols = c("arr_delay", "dep_delay")]
+```
+
+There are a few things to note:
+
+* The output of `lapply()` is a list. Recall that for section 'j', as long as the output is a list, data.table will give you each element of the list as a column in your new data.table.
+* `.SDcols` allows us to specify which columns we which to perform the function on. data.table will otherwise by default try to perform the function on all columns.
+
+## Keys
+
+Useful references: 
+
+* The data.table key [vignette](https://cloud.r-project.org/web/packages/data.table/vignettes/datatable-keys-fast-subset.html)
+* [this](https://stackoverflow.com/questions/20039335/what-is-the-purpose-of-setting-a-key-in-data-table) question on SO.
+
+You can set one or more columns as 'keys' in your data table. These columns can be of any data type and uniqueness is not forced (you can have rows with the same value). 
+
+What keys do:
+
+* Reorders the rows of the data.table by the key, in increasing order.
+* Marks those columns as key columns (by setting an attribute called 'sorted').
+
+The `setkey()` function lets you set the key. You do not need to assign the output to a variable - it is modified in place.
+
+To find out the keys of a datatable, use the function `key()`.
+
+What you can do after you set a key:
+
+* Subset
+    * `DT[.('rowvalue', 'rowvalue2')]` - here you are querying the key columns, using the `.()` (`list()`) notation. The output is the rows where the first key column has the value 'rowvalue' and the second key column has the value 'rowvalue2'. You can put as many values as you have keys.
+    * To be able to subset only ONE of the key columns you need something like this: `dt[ .(unique(key1), 'rowvalue2') ]`. You cannot skip the first key, thus you put all the values of the first key there.
+
+## Reshaping
+
+`melt()` - wide to long.
+
+See [this](https://cran.r-project.org/web/packages/data.table/vignettes/datatable-reshape.html) vignette for more.
+
+```{r, eval=FALSE}
+melt(DT, id.vars = c("col1", "col2"),
+     measure.vars = c("col3"))
+```
+
+* `measure.vars` specifies the columns to make long. You can refer to columns via indices.
+* If a column is factor, you can set `variable.factor` argument to FALSE to prevent return character data type instead.
+* If either `id.vars` or `measure.vars` is missing, the rest of the columns are automatically assigned to the missing argument.
+* Use argument `variable.name` and `value.name` to specify names of the columns.
+
+`dcast()` long to wide.
+
+```{r, eval=FALSE}
+dcast(DT, col1 + cl1 ~ col3, value.var = "name")
+```
+
+* Formula notation - LHS is the id columns, RHS measurement columns.
+* `value.var` let's you specify the prefix to add the column names. Useful if there are more than one measurement columns.
+
+## Merge
+
+data.table will by default merge using the 'key' column of the data.table. Recall you can set the key using the function `setkey()`. 
+
+You can also set the key on a 'case by case' basis using `on` (`X[Y, on=c("x_a" = "y_a")]`).
+
+If you have several columns to merge by, add another element to your vector for the 'on' argument. See [this](https://stackoverflow.com/questions/20039335/what-is-the-purpose-of-setting-a-key-in-data-table) question on SO for more.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

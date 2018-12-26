@@ -1,0 +1,506 @@
+# Package development
+
+Useful references:
+
+* Hadley Wickham's [R packages](http://r-pkgs.had.co.nz/intro.html)
+* Hillary Parker's [quick guide](https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/)
+* Damjan Vukcevic's [slides](http://damjan.vukcevic.net/2016/09/20/writing-and-managing-r-packages/)
+
+## Naming
+
+* Can only contain letters, numbers and periods ('.')
+* Must start with letter 
+* Cannot end with a period
+* Hadley recommends against using periods
+
+## States
+
+An R package can exist in five states:
+
+
+### Source
+
+Development version. Lives on your computer. It is just a directory with DESCRIPTION file, R/ folder etc.
+
+### Bundled
+
+Package that has been compressed into a single file. By convention, uses the extension '.tar.gz'. This means that several files have been reduced to a single file (.tar) then compressed (gz). `devtools::build()` will create a bundle of your package.
+
+When you decompress a bundle it will look almost the same as your source package. The differences are:
+
+* Vignettes are built already. In source you may have markdown or latex input. In decompressed bundle, you will only have the html and pdf output.
+Temp files in source will not be included in the decompressed bundle e.g. things in the 'src/' fold.
+* Any files listed in '.Rbuildignore' will not be included. This is useful for files that are needed to generate the output. In the bundle you only need the output file, thus do not need to include the files used to generate it. 
+
+### Binary package
+
+Single file (like a package bundle) but internal structure is different when uncompressed:
+
+* Instead of R/, there are 3 files that store the parsed functions in an efficient file format. It is basically the result of loading all the R code and then saving the functions with `save()`. This is what it looks like:
+
+![](Images/bundle.png)
+
+The is a 'Meta/' directory (one above) that contains a number of Rds files. These files contact cached metadata about the package - like what topics the help files cover and parsed versions of the DESCRIPTION files. These files make package loading faster by caching costly computations.
+
+The 'html/' directory contains files for html help files. Binaries are platform specific.
+
+### Installed
+
+Binary package that's been decompressed into a package library. Installation involves these steps: source -> bundle, bundle -> binary, binary -> installed - however there are often shortcuts available.
+
+See section \@ref(r-cmd-install) (R CMD install) for more details.
+
+### In memory
+
+Packages must be loaded into memory to use. There is difference between loading and attaching a package - see section 888 (NAMESPACE) for more.
+
+### Summary
+
+Files present in the root directory for source, bundled and binary versions of devtools.
+
+![](Images/package-files.png)
+
+## R CMD install
+
+The command line tool 'R CMD INSTALL' can install a source, bundle or binary package. Devtools functions provide wrappers that allow you to access this tool from R rather than from the command line.
+
+* `build()` - converts a package source directory into a single bundled file then intalls the package. Wrapper for R CMD build.
+* `install()` - install a local development package (into your R system library). Wrapper for R CMD install. 
+    * It reinstalls the package, detaches the currently loaded version the reloads the new version with `library()`
+* `load_all()` - roughly simulates what happens when a package is installed and loaded with `library()`. 
+    * It will load R code in the /R folder (and compiled shared objects in /src and data files in /data). 
+    * Won't be available when you close your R session.
+    * It allows you to 'skip' install and load a source package directly into memory.
+
+Note that you need to use the above three functions from a working directory OUTSIDE of your package directory! This can be easily done with `setwd('..')`.
+
+* `install_github()` - downloads a source package from GitHub, runs `build()` to make vignettes then uses R CMD install to install.
+* `install_url()`, `install_gitorious()`, `install_bitbucket()` do similar things but just from different websites.
+* `install.packages()` - looks on CRAN for package, downloads and then installs. 
+    * The difference between `install_github()` and `install.packages()` is that for the latter, packages are often in binary format on CRAN thus do not need to be built before installed.
+    
+See the [devtools](https://cran.r-project.org/web/packages/devtools/readme/README.html) package documentation for more.
+
+RStudio's 'build and reload' or 'install and restart' (depending on the RStudio version) button (or keyboard 'Ctrl/Cmd + Shift + B') is similar to `load_all()`. It lets you skip install and load a source package into memory. It is slower than `install_all()`. It does not build vignettes like `install()` does.
+
+Build will make a copy of many of the files - problem for large data files. (See [this](https://stackoverflow.com/questions/46724623/difference-between-load-all-and-build-reload) question SO for more).
+
+As discussed below in section \@ref(workflow) (Workflow), build and reload will show links between your documentation pages.
+
+Comparison:
+
+![](Images/loading.png)
+
+Summary of the build functions:
+
+![](Images/installation.png)
+
+An installed package is just a binary package that’s been decompressed into a package library.
+
+## Workflow
+
+This describes the package writing workflow using roxygen2 to create the documentation and the NAMESPACE files. You can choose to use roxygen2 to only create the documentation or NAMESPACE. If you do not use any of the tags associated with one, it will not alter either the /man or NAMESPACE files.
+
+1. Create file structure (see section \@ref(file-system) (file system)).
+2. Update DESCRIPTION file.
+3. Write your functions and put them in your R/ folder.
+4. Add roxygen2 comments to your R script to generate documentation and/or update the NAMESPACE file. 
+5. Use the function `document()` to generate the documentation and/or NAMESPACE.
+    + You do not need to install or load your package first. 
+    + You do not need to give document any arguments. The default is `pgk = '.'`.
+
+`roxygenise()` vs `document()` -
+
+Roxygen does live analysis of your source code - loads the code in your package so it can create documentation using values in an R environment, not just source code.
+
+`roxygenise()` - sources all files in R/
+`document()` - sources all files in R/, compiles source code in src/, loads data and generally does an accurate job of simulating package loading
+It is recommended to use `roxygenise()` only for simple packages. (See [this](https://stackoverflow.com/questions/25104108/devtoolsdocument-vs-roxygen2roxygenize) SO question for more.)
+
+6. Preview documentation with `?fun` or `help(fun)`.
+    + R looks for an .Rd file containing \alias{'yourfun'}, parses the file, converts it to HTML and displays it. Generally this looks for Rd files in installed packages BUT if you use `load_all()`, devtools tells the `help()` and `?` how to work with source packages. This preview does NOT work with intra-package links through! You need to install your package for these to work.
+7. Install your package.
+
+## File structure
+
+The minimum files required for an R package are:
+
+* /R fold with all your function files (.R)
+* DESCRIPTION file
+* NAMESPACE file
+
+![](Images/file_struct.png)
+
+* DESCRIPTION file - this file states important things about your package like:
+    * Name of package and description of what it does
+    * Version number
+    * Required packages & their versions and the version of R required
+    * Name of author(s) and creator(s) - the creator should be the maintainer of the package
+* NAMESPACE file - here you specify which functions you require from other packages and what functions your package makes available to other packages.
+* /R folder - this folder is where the R functions/code should be.
+* /man folder - this is where your function documentation/help files will be.
+
+There are two ways to generate the files and file structure automatically:
+
+1. Use the function `devtools::create("mypackage")` sets up the file structure and provides a skeleton for your DESCRIPTION and NAMESPACE files.
+2. Create a new 'package' project using New Directory > R package. Fill in the blanks in the resulting window: 
+
+![](Images/package-proj.png)
+
+Both of these options work the same and gets you to the same place. 
+
+Hadley does NOT recommend using `package.skeleton()` as this creates extra files you have to delete or modify to get a working package.
+
+## DESCRIPTION
+
+This file is the defining feature of a package. It uses the Debian control format (DCF). Each line consists of a field name and a value, separated by colon. When values span several lines, they must be indented, usually with four spaces.
+
+```
+Package: mypackage
+Title: What The Package Does (one line, title case required)
+Version: 0.1
+Authors@R: person("First", "Last", email = "first.last@example.com",
+                  role = c("aut", "cre"))
+Description: What the package does (one paragraph)
+Depends: R (>= 3.1.0)        # which version of R is required
+License: What license is it under?
+LazyData: true
+Imports:
+Suggests:
+```
+
+The last two are important tags that specify packages that are needed or useful for your package.
+
+### Imports
+
+Packages listed under imports MUST be present for your package to work. When you install your package, all packages in this list will also be installed if not already. This does NOT mean it will be 'attached' to your package (i.e. loaded with `library()`).
+
+Best practice is to explicitly refer to functions from other packages with `package::function()` in your .R scripts.
+
+Note on 'Depends': previous to the use of namespaces, `depends' was the only way to list another package as a dependency. Now use imports instead. This is because depends only loads and attaches the package whereas imports only loads it. This is because you do not want to change the search path of person who is using your package - this makes the package more 'self-contained' and minimises changes to the global environment.
+
+Hadely recommends you to structure Imports with a new line between each pacakge and the packages listed in alphabetical order.
+
+```
+imports:
+      tidyverse,
+       limma
+```
+
+### Suggests
+
+Put packages here that your package can use but does not require. Packages placed here will not be automatically installed. Thus, you need to check if they are available before using.
+
+Listing packages under Suggests is a courtesy to your users - so that you are not forcing them to download rarely needed packages. It also lets them get started with your package as quickly as possible. 
+
+## NAMESPACE
+
+This is not very important if you are developing packages for yourself but vital if you plan on submitting to CRAN. 
+
+It ensures that other packages won't interfere with your code and that your code will not interfere with other packages. It does this with:
+
+* Imports - the functions that you write will use other functions. Imports defines what functions will be used.
+* Exports - specifies what functions are available outside of your package. Helper functions etc should be made internal functions meaning that are only available within your package and another package cannot easily use them. Generally, you want to export a minimal set of functions to avoid conflicts.
+
+Namespaces help with looking up the value of an object associated with a name. 
+
+### Search paths
+
+Adding a package to the search path means that you can use functions from it without specifying which package it comes from (e.g. `fun()` instead of `package::fun()`)
+
+When you call a function, R looks for it in the global environment first, then in subsequent packages. When you run `search()`, it will show you where R will look for functions (in order). 
+
+Example output:
+
+![](Images/search-path.png)
+
+Package loading and attaching:
+
+* Loading - load code, data. Available in memory after loading. NOT in the search path so you cannot access its components without using `::`.
+    * Confusingly, using `package::fun()` will automatically load a package if it is not already loaded.
+    * It won’t however 'attach' a package to the search path, like `library()` does.
+* Attaching - puts the package in the search path. You cannot attach a package without first loading it BUT you can load a package without attaching it. 
+
+There are 4 ways to make a package available. Here they are divided into Load (ONLY loads) and Attach (loads and attaches):
+
+![](Images/package-avail.png)
+
+
+Hadley recommends that you only use `library()` and `requireNamespace()` in specific circumstances.
+
+### File syntax
+
+This file can be generated by roxygen2. You can specify which functions to export etc directly in the function .R script. There are a few reasons for this:
+
+* You can tell in your code which functions are being exported.
+* Only have to use @export and you don’t have to worry about the specific directives.
+* Keeps the file tidy. You can import a package several times but it will only appear once in the the NAMESPACE file.
+
+It looks something like this:
+
+```
+# Generated by roxygen2 (4.0.2): do not edit by hand
+S3method(as.character,expectation)
+S3method(compare,character)
+export(auto_test)
+export(auto_test_package)
+export(colourise)
+export(context)
+exportClasses(ListReporter)
+exportClasses(MinimalReporter)
+importFrom(methods,setRefClass)
+useDynLib(testthat,duplicate_)
+useDynLib(testthat,reassign_function)
+```
+
+Each line contains a directive (e.g. `export()`, `import()`). There are 8 namespace directives:
+
+* `export()` - exports functions.
+* `exportPattern()` - export all functions that match a (regular expression) pattern.
+* `exportClasses()`, exportMethods - export S4 classes and methods.
+* `S3method()` - export S3 methods.
+
+* `import()` - import all functions from a package.
+* `importFrom()` - import selected functions.
+* `importClassesFrom()`, importMethodsFrom() - import S4 classes and methods.
+* `useDynLib()` - import a function from C.
+
+### Exporting
+
+Add `#’ @export` above the function to make it usable outside of your package (not all functions like helper functions are usable ‘inside’ your function - meaning that you can ‘call’ on one function in your package within another function in your package). 
+
+### Importing
+
+NAMESPACE controls which external functions can be used by your package without using `::`.
+
+Note that 'Imports' in the DESCRIPTION file just makes sure a package is installed when yours it. It DOES NOT make functions available. This is the case whether or not the package was attached! 
+
+It is a convenience for the user - if your package is attached, it also attaches all the packages listed in Depends. This means that when a user loads and attaches your package, they can also use all the functions in Depends without using `::`.
+
+Hadley recommends for you to list all the require packages in Imports (so that it is installed) but do not import these functions because it is better to refer to it explicitly using package `::fun()` - this is to make your code easier to read.
+
+To import a function using roxygen2, use: `@importFrom package fun`.
+Hadley says it is okay to do this if you are using a function repeatedly, as there is a 5s increase in function evaluation time if you use `::`.
+
+### Exporting
+
+Add `#’ @export` above the function to make it usable outside of your package (not all functions like helper functions are usable ‘inside’ your function - meaning that you can 'call' on one function in your package within another function in your package). 
+
+## Documentation
+
+Great guide [here](http://kbroman.org/pkg_primer/pages/docs.html) by K Broman.
+
+Documentation can be for your function (or your dataset or class). It is accessed by `?` or `help()`.
+
+Documentation should be in a folder called 'man' and should be of .Rd format. .Rd is loosely based on LaTeX and are rendered to HTML, plain text and pdf for viewing. 
+
+### Roxygen2
+
+Roxygen2 is a package that helps you write these documentation files IN your script by turning specially formatted comments into .Rd files. As stated at the top of the roxygen generated .Rd files, you should not edit the .Rd file by hand.
+
+#### Basics
+
+Roxygen comments start with `#’`. All the roxygen comments before a function is called a 'block'. Each line should be wrapped like your code (at 80 characters). 
+
+Tags - tags break up blocks and are specified using `@tagName`. `@` needs to be escaped if you want to add a literal '@'.
+
+Sections - you can add arbitrary sections using the `@section` tag. Useful for breaking a long details section into several chunks.
+Section titles: Sentence case, followed by colon, 1 line long.
+
+#### Layout
+
+* Title - First sentence becomes the title of the documentation.
+    * Sentence case. Do NOT end with full stop. 
+    * Required 
+* Description - Second paragraph. Briefly describe what the function does.
+    * Required.
+* Details - Third and subsequent paragraph(s). 
+    * Go into detail about how a function works.
+    * Shown after the argument descriptions.
+    * Optional.
+
+#### Tags
+
+* `@param` - details of function parameters.
+    * syntax: `@param name description`.
+    * Specify type of input (string, vector..etc) and what it does.
+    * Description should be sentence case and end with a full stop.
+    * Document several parameters by separating their parameter names with comma (no space) in 'name'.
+* `@examples` - Executable R code showing how to use the function in practice.
+    * To show error, use `\dontrun{}`.
+    * You can also have examples in separate files and give a path to them, and use this syntax - `@example path/rel/to/package/root`
+    * Note lack of 's' at end of example here.
+* `@return` - Describes the output from the function.
+* `@seealso` - Point to other useful resources, e.g webpages or another function in your package.
+* `@family` - Family of related functions, where every function should link to every other function in the family. E.g.:
+
+```
+#' @family aggregate functions
+#' @seealso \code{\link{prod}} for products, \code{\link{cumsum}} for cumulative
+#'   sums, and \code{\link{colSums}}/\code{\link{rowSums}} marginal sums over
+#'   high-dimensional arrays.
+```
+
+* `@aliases` - Any other alias(es) that should direct the user to this help file.
+* `@keywords` - Adds standardise keywords. These are optional but there is 1 that may be useful.
+    * `@keywords internal` - can be added to internal package functions. This removes it from the (associated .Rd file) from the package index (meaning a user can not easily access it) and disables some of its automated tests.
+
+
+Example:
+
+```{r, eval=FALSE}
+#' Sum of vector elements.
+#'
+#' \code{sum} returns the sum of all the values present in its arguments.
+#'
+#' This is a generic function: methods can be defined for it directly
+#' or via the \code{\link{Summary}} group generic. For this to work 
+#' properly, the arguments \code{...} should be unnamed, and dispatch is on #' the first argument.
+#'
+#' @param ... Numeric, complex, or logical vectors.
+#' @param na.rm A logical scalar. Should missing values (including NaN)
+#'   be removed?
+#'
+#' @return If all inputs are integer and logical, then the output
+#'   will be an integer. If integer overflow
+#'   \url{http://en.wikipedia.org/wiki/Integer_overflow} occurs, the output
+#'   will be NA with a warning. Otherwise it will be a length-one numeric or
+#'   complex vector.
+#'
+#'   Zero-length vectors have sum 0 by definition. See
+#'   \url{http://en.wikipedia.org/wiki/Empty_sum} for more details.
+#'
+#' @examples
+#' sum(1:10)
+#' sum(1:5, 6:10)
+#' sum(F, F, F, T, T)
+#'
+#' \dontrun{
+#' sum("a")
+#' }
+#' @export
+sum <- function(..., na.rm = TRUE) {}
+```
+
+#### Formatting
+
+Special characters:
+
+* `@` - marks start of tag. `@@` to insert literal '@'.
+* `%` - marks start of a latex comment. `\%` to insert literal '%'.
+* `\` - marks start of latex escaping. Use `\\` to insert literal '\'.
+
+To manually insert a new line use `\cr` (See [this](https://stackoverflow.com/questions/18835365/roxygen2-manually-insert-line-breaks) SO question for more.)
+
+
+* `\emph{}` - Italics.
+* `\strong{}` - Bold.
+* `\code{}` - Inline code.
+* `\preformatted{}` - Format as-is. Can be used for multi-line code.
+
+Links
+
+* `\code{\link{function}}` - Link to function in this package.
+* `\code{\link[package]{function}}` - Link to function in another package.
+* `\link[=dest]{name}` - Link to 'dest', but show/display 'name' in documentation output.
+* `\code{\link[MASS:abbey]{name}}` - Link to function in another package, but show name.
+* `\url{http://rstudio.com}` - url.
+* `\href{http://rstudio.com}{Rstudio}` - a url with custom link text.
+
+Lists
+
+Numbered:
+```{r}
+#' \enumerate{
+#'     \item
+#'      \item
+#' }
+```
+
+Bullet:
+```{r}
+#' \itemize{
+#'     \item
+#'      \item
+#' }
+```
+
+Named:
+```{r}
+#' \describe{
+#'     \item{name}{blah blah}
+#'      \item{name}{blah blah}
+#' }
+```
+
+#### Multiple functions
+
+There are times where you may want to have greater than one function per .R script:
+
+* Helper functions - often these use 'linux' naming convention where the name of the function starts with a '.' Do not export this function.
+* Similar functions, especially if they have the same parameters.
+
+This can be done with `@describeIn` or `@rdname`.
+
+`@describeIn` - 
+
+* Good for documenting functions with the same/similar arguments. 
+* Generates a new section named 'Functions' (or Methods (by class) if you are documenting a method) .
+    * This generates a bulleted list describing each function. This is at the end under 'Details'.
+    * The document itself is named the first function, the other functions are documented in the same file.
+
+For ALL functions (including the first/main one), use `@describeIn <name of 1st fun> <description>` above the `#' @export` of that function. This will give you a bullet point list of all your functions and their individual descriptions.
+
+`@rdname`
+
+Overrides the default file name generated by roxygen2 and merges documentation for several objects into one file.
+
+Can look something like this:
+
+```{r}
+#' @rdname fun1    # you want this function to be documented with fun1
+#' @export
+fun2            # export your 2nd function as usual
+```
+
+This generates a file named the first function (as above) and your other functions are documented in the same file.
+
+Or you can create a dummy documentation file:
+
+```{r}
+#' Basic arithmetic
+#'
+#' @param x,y numeric vectors.
+#' @name arith        # dummy file - this will be title of the help file
+NULL
+## NULL
+#' @rdname arith        # your function will be documented under the title of your dummy file
+add <- function(x, y) x + y
+
+#' @rdname arith        # same with your second function
+times <- function(x, y) x * y
+```
+
+Here your document is named 'arith' and your functions are documented in this document. Notice here that the document name is NOT the same as either of your functions.
+
+See the roxygen2 [vignette](https://cran.r-project.org/web/packages/roxygen2/vignettes/rd.html) and [this](https://stackoverflow.com/questions/15932585/multiple-functions-in-one-rd-file) SO question for more. 
+
+#### Helper functions
+
+In a package, you do NOT need to write a helper function above the main functions (which calls the helper function). All the functions are made available.
+
+This is of note as roxygen2 will generate a .Rd file for the FIRST function (even if it is marked as internal) and NOT for your subsequent main function.
+
+Remember to add `#’ @keywords internal` above the helper function so users cannot easily use it.
+
+See [this](https://stackoverflow.com/questions/5249673/how-should-i-handle-helper-functions-in-an-r-package) SO question for more on how to handle helper functions.
+
+
+
+
+
+
+
+
+
+
