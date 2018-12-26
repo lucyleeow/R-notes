@@ -1,1 +1,204 @@
-# Sting manipulation
+# String manipulation
+
+Useful references:
+
+* [Handling and processing strings in R](http://www.gastonsanchez.com/Handling_and_Processing_Strings_in_R.pdf)
+* Paul Murrell's [notes](https://www.stat.auckland.ac.nz/~paul/ItDT/HTML/node82.html)
+* [Regular expressions in R](https://www.stat.auckland.ac.nz/~paul/ItDT/HTML/node82.html) - several examples were taken from here.
+* [Regular expression info](https://www.regular-expressions.info/rlanguage.html)
+
+## Grep family
+
+* `grep()` - gives you each element in the vector that matches your pattern. `value=FALSE` returns indices of matches, `value=TRUE` returns the the matches. `invert` argument allows you to return everything but the matches.
+* `grepl()` - returns a logical vector telling you which elements in your vector matches your pattern.
+
+```{r}
+strings <- c("a", "ab", "acb", "accb", "acccb", "accccb")
+grep("ac", strings, value = TRUE)
+```
+
+```{r}
+grepl("ac", strings)
+```
+
+### Locating pattern within string
+
+Each element is searched separately. Information sufficient to extract the pattern is returned:
+
+1. An integer vector indicating the character position in each element, where either the first, or all regex match was found. 
+2. Each element also has a `match.length` attribute, which gives the length of the match. 
+
+If pattern is not found, -1 is returned. 
+
+* `regexpr()` - returns vector, giving the first match found for each element in input vector. 
+* `gregexpr()` - returns list, giving all matches found for each element in input vector.
+
+We can look for the pattern 'cc' in `strings`:
+
+```{r}
+str(regexpr('cc', strings))
+```
+
+The output is a vector of the same length as `strings`. Each element in the vector is the first index within each string in `strings` that matched the pattern. Each elemetn also has a `match.length` attribute which gives the length of the match. As the pattern was two characters in length, all the `match.length`s are '2'.
+
+```{r}
+str(gregexpr('cc', strings))
+```
+
+`gregexpr()` gives you ALL the matches. The output is thus a list as the number of matches can vary for each element in the text (`strings` here). Again '-1' indicates taht there were no matches. The one difference is that in the last element 'accccb', the pattern 'cc' matches twice - once at index 2 and once at index 4.
+
+You can also change the pattern from an 'exact match' to a regular expression. Here we are looking for the pattern 'cc' 'at least once' - instead of the exact pattern 'cc'.
+
+```{r}
+str(regexpr('cc+', strings))
+```
+
+Adding the `+` to the pattern says that we are looking for 'cc' to occur at least once. The result of this change is that `match.length` now gives the full length of c's in each element (as long as it is longer than twoº.
+
+To get the actual substrings matched by the pattern, use `regmatches()` after the above functions.
+
+If you pass the output from `regexpr()` to `regmatches()`, a character vector is with all the strings that matched is returned. This vector is shorter than the input vector if no match was found in some of the elements. 
+`regmatches()` takes two arguments, the vector of strings the pattern was searched for in and the output from a regex.
+
+```{r}
+regmatches(strings, regexpr('cc', strings))
+```
+
+If you pass the output from `gregexpr()` to `regmatches()` a list the same length as the input vector will be output. Each element is a character vector with all the matches of the corresponding element in the input vector, or 'character(0)' if an element had no matches.
+
+```{r}
+regmatches(strings, gregexpr('cc', strings))
+```
+
+### Replacments
+
+A very powerful way of making replacements in a string is to assign a new list to the `regmatches()` function when you call it on the output of `gregexpr()`. 
+
+```{r}
+x <- c("abc", "def", "cba a", "aa")
+m <- gregexpr("a+", x)
+regmatches(x, m)
+```
+
+First, notice how in the third element of `x`, 'a+' matched twice, which in the fourth element, it matched only once. This is because we are looking for at least one 'a' but there was a space between the two a's in the third element.
+
+```{r}
+list(c("one"), character(0), c("two", "three"), c("four"))
+```
+
+```{r}
+regmatches(x, m)  <- list(c("one"), character(0), c("two", "three"), c("four"))
+x
+```
+
+All the matches were replaced by the words in the list.
+
+The list you assign should have as many elements as the original input vector. Each element should be a character vector of the same length as the number of matches in that element. The original input vector is then modified to have all the regex matches replaced with the text from the new vector.
+
+This can also be done using these two functions:
+
+* `sub()` - replace first occurrence.
+* `gsub()` - replace all occurrences.
+
+You can match and replace an exact phrase:
+
+```{r}
+string <- c("122 trfr (2.3%) fdfd", "122 trfr (2.3%) fdfd")
+sub('122', "**" , string)
+```
+
+Or you can use a a regular expression (`\\d` means any number):
+
+```{r}
+sub('\\d', "**" , string)
+```
+
+### Backreferences
+
+You can use backreferences to reinsert text matched by capturing a group. Bascially you can retrieve the bits that matched various parts of your regular expression to alter them or use them for building up a new string.
+
+```{r}
+string <- "The cat sat on the mat."
+gsub("(.)at", "\\1ot", string)
+```
+
+`\\1` is referring to the first match of the pattern "(.)at" (which is any three-letter word ending with 'at'). Thus three-letter word ending in 'at' is replaced by a three-letter word with the original starting letter but ending in 'ot'.
+
+You can only refer to backreference \\1 to \\9 (i.e. the first to ninth match). If you wish to return entire match, place entire regex in a capturing group and use \\1. 
+
+If you are using capturing group, your regex needs to consider the entire string, and use `()` to specify which ones you are interested in. The `(...)` allows for grouping in regular expressions so you can retrieve the bits that matched various parts of your regular expression so you can alter them or use them for building up a new string. Each group can than be referred to using `\\N`, with `N` being the number of the grouping to be used.
+
+An important note is the the regular expression pattern used with in `sub()` or `gsub()` and backreferences MUST consider the whole string and use `( )` to specify the parts you are interested in. With all other functions and examples, you can imply imput the specific string pattern you are looking for.
+
+See [this](https://www.stat.auckland.ac.nz/~paul/ItDT/HTML/node84.html#SECTION001526000000000000000) page in 'Regular expressions in R' for more.
+
+## Regular expressions
+
+### Quantifiers 
+
+How many times the letter/pattern occurs.
+
+* `*` - matches at least 0 times.
+* `+` - matches at least 1 times.
+* `?` - matches at most 1 times.
+* `{n}` - matches exactly n times.
+* `{n,}` - matches at least n times.
+* `{n,m}` - matches between n and m times.
+
+```{r}
+grep("ac*b", strings, value = TRUE)
+```
+
+This looks for pattern with 'a', 0 to infinite c('s) and then b.
+
+### Position
+
+* `^` - matches the start of the string.
+* `$` - matches the end of the string.
+* `\b` - matches the empty string at either edge of a word. Don't confuse it with `^` and `$` which marks the edge of a string.
+* `\B` - matches the empty string provided it is not at an edge of a word.
+
+### Operators
+
+* `*` - matches any single character, as shown in the first example.
+* `[...]` - a character list, matches any one of the characters inside the square brackets. We can also use `-` inside the brackets to specify a range of characters.
+* `[^...]` - an inverted character list, similar to `[...]`, but matches any characters except those inside the square brackets.
+* `\` - suppress the special meaning of metacharacters in the regular expression. Metacharacters in R are: `$ * + . ? [ ] ^ { } | ( ) \`. Further, since `\` itself needs to be escaped in R, we need to escape these metacharacters with double backslash (E.g. `\\$`). This is unique to R. (See [this](https://stackoverflow.com/questions/26665100/how-to-use-the-strsplit-function-with-a-period) question on SO for more.
+* `|` - an 'or' operator. Matches patterns on either side of the |.
+* `(...)` - grouping in regular expressions. Each group can than be referred to using `\\N` - see backreferennces above. with `N` being the No. of (...) used.
+
+### Character classes
+
+* `[:digit:]` or `\\d` - digits, 0 1 2 3 4 5 6 7 8 9, equivalent to `[0-9]`.
+* `\D` - non-digits, equivalent to `[^0-9]`.
+* `[:lower:]` - lower-case letters, equivalent to `[a-z]`.
+* `[:upper:]` - upper-case letters, equivalent to `[A-Z]`.
+* `[:alpha:]` - alphabetic characters, equivalent to `[[:lower:][:upper:]]` or `[A-z]`.
+* `[:alnum:]` - alphanumeric characters, equivalent to `[[:alpha:][:digit:]]` or `[A-z0-9]`.
+* `\w` - word characters (any character used in words), equivalent to `[[:alnum:]_]` or `[A-z0-9_]`.
+* `\W` - not word, equivalent to `[^A-z0-9_]`.
+* `[:xdigit:]` - hexadecimal digits (base 16), 0 1 2 3 4 5 6 7 8 9 A B C D E F a b c d e f, equivalent to `[0-9A-Fa-f]`.
+* `[:blank:]` - blank characters, i.e. space and tab.
+* `[:space:]` - space characters: tab, newline, vertical tab, form feed, carriage return, space.
+* `\s` - space, ` `.
+* `\S` - not space.
+* `[:punct:]` - punctuation characters, ! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [  ] ^ _ ` { | } ~.
+* `[:graph:]` - graphical (human readable) characters: equivalent to `[[:alnum:][:punct:]]`.
+* `[:print:]` - printable characters, equivalent to `[[:alnum:][:punct:]\\s]`.
+* `[:cntrl:]` - control characters, like \n or \r, `[\x00-\x1F\x7F]`.
+
+Notes:
+* `[:...:]` has to be used inside square brackets, e.g. `[[:digit:]]`.
+* `\` itself is a special character that needs escape, e.g. `\\d`. Do not confuse these regular expressions with R escape sequences such as \t.
+
+### Examples
+
+Too look for a string that is ALL (or only) digits/letters, use `^` and `$`:
+
+```{r, eval=FALSE}
+"^[[:digit:]]+$"
+```
+
+
+
+

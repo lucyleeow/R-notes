@@ -103,7 +103,7 @@ a[c(1,2,1,1)]
 The following are difference ways to subset:
 
 - **Positive integer** returns elements at the specific positions. If index duplicated, will return element twice. If decimal number given, will be silently truncated (NOT rounded) to integer.
-- **Negative integer** omits the specified elements. You can’t mix positive and negative integers, will return an error.
+- **Negative integer** omits the specified elements. You can't mix positive and negative integers, will return an error.
 - **Logical vector** selects for element where corresponding boolean is `TRUE`. Will be recycled if shorter than vector.
 - **Character vector** can be used if the vector is named. Names matched exactly.
 - **NA** - an NA in the index will either return an NA value at a NA index:
@@ -135,7 +135,7 @@ Use apply family for clarity (NOT performance) and because it has no side effect
 * `lapply()` 'list apply' - returns list of the same length as input function. Each element is result of applying a function to the input object.
 * `sapply()` 'simplify apply' - same as `lapply()` but returns a vector or matrix. (`sapply()` and `lapply()` are essentially the same however, lapply always returns a list and sapply tries to simplify.)
     * Do not have to specify index as you do in apply
-    * Returns named vector, `USE.NAMES = FALSE` if you don’t want `sapply()` to use character values as names for the result.
+    * Returns named vector, `USE.NAMES = FALSE` if you don't want `sapply()` to use character values as names for the result.
 * `vapply()` - returns specified type of value.
 * `mapply()` 'multivariate apply - allows input of more than one argument.
 
@@ -239,7 +239,7 @@ Here the `do.call()` function is giving the `c()` function five arguments, with 
 
 Further, notice how `x` is a named list. The output of `do.call()` was a name vector.
 
-Let’s look at a paste example for clarity.
+Let's look at a paste example for clarity.
 
 ```{r}
 a <- c(a = "a", b = "b", sep = ".")

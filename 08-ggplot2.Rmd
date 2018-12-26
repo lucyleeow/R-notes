@@ -110,7 +110,7 @@ It is important to note the difference between mapping an aesthetic within `aes(
 
 ### Syntax
 
-If you put mappings at the top in ggplot(), it will use such mapping for everything, ‘global mapping’.
+If you put mappings at the top in ggplot(), it will use such mapping for everything, ‘global mapping'.
 
 Here the same y and x mappings are used to create points and a smooth line.
 
@@ -373,7 +373,7 @@ Finally, note that grouping is for *collective geoms*. Collective geoms are geom
 
 ## Bar graphs & histograms
 
-The default stat of `geom_bar()` is 'count', which ‘bins’ your data (puts each value into a defined ‘bin’), and then plots bin counts. 
+The default stat of `geom_bar()` is 'count', which 'bins' your data (puts each value into a defined 'bin'), and then plots bin counts. 
 
 ```{r}
 ggplot(iris, aes(x = Species)) +
@@ -452,7 +452,7 @@ ggplot(mpg) +
   facet_wrap(. ~ class, nrow = 2) # same plot with or without dot
 ```
 
-The first argument is a ‘formula’, which you create with `~` followed by variable name. Variable should not be a continuous variable. In the above plot, leaving one side empty or using a dot means that only one variable is being facetted. The `nrow` and `ncol` arguments let you specify how many rows or columns you want.
+The first argument is a 'formula', which you create with `~` followed by variable name. Variable should not be a continuous variable. In the above plot, leaving one side empty or using a dot means that only one variable is being facetted. The `nrow` and `ncol` arguments let you specify how many rows or columns you want.
 
 If you wish to facet using two variables, `facet_wrap` will look like this:
 
@@ -589,7 +589,7 @@ iris %>%
 
 ```
 
-The output of this is a dataframe where the first column gives the names of the groups (from the `group_by()`) and the second column is called ‘plots’ (as we specified) and each item is a plot (`gg` object).
+The output of this is a dataframe where the first column gives the names of the groups (from the `group_by()`) and the second column is called 'plots' (as we specified) and each item is a plot (`gg` object).
 
 To give the plot a title - the name of the group - you can either use:
 
@@ -601,7 +601,7 @@ To give the plot a title - the name of the group - you can either use:
 Using `pdf()` or `png()`:
 
 ```{r, eval=FALSE}
-pdf(‘name of thing.pdf’)
+pdf('name of thing.pdf')
  
 # Generate your plot
 

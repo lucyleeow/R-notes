@@ -68,8 +68,8 @@ See [RStudio](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Proj
 
 A package bundles together code, data, documentation, and tests and is an easy way to share code with others. Most are hosting on [CRAN](http://cran.us.r-project.org/). 
 
-* `install.packages(“dplyr”)` - downloads package from the internet onto your computer. Package name needs to be in quotes. These are downloaded from CRAN.
-* `library(‘dplyr’)` - Opens the library into the current R session. Does NOT need to be quoted. 
+* `install.packages('dplyr')` - downloads package from the internet onto your computer. Package name needs to be in quotes. These are downloaded from CRAN.
+* `library('dplyr')` - Opens the library into the current R session. Does NOT need to be quoted. 
 * `installed.packages()` - Shows you what packages are installed
 * `update.package()`
 * `remove.package()`
@@ -85,7 +85,7 @@ When you load a package it may warn you of 'conflicts' - this means that some fu
 A library is a directory containing your installed packages. You generally have 2:
 
 * One for packages that come with every R installation (base, stats etc)
-* One for packages that you have installed. They are normally based on the version of R you are using (e.g. if you have have a folder named '3.4', packages installed when using this R version will be stored here). Sometimes it may seems like you lose all of your packages when you reinstall R — they’re still on your hard drive, but R can’t find them.
+* One for packages that you have installed. They are normally based on the version of R you are using (e.g. if you have have a folder named '3.4', packages installed when using this R version will be stored here). Sometimes it may seems like you lose all of your packages when you reinstall R — they're still on your hard drive, but R can't find them.
 
 `.libPaths()` tells you which libraries are currently active.
 
@@ -133,7 +133,7 @@ Without quotes it evaluates var1, the result of which is a string called 'Ice be
 * To set working directory: `setwd:('D:/path to wd')` or via session -> set working directory.
     * `getwd()` to get the working directory.
 * To cancel commands use Esc. If R is waiting for you to finish code, a `+` will be shown in the console instead of `>`.
-Comparing numbers: ‘==’ fine for integers but use all.equal() for decimals due to machine representing decimals to certain precision, ‘machine numeric tolerance’
+Comparing numbers: '==' fine for integers but use all.equal() for decimals due to machine representing decimals to certain precision, 'machine numeric tolerance'
 * Environment - Objects created in for loops are global objects and objects created in functions are local (See [Advanced R](http://adv-r.had.co.nz/Environments.html) for more).
 * `&` is vectorised and `&&` is not. Similar for `|` and `||`. See [this](https://stackoverflow.com/questions/6558921/boolean-operators-and) SO question for more.
 * `12 | 3` is evaluated to be TRUE because if you coerce a number into a logical, any non-zero number will be TRUE and 0 will be FALSE. Thus `12 | 3` is essentially `TRUE | TRUE` which is `TRUE`.
@@ -158,13 +158,13 @@ as.logical(-3)
 
 To access the help file for an object use `?function_name` or `help(function_name)`.
 
-If you don’t really know the function, you can do a fuzzy search - `??function_name`.
+If you don't really know the function, you can do a fuzzy search - `??function_name`.
 
 A summary of packages broken down by topic can be found at [CRAN](https://cran.r-project.org/web/views/)
 
 When asking for help online these functions will be useful:
 
-* `dput()` - will dump the data you’re working with into a format so that it can be copy and pasted by anyone else into their R session.
+* `dput()` - will dump the data you're working with into a format so that it can be copy and pasted by anyone else into their R session.
 * `sessionInfo()` - will print out your current version of R, as well as any packages you have loaded. This can be useful for others to help reproduce and debug your issue.
 
 ## Data types
@@ -210,7 +210,7 @@ my_fact <- as.factor(c("red", "blue"))
 attributes(my_fact)
 ```
 
-If data is stored as a factor will treat as categorical data or ordinal data in statistical analysis. This, it can be useful when you know all the values a variable can take. However, you can’t add another nominal value that does not already exist, unless you add that nominal value first. 
+If data is stored as a factor will treat as categorical data or ordinal data in statistical analysis. This, it can be useful when you know all the values a variable can take. However, you can't add another nominal value that does not already exist, unless you add that nominal value first. 
 
 Factors can also be used to store ordinal data (i.e small, medium large - data with order but where the intervals not necessarily equal) as ordered factors. 
 
@@ -239,7 +239,7 @@ str(factor_ordering_example)
 
 It may not be immediately obvious that a column is stored as factors. When parsing in data there is an option of not using factors. By default, R always transforms character vectors to factors when creating a dataframe with character vectors or converting a character matrix to a dataframe. 
 
-A problem with this default behaviour is that it will convert numerical columns of data into a factor if there is a non-numeric value in your column (e.g. a missing value encoded by a character). This can be a nasty cause of errors in your code if you’re not aware of it. 
+A problem with this default behaviour is that it will convert numerical columns of data into a factor if there is a non-numeric value in your column (e.g. a missing value encoded by a character). This can be a nasty cause of errors in your code if you're not aware of it. 
 
 To convert factor data into numeric: 
 
@@ -273,7 +273,7 @@ Or use `na.strings` is also useful, to specify what should be read in as NA.
 
 ### Atomic vector
 
-All elements must be same type (mode). All elements have to be of a basic ‘atomic’ vector data type:
+All elements must be same type (mode). All elements have to be of a basic 'atomic' vector data type:
 
 **Typeof**|**mode**|**storage.mode**
 :-----:|:-----:|:-----:
@@ -374,12 +374,12 @@ employ.data <- data.frame(employee, salary)
 
 `cbind()` (with vectors) will create matrix unless one of the arguments is already a dataframe.
 
-When combining column-wise, the number of rows must match, but row names are ignored. When combining row-wise, both the number and names of columns must match. You an use `plyr::rbind.fill()` to combine data frames that don’t have the same columns.
+When combining column-wise, the number of rows must match, but row names are ignored. When combining row-wise, both the number and names of columns must match. You an use `plyr::rbind.fill()` to combine data frames that don't have the same columns.
 
 You can also coerce an object to a data frame with `as.data.frame()`.
 
 * A vector will create a one-column data frame.
-* A list will create one column for each element; there will be an error if they’re not all the same length.
+* A list will create one column for each element; there will be an error if they're not all the same length.
 * A matrix will create a dataframe with the same number of columns and rows as the matrix.
 
 It is possible to store a list as a column in a dataframe: 
@@ -462,7 +462,7 @@ By default you lost most (NOT all) attributes when modifying a vector.
 attributes(sum(y))
 ```
 
-Attributes you don’t lose:
+Attributes you don't lose:
 
 * Names
 * Dimensions (can be used to turn vectors into matrices and arrays)
@@ -482,7 +482,7 @@ x <- setNames(x, c("a", "b", "c"))    #assigns names to an object and returns th
 ```
 
 
-* Names don’t have to be unique but you can subset by names when they are
+* Names don't have to be unique but you can subset by names when they are
 * Not all elements need to have a name. If some are missing when you create the vector the name will be set to be an empty string
     * However if you modify a vector 'in place' by setting name, `names()` will return NA for the missing ones.
 
@@ -574,6 +574,19 @@ There is a difference.
 * NA - Not Available - usually a missing value. From R1.5.0 the string 'NA' is distinct from NA of character type. String 'NA' should be written as `as.character(NA)`.
 
 For more see [this](https://www.r-bloggers.com/difference-between-na-and-nan-in-r/) blog.
+
+## Importing & exporting
+
+`read.table()`, `read.csv()`, `read.delim()` are all in same family. They read in files and output dataframes.
+
+`scan()` also reads in files but outputs a list or vector (See [datacamp](https://www.datacamp.com/community/tutorials/importing-data-r-part-two#gs.9J1Df1o) for more)
+
+`read.fwf()` 'fixed width files' - will let you read in any type of ASCII file. Each column in the data is a fixed width, thus no uniform separation of cells in row. (See [this](https://www.datacam.com/community/tutorials/importing-data-r-part-two#gs.9J1Df1o) SO question for more)
+
+`write.table()` is the base R function for writing out data. 
+
+If your data has rownames, using default arguments results in a 'missing' column name - because there is no column name for the rownames column. Set `col.names = NA` and `row.names = TRUE` to write out a blank cell where the column name for the rownames column is. This is the convention used for CSV files to be read by spreadsheets. 
+
 
 ## Saving objects
 

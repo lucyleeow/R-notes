@@ -64,7 +64,7 @@ readr determines data type when reading in a file by reading the first 1000 rows
 * date: matches the default date_format.
 * date-time: any ISO8601 date.
 
-To emulate this process you can use `guess_parser()` which returns readr’s best guess as to type of vector. `parse_guess()` guesses and uses the guess to parse the vector.
+To emulate this process you can use `guess_parser()` which returns readr's best guess as to type of vector. `parse_guess()` guesses and uses the guess to parse the vector.
 
 There can be problems with larger files:
 
@@ -132,7 +132,7 @@ If there are many problems, use `problems(variable_name)` to get complete set. T
 parse_number("It cost $123.45")
 ```
 
-It also deals with grouping marks (e.g. 100,000 or 100.000 or 100’000).
+It also deals with grouping marks (e.g. 100,000 or 100.000 or 100'000).
 
 ```{r}
 parse_number("123.456.789", locale = locale(grouping_mark = "."))
@@ -359,7 +359,7 @@ mpg %>%
 
 It does this by calling `group_by()`, `n()` and then `ungroup()`.
 
-You can also perform a ‘weighted’ count. This means summing the actual values of the variable. The first argument is how it will group and the `wt` is what values will be summed to give you `n`. You cannot assign `wt` to character and factor columns.
+You can also perform a 'weighted' count. This means summing the actual values of the variable. The first argument is how it will group and the `wt` is what values will be summed to give you `n`. You cannot assign `wt` to character and factor columns.
 
 ```{r}
 mpg %>%
@@ -385,7 +385,7 @@ mpg %>%
   tally(manufacturer)
 ```
 
-What tally() does when you give it a column name is perform a ‘weighted tally’ which just means that it will sum up all the values in that column. It could not do that for `manufacturer` as this is a charater column.
+What tally() does when you give it a column name is perform a 'weighted tally' which just means that it will sum up all the values in that column. It could not do that for `manufacturer` as this is a charater column.
 
 If you gave it a numeric column instead, it will give you the sum of all the rows of that column.
 
@@ -413,7 +413,6 @@ There are a few things too note:
 * The resulting tibble has the same number of rows as there are groups
 * The only columns that remain are the column(s) that were used to group and the summarise columns.
 
-
 You can group by several columns:
 
 ```{r}
@@ -422,7 +421,7 @@ mpg %>%
   summarise(meanDispl = mean(displ))
 ```
 
-It is important to note that `summarise()` will peel away one layer of ‘grouping’. E.g. if you have `group_by(var1, var2) %>% summarise()`
+It is important to note that `summarise()` will peel away one layer of 'grouping'. E.g. if you have `group_by(var1, var2) %>% summarise()`
 The resulting tibble will be grouping by 'var1' because `summarise()` peeled away the 'var2' grouping. 
 
 #### do

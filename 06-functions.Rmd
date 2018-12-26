@@ -94,7 +94,7 @@ When using a R script on the command line - you can redirect standard out and st
         * Prints [x] at the start, where x indicates the element of the term.
     - **cat()**
         * Allows concatenation and has the sep argument.
-        * Need to either for new lines with ‘\n’ or `fill = TRUE` (uses default print width).
+        * Need to either for new lines with ‘\n' or `fill = TRUE` (uses default print width).
 - **Standard error**
     - **message()**   
         * Output is usually red.
@@ -132,11 +132,11 @@ Non standard evalation is a catch-all term that means dplyr functions do not fol
 
 `filter(df, x == 1, y == 2, z == 3)` instead of `df[df$x == 1 & df$y ==2 & df$z == 3, ]`.
 
-2. dplyr can choose to compute results in a different way to base R. This is important for database backends because dplyr itself doesn’t do any work, but instead generates the SQL that tells the database what to do.
+2. dplyr can choose to compute results in a different way to base R. This is important for database backends because dplyr itself doesn't do any work, but instead generates the SQL that tells the database what to do.
 
 The drawbacks:
 
-1. dplyr arguments are not 'referentially transparent'. You cannot replace a value with a seemingly equivalence object that you’ve defined elsewhere.
+1. dplyr arguments are not 'referentially transparent'. You cannot replace a value with a seemingly equivalence object that you've defined elsewhere.
 
 ```{r}
 # define df
@@ -184,7 +184,7 @@ greet <- function(name) {
 greet("Hadley")
 ```
 
-The quotes in:  `"How do you do, name?"` mean that it doesn’t interpret what you’ve typed. It just stores it in a string. 
+The quotes in:  `"How do you do, name?"` mean that it doesn't interpret what you've typed. It just stores it in a string. 
 
 ### Writing dplyr functions
 
@@ -241,7 +241,7 @@ An error is given. This is because dplyr 'quotes' the input to `group_by()`. It 
 To fix this we need to do 2 things:
 We need to quote the input ourselves. We use `quo()` which returns a quosure, which is a special type of formula. This has 2 uses:
 
-If we just give an unquoted argument, R will use it as a variable. It will then tell you it can’t find this variable. 
+If we just give an unquoted argument, R will use it as a variable. It will then tell you it can't find this variable. 
 
 `quo()` function quotes its input. We cannot just use '' as it would give us a string. `quo()` captures the expression and its environment.
 
