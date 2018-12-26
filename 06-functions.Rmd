@@ -1,5 +1,9 @@
 # Functions
 
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+```
+
 Useful definition:
 
 * parameter is what is given in the function declaration/definition.
@@ -200,15 +204,17 @@ mutate_y <- function(df) {
 
 Though, it can silently fail if one of the variables is not present in the data frame but present in the global environment.
 
-For example, if you function added two columns: 'y = column a + column x' but there is no column `a` but in the global environment is a variable `a` (`a <- 3`) - 
+For example, if you wanted function that added two columns - 'y = column a + column x'. However, there is no column `a` but in the global environment there is a variable `a`. 
 
 ```{r, eval=FALSE}
+a <- 3
+
 mutate_y <- function(df) {
   mutate(df, y = a + x)
 }
 ```
 
-Will add the variable `a`, to the column x.
+The above code will add the variable `a`, to the column x.
 
 To prevent this, you can use this more explicit code:
 
@@ -220,7 +226,7 @@ mutate_y <- function(df) {
 
 `.data` specifies that you want to use the columns of the dataframe.
 
-If you want one of the arguments to be a variable name or an expression (e.g. x+y) - you need to handle this specially.
+If you want one of the arguments in your function to be a variable name or an expression (e.g. x+y) - you need to handle this specially.
 
 For example, if you want to write a function that does this:
 
@@ -243,7 +249,7 @@ We need to quote the input ourselves. We use `quo()` which returns a quosure, wh
 
 If we just give an unquoted argument, R will use it as a variable. It will then tell you it can't find this variable. 
 
-`quo()` function quotes its input. We cannot just use '' as it would give us a string. `quo()` captures the expression and its environment.
+`quo()` function quotes its input. We cannot just use ' ' as it would give us a string. `quo()` captures the expression and its environment.
 
 We then need to tell the dplyr function to not quote its input as we have already done it. We can do this with `!!`.
 
