@@ -11,7 +11,7 @@ The difference between markdown and LaTeX, which are both typesetting languages 
 * Markdown designed for html. Easy to learn and type but you do not have fine control over typesetting.  
 * LaTeX designed for pdf and related outputs. Relatively more difficult to learn but you have control over everything. 
 
-Note that markdown can create both html and pdf output and same for LaTeX. Pandoc can convert markdown to almost everything.
+Note that markdown can create both html and pdf output and same for LaTeX. Pandoc can convert markdown/LaTeX to almost everything.
 
 Pages are the source of all (?) problems when the output is not html. In html there are no page breaks and no need to worry about where to place figures, tables and images. Things are able to just appear linearly. 
 
@@ -78,14 +78,6 @@ This goes at the top of the code chunk along in `{r, }`.
 * `message` - Logical: stops messages like the ones that output after loading package.
 * `cache` - Cached code chunks are NOT evaluated. Objects created from these chunks are lazy loaded from previously saved databases (it will save it). 
 
-For the problem of code in a code chunk running off the page you can:
-
-1. Set `tidy=FALSE`.
-2. Space your code out how you want to
-
-You can also try `{r, tidy.opts=list(width.cutoff = 30)}`.
-
-
 Plots
 
 * `fig.keep` - Options:
@@ -110,6 +102,53 @@ For example:
 opts_chunk$set(fig.width=12, fig.height=8, fig.path='Figs/',
                echo=TRUE, warning=FALSE, message=FALSE)
 ```
+
+### Common problems
+
+Code in a code chunk running off the page you can:
+
+1. Set `tidy=FALSE`.
+2. Space your code out how you want to
+
+You can also try `{r, tidy.opts=list(width.cutoff = 30)}`.
+
+Plots running off the marging, either on the side or bottom of the page. Mostly occuring when outputting plots from a for loop. 
+
+The problem is apparently that the generated .tex file has no spaces between the `\includegraphics{}` calls. LaTeX gives warnings about overfull hboxes, because the graphics aren't big enough to sit alone on a line, and are too big when it puts two on each line. See [this](https://stackoverflow.com/questions/29508059/how-to-add-multiple-figures-across-multiple-pages-in-a-chunk-using-knitr-and-rma) SO question for an example of the .tex file.
+
+A solution is to force each figure to be in its own paragraph. You can do this by essentiall putting a blank line between each figure:
+
+```
+\includegraphics{test_files/figure-latex/plot_phenotype-1.pdf}
+\includegraphics{test_files/figure-latex/plot_phenotype-2.pdf}
+\includegraphics{test_files/figure-latex/plot_phenotype-3.pdf}
+```
+With blank lines:
+
+```
+\includegraphics{test_files/figure-latex/plot_phenotype-1.pdf}
+
+\includegraphics{test_files/figure-latex/plot_phenotype-2.pdf}
+
+\includegraphics{test_files/figure-latex/plot_phenotype-3.pdf}
+```
+
+There are two ways to do this:
+
+* Add `cat('\r\n\r\r')` after each plot. 
+    * `\r` means carriage return, `\n` means new line.
+* Add this function to each code chunk:
+
+```{r, eval=FALSE}
+my_plot_hook <- function(x, options){
+  paste("\n", knitr::hook_plot_tex(x, options), "\n")
+}
+knitr::knit_hooks$set(plot = my_plot_hook)
+```
+    * The `my_plot_hook` function adds a new line before and after the input graphics.
+    * `hook_plot_tex`, according to the [help](https://www.rdocumentation.org/packages/knitr/versions/1.20/topics/hook_plot_html) file, return the `\includegraphics{}` command.
+    * [Chunk hooks](https://yihui.name/knitr/hooks/#chunk-hooks) are functions to be called before or after a code chunk when the chunk option is not NULL (it basically means as long as you set a option, the hook will be run).
+    * See [this](https://stackoverflow.com/questions/37030219/r-markdown-plots-within-a-loop-going-out-of-margin-when-typesetting-to-pdf) SO question for more.
 
 
 ## Bookdown
