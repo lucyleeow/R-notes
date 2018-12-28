@@ -40,25 +40,26 @@ Different types of graphs are called different 'geoms', as they can be thought o
 ### Layering
 
 Think of ggplot2 as creating a plot using layers. Here is a simple scatter plot: 
+
 ```{r}
-ggplot(data = mpg) + 
-  geom_point(mapping = aes(x = displ, y = hwy))
+ggplot(data = iris) + 
+  geom_point(mapping = aes(x = Sepal.Length, y = Sepal.Width))
 ```
 
 We can break this down into 'layers'.
 
 This creates an empty graph:
 ```{r}
-ggplot(data=mpg)
+ggplot(data = iris)
 ```
 
 geom_point() creates a scatter plot on top of the empty base. 'mapping' is an argument you beed to define. It maps variable to a way to show it on graph or 'defines how variables in your dataset are mapped to visual properties'.
 
 Mapping is always paired with aes() and the x and y arguments of aes(), which specify which variable is x and which one is y. 
 
-```{r}
-ggplot(data = mpg) + 
-  geom_point(mapping = aes(x = displ, y = hwy))
+```{r, eval=FALSE}
+ggplot(data = iris) + 
+  geom_point(mapping = aes(x = Sepal.Length, y = Sepal.Width))
 ```
 
 ### Aesthetics
@@ -76,17 +77,21 @@ A different variable can be mapped to each of these aesthetics. ggplot selects a
 
 Here colour is mapped to the variable (column) class.
 ```{r}
-ggplot(data = mpg) + 
-  geom_point(mapping = aes(x = displ, y = hwy, colour = class))
+ggplot(data = iris) + 
+  geom_point(mapping = aes(x = Sepal.Length, y = Sepal.Width, 
+                           colour = Species))
 ```
 
-You can also set aesthetics manually. Do this by mapping aesthetic name *outside of* the `aes()` function.
+You can also set aesthetics to a SINGLE value manually. Do this by mapping aesthetic name *outside of* the `aes()` function. 
 
 This makes all the points blue:
 ```{r}
-ggplot(data = mpg) + 
-  geom_point(mapping = aes(x = displ, y = hwy), colour = "blue")
+ggplot(data = iris) + 
+  geom_point(mapping = aes(x = Sepal.Length, y = Sepal.Width), 
+                           colour = "blue")
 ```
+
+You can also specify these aesthetic appearance mappings:
 
 * size - you can specify size of all points in mm
 * shape - specify using a number code. The shapes available are:
@@ -95,9 +100,9 @@ ggplot(data = mpg) +
 
 Here we add a border to all the points:
 ```{r}
-ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
-  geom_point(colour = "black", shape = 21, stroke = 1, size = 4, 
-             aes(fill = factor(drv)))
+ggplot(data = iris, mapping = aes(x = Petal.Length, y = Petal.Width, 
+                                  fill = Species)) +
+  geom_point(colour = "black", shape = 21, stroke = 1, size = 4)
 ```
 
 It is important to note the difference between mapping an aesthetic within `aes()` and outside of `aes()` - 
@@ -107,6 +112,24 @@ It is important to note the difference between mapping an aesthetic within `aes(
 
 (See [SO](https://stackoverflow.com/questions/41863049/when-does-the-aesthetic-go-inside-or-outside-aes) for more details)
 
+Further, if you do try to provide a colour to a mapping within `aes()` ggplot2 will interpret it as a variable. 
+
+```{r}
+ggplot(iris, aes(x = Petal.Width)) +
+  geom_line(aes(y = Sepal.Length, colour = "red")) +
+  geom_line(aes(y = Petal.Length, colour = "blue")) 
+```
+
+The legend labels are `"blue"` and `"red"` because ggplot2 has interpreted these to be the labels of each line. ggplot2 also maps the variables `"blue"` and `"red"` to the default colour pallete in *alphabetical order*. Notice how in the legend `"blue"` occurs first. 
+
+If you add legend labels - notice how `labels` are mapped to your `"blue"` and `"red"` NOT according to the order the appear in, in the code, but in alphabetical order. See [this](https://stackoverflow.com/questions/47317338/how-do-i-change-line-color-in-ggplot2-without-legend-disappearing) question on SO for more.
+
+```{r}
+ggplot(iris, aes(x = Petal.Width)) +
+  geom_line(aes(y = Sepal.Length, colour = "red")) +
+  geom_line(aes(y = Petal.Length, colour = "blue")) +
+  scale_colour_discrete(labels = c("first", "second"))
+```
 
 ### Syntax
 
@@ -571,6 +594,28 @@ For more examples see [R cookbook](http://www.cookbook-r.com/Graphs/Plotting_mea
 * Legend title/labels: `scale_fill_discrete(name = "Legend name", labels = c())`.
 * Angle of labels: `theme(axis.text.x = element_text(angle = 90, hjust = 1))`.
 
+### Scales
+
+Scale functions are quite confusing. A few notes:
+
+* The functions `scale_colour_discrete()` and `scale_fill_discrete()` are actually both wrappers around the function `discrete_scale()` but with useful defaults.
+
+```{r}
+scale_colour_discrete
+```
+    * You can set the legend title and labels quite easily but the colours with difficulty. You need to use the `palette` argument which takes the name of a function that when called and given an integer, 'x', will give you 'x' colours in hex. The function `colorRampPalette()` takes in a vector of colours (usually two or three, in hex format) and will produce a function that when given an integer, will return a character vector of that length, of colours that interpolate the colours given to the original function. E.g. 
+    
+```{r}
+# this creates a function. The two colours given is what will be interpolated.
+palette_fun <- colorRampPalette(c("#000000","#800000"))
+palette_fun(10)
+```
+
+The output is ten colours, which range from the first colour "#000000", to second colour "#800000".
+    
+* `scale_xx_manual()` are more flexible functions which allow you to change the legend title and labels as well as the colours.
+
+
 
 Fonts: [cookbook](http://www.cookbook-r.com/Graphs/Fonts/)
 
@@ -616,8 +661,3 @@ dev.off() # this closes off the current graphic device
 
 
 
-
-
-
-
-)
