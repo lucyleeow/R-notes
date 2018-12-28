@@ -3,10 +3,10 @@
 
 ## pheatmap
 
-Arugments
+Arguments
 
 * `mat` - Numeric matrix of the values to be plotted
-* `Annotation_row` - Labels for each row of the heatmap. Dataframe of 1 column and rownames. The rownames should be the same as the names of the rows of the heatmap. The column should be the labels desired. This will appear in a legend on the LHS of the heatmap. ([ref](https://www.biostars.org/p/66079/))
+* `annotation_row` - Labels for each row of the heatmap. Dataframe of 1 column and rownames. The rownames should be the same as the names of the rows of the heatmap. The column should be the labels desired. This will appear in a legend on the LHS of the heatmap. ([ref](https://www.biostars.org/p/66079/))
 * `annotation_col` - Same as above but for heatmap columns.
 * `cluster_row` & `cluster_col` - Logical. If TRUE will perform clustering on the row/columns.
 * `main` - title of the graph.

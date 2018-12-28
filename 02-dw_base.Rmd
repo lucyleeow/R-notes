@@ -137,7 +137,7 @@ Use apply family for clarity (NOT performance) and because it has no side effect
     * Do not have to specify index as you do in apply
     * Returns named vector, `USE.NAMES = FALSE` if you don't want `sapply()` to use character values as names for the result.
 * `vapply()` - returns specified type of value.
-* `mapply()` 'multivariate apply - allows input of more than one argument.
+* `mapply()` 'multivariate apply' - allows input of more than one argument.
 
 ```{r}
 mapply(min, iris$Sepal.Length, iris$Sepal.Width)
