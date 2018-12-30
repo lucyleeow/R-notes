@@ -122,7 +122,7 @@ ggplot(iris, aes(x = Petal.Width)) +
 
 The legend labels are `"blue"` and `"red"` because ggplot2 has interpreted these to be the labels of each line. ggplot2 also maps the variables `"blue"` and `"red"` to the default colour pallete in *alphabetical order*. Notice how in the legend `"blue"` occurs first. 
 
-If you add legend labels - notice how `labels` are mapped to your `"blue"` and `"red"` NOT according to the order the appear in, in the code, but in alphabetical order. See [this](https://stackoverflow.com/questions/47317338/how-do-i-change-line-color-in-ggplot2-without-legend-disappearing) question on SO for more.
+If you add legend labels - notice how `labels` are mapped to your `"blue"` and `"red"` NOT according to the order the appear in, in the code, but in alphabetical order (`"blue"` first). See [this](https://stackoverflow.com/questions/47317338/how-do-i-change-line-color-in-ggplot2-without-legend-disappearing) question on SO for more.
 
 ```{r}
 ggplot(iris, aes(x = Petal.Width)) +
@@ -163,7 +163,7 @@ You can also simplify the syntax as `data =` and `mapping =` are the first argum
 
 ### Stat
 
-Stat stands for statistical transform and is the algorithm used by a geom  to calculate the values used for the graphs. You can find the default stat by looking in the help file of that geom.
+Stat stands for 'statistical transform' and is the algorithm used by a geom  to calculate the values used for the graphs. You can find the default stat by looking in the help file of that geom.
 
 You can use stat and geom interchangeably. For example, the default stat for `geom_bar()` is `stat_count()`.
 
@@ -324,6 +324,16 @@ ggplot(iris, aes(y = Petal.Width, x = Petal.Length)) +
 ```
 
 More details can be found in the [ggplot2 reference](https://ggplot2.tidyverse.org/reference/geom_smooth.html).
+
+For a plot where x-axis was a categorical/ordinal variable, you can use `stat_summary()` to draw a line joining the means (or some other function) of each group. `stat_summary()` operates on unique x and are more flexible versions of `stat_bin()` - they can compute any aggregate instead of just count.
+
+```{r}
+ggplot(iris, aes(y = Sepal.Length, x = Species)) +
+  geom_point() +
+  stat_summary(aes(group = 1),fun.y = mean, geom = "line")
+```
+
+Note that it is important to set the `group` aesthetic - this tells ggplot if there are groupings within each unique x.
 
 #### Grouping
 
