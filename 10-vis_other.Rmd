@@ -58,6 +58,8 @@ pheatmap::pheatmap(new_iris, annotation_row = annot_row,
                    annotation_colors = annot_colour)
 ```
 
+More appearance alterations can be found in [this](https://stackoverflow.com/questions/41628450/r-pheatmap-change-annotation-colors-and-prevent-graphics-window-from-popping-up) SO question.
+
 ## VennDiagram
 
 ```{r, eval=FALSE}
