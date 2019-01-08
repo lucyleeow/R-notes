@@ -12,6 +12,52 @@ Arguments
 * `main` - title of the graph.
 * `filename` - name of the file to save the graph in.
 
+Let's use the first 10 rows of `setosa` and `versicolor` in `iris`. To prepare the data we need to convert it into a matrix and add rownames.
+
+```{r}
+new_iris <- iris[c(1:10,51:60),1:4]
+new_iris <- as.matrix(new_iris)
+rownames(new_iris) <- paste("S", 1:20, sep = "")
+```
+
+```{r}
+pheatmap::pheatmap(new_iris)
+```
+
+Both the columns and rows are clustered using hierarchical clustering (using `hclust()`). 
+
+To add row annotations we must create a dataframe with the annotations as one column. The length of the column (i.e. number of rows) must match the number of rows. The row names of this dataframe must correspond to the row names in the the matrix object (here `new_iris`).  
+
+```{r}
+annot_row <- data.frame(Species = iris[c(1:10,51:60),5])
+rownames(annot_row) <- rownames(new_iris)
+head(annot_row)
+```
+
+```{r}
+pheatmap::pheatmap(new_iris, annotation_row = annot_row)
+```
+
+Note that the column name of `annot_row` becomes the legend title. 
+
+The process to add column annotations is the same as above (except with column names). You can also add more than one annotation but adding another column to the annotation dataframe passed to `annotation_row` or `annotation_column`.
+
+You can also change the colours of the annotation using the 
+
+```{r}
+c1 <- c("blue","red")
+names(c1) <- unique(annot_row$Species)
+annot_colour <- list(Species = c1)
+annot_colour
+```
+
+Note that `annotation_colors` takes a list, which must be named. The name of each element must correspond to the annotation (name of the annotation column from the annotation dataframe above). Each element of the list is a vector of colours, which also must be named with the unique annotations (e.g. here `setosa` and `versicolor`).
+
+```{r}
+pheatmap::pheatmap(new_iris, annotation_row = annot_row,
+                   annotation_colors = annot_colour)
+```
+
 ## VennDiagram
 
 ```{r, eval=FALSE}
