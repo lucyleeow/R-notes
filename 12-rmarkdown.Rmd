@@ -152,13 +152,16 @@ knitr::knit_hooks$set(plot = my_plot_hook)
     * [Chunk hooks](https://yihui.name/knitr/hooks/#chunk-hooks) are functions to be called before or after a code chunk when the chunk option is not NULL (it basically means as long as you set a option, the hook will be run).
     * See [this](https://stackoverflow.com/questions/37030219/r-markdown-plots-within-a-loop-going-out-of-margin-when-typesetting-to-pdf) SO question for more.
 
-* Warning messages for non-English alphabet characters (e.g. Greek characters) when plotting, yet plot has correct characters.
+**Non-english alphabet characters**
+Warning messages for non-English alphabet characters (e.g. Greek characters) when plotting, yet plot has correct characters.
 
 Warning messages look something like this: 
 
 > Warning: conversion failure on '<var>' in 'mbcsToSbcs': dot substituted for <var>
 
-You can prevent this by using `pdf.options(encoding='')`. Note that you need to put this in a code chunk above the problematic code chunk. This is because knitr opens a new graphical device to record plots (by default it is a PDF device). If you out the above code in the same chunk, it is too late to set `pdf.options()`. 
+You can prevent this by using `pdf.options(encoding='')`. Note that you need to put this in a code chunk above the problematic code chunk. This is because knitr opens a new graphical device to record plots (by default it is a PDF device). If you out the above code in the same chunk, it is too late to set `pdf.options()`.
+
+To see a list of all possible encodings, run: `list.files(system.file('enc', package = 'grDevices'))`.
 
 See [this](https://stackoverflow.com/questions/13251665/rhtml-warning-conversion-failure-on-var-in-mbcstosbcs-dot-substituted-f) SO question for more.
 
@@ -173,7 +176,12 @@ Another solution suggested is to specify `dev='cairo_pdf'` in the chunk options 
 
 This requires you to have the package called "Cairo". There may be an error with loading this (with `library()`) on a Mac, as you require the software XQuartz, which does not ship with OS X any more  ([ref](https://stackoverflow.com/questions/38952427/include-cairo-r-on-a-mac)). 
 
-For me, downloading and installing XQuartz (then restarting the computer so it is the default X11), then re-running the code with `dev='cairo_pdf'` set worked.
+For me, downloading and installing XQuartz (then restarting the computer so it is the default X11), then re-running the code with `dev='cairo_pdf'` set worked. I also had to add this to my yaml header to set the latex engine:
+
+```
+pdf_document:
+    latex_engine: xelatex
+```
 
 Knitr (always?) 'records' plots using the `pdf()` device and then redraws it using the device specified in the chunk option ([ref](https://github.com/yihui/knitr/issues/496)). Warnings (like the conversion failure on above) are generated while knitr is printing the plot to a pdf device.
 
