@@ -6,7 +6,7 @@ library(tidyverse)
 
 ## Tibbles
 
-Tibbles are a 'modern take on dataframes' and are used extensively in tidyverse. Tibbles are data frames with some behaviours tweaked:
+Tibbles are a 'modern take on dataframes' and are used extensively in tidyverse. Tibbles are dataframes with some behaviours tweaked:
 
 * Does not change the type of input (e.g. never changes strings to factors)
 * Never changes names of variables
@@ -171,7 +171,7 @@ Note R does not have a good built in class for time data. Thus the hms package i
 
 Offers several useful functions. Parameters that go in these functions:
 
-1. The first argument is a data frame.
+1. The first argument is a dataframe.
 2. The subsequent arguments describe what to do with the data frame, using the variable names (without quotes).
 3. The result is a new data frame.
 
@@ -569,7 +569,7 @@ iris %>%
   head()
 ```
 
-This error says that the `.` is an atomic vector. This means the `.` is referring to one 'selected' columm at a time and that selected column is in the form of an atomic vector and NOT a dataframe/tibble. 
+This error says that the `.` is an atomic vector. This means the `.` is referring to one 'selected' columm at a time and that selected column is in the form of an atomic vector and NOT a data frame/tibble. 
 
 `mutate_if()` - lets you select columns using a condition. Syntax is: `mutate_if(.tbl, .predicate, .funs, ...)`
 
@@ -752,7 +752,7 @@ Here we are filtering on every column. In one row, if any value is greater tnan 
 
 You can write your own functions to add to the end of a dplyr chain.
 
-Certain functions (e.g. `mean()`, `sd()`) expect a vector input (and not dataframe). When you have a `group_by()` above your function (e.g. `group_by(a) %>% yourfunction()`), subsetting within your own function with `[ ]` to obtain one column will give you a dataframe and NOT a vector. 
+Certain functions (e.g. `mean()`, `sd()`) expect a vector input (and not data frame). When you have a `group_by()` above your function (e.g. `group_by(a) %>% yourfunction()`), subsetting within your own function with `[ ]` to obtain one column will give you a data frame and NOT a vector. 
 
 
 ```{r}
