@@ -25,6 +25,7 @@ Rmarkdown is a variant of Markdown developed by RStudio. Can include embedded co
 * `---` turns into emdash (longer line).
     * If you want actual `--` (2 dashes) use \ to escape 2nd dash `-\-`.
 * To output text verbatim, surround with backticks. 
+* Line break is created using 'backslash followed by two space characters', i.e. `\  ` ([ref](https://samboh.blogs.dsv.su.se/2017/03/09/line-break-in-r-markdown-reports-r-notebooks/)).
 
 ## Knitr
 
