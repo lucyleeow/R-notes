@@ -251,6 +251,10 @@ What you can do after you set a key:
 * Subset
     * `DT[.('rowvalue', 'rowvalue2')]` - here you are querying the key columns, using the `.()` (`list()`) notation. The output is the rows where the first key column has the value 'rowvalue' and the second key column has the value 'rowvalue2'. You can put as many values as you have keys.
     * To be able to subset only ONE of the key columns you need something like this: `dt[ .(unique(key1), 'rowvalue2') ]`. You cannot skip the first key, thus you put all the values of the first key there.
+    
+## set
+
+The `:=` function is called set (?) and it allows you to update or create new columns 'by reference'.
 
 ## Reshaping
 
