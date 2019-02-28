@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Chapter 2 Introduction | R notes</title>
+  <meta name="description" content="Guide to R.">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="Chapter 2 Introduction | R notes />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Guide to R." />
+  <meta name="github-repo" content="lucyleeow/R_notes" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 Introduction | R notes />
+  
+  <meta name="twitter:description" content="Guide to R." />
+  
+
+<meta name="author" content="Lucy Liu">
+
+
+<meta name="date" content="2018-12-24">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="index.html">
+<link rel="next" href="data-wrangling-base-r.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">R notes</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a></li>
+<li class="chapter" data-level="2" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>2</b> Introduction</a><ul>
+<li class="chapter" data-level="2.1" data-path="introduction.html"><a href="introduction.html#r-files"><i class="fa fa-check"></i><b>2.1</b> R files</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="introduction.html"><a href="introduction.html#memory"><i class="fa fa-check"></i><b>2.1.1</b> Memory</a></li>
+<li class="chapter" data-level="2.1.2" data-path="introduction.html"><a href="introduction.html#r-project"><i class="fa fa-check"></i><b>2.1.2</b> R project</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="introduction.html"><a href="introduction.html#packages"><i class="fa fa-check"></i><b>2.2</b> Packages</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="introduction.html"><a href="introduction.html#library"><i class="fa fa-check"></i><b>2.2.1</b> Library</a></li>
+<li class="chapter" data-level="2.2.2" data-path="introduction.html"><a href="introduction.html#bioconductor"><i class="fa fa-check"></i><b>2.2.2</b> Bioconductor</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="introduction.html"><a href="introduction.html#basics"><i class="fa fa-check"></i><b>2.3</b> Basics</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="introduction.html"><a href="introduction.html#arithmetic"><i class="fa fa-check"></i><b>2.3.1</b> Arithmetic</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="introduction.html"><a href="introduction.html#help"><i class="fa fa-check"></i><b>2.4</b> Help</a></li>
+<li class="chapter" data-level="2.5" data-path="introduction.html"><a href="introduction.html#data-types"><i class="fa fa-check"></i><b>2.5</b> Data types</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="introduction.html"><a href="introduction.html#numeric"><i class="fa fa-check"></i><b>2.5.1</b> Numeric</a></li>
+<li class="chapter" data-level="2.5.2" data-path="introduction.html"><a href="introduction.html#coercion"><i class="fa fa-check"></i><b>2.5.2</b> Coercion</a></li>
+<li class="chapter" data-level="2.5.3" data-path="introduction.html"><a href="introduction.html#factors"><i class="fa fa-check"></i><b>2.5.3</b> Factors</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="introduction.html"><a href="introduction.html#data-structures"><i class="fa fa-check"></i><b>2.6</b> Data structures</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="introduction.html"><a href="introduction.html#atomic-vector"><i class="fa fa-check"></i><b>2.6.1</b> Atomic vector</a></li>
+<li class="chapter" data-level="2.6.2" data-path="introduction.html"><a href="introduction.html#lists"><i class="fa fa-check"></i><b>2.6.2</b> Lists</a></li>
+<li class="chapter" data-level="2.6.3" data-path="introduction.html"><a href="introduction.html#matrix"><i class="fa fa-check"></i><b>2.6.3</b> Matrix</a></li>
+<li class="chapter" data-level="2.6.4" data-path="introduction.html"><a href="introduction.html#array"><i class="fa fa-check"></i><b>2.6.4</b> Array</a></li>
+<li class="chapter" data-level="2.6.5" data-path="introduction.html"><a href="introduction.html#dataframes"><i class="fa fa-check"></i><b>2.6.5</b> Dataframes</a></li>
+<li class="chapter" data-level="2.6.6" data-path="introduction.html"><a href="introduction.html#high-dimension-structures"><i class="fa fa-check"></i><b>2.6.6</b> High dimension structures</a></li>
+<li class="chapter" data-level="2.6.7" data-path="introduction.html"><a href="introduction.html#attributes"><i class="fa fa-check"></i><b>2.6.7</b> Attributes</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="introduction.html"><a href="introduction.html#nas"><i class="fa fa-check"></i><b>2.7</b> NAs</a></li>
+<li class="chapter" data-level="2.8" data-path="introduction.html"><a href="introduction.html#saving-objects"><i class="fa fa-check"></i><b>2.8</b> Saving objects</a><ul>
+<li class="chapter" data-level="2.8.1" data-path="introduction.html"><a href="introduction.html#feather"><i class="fa fa-check"></i><b>2.8.1</b> feather</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html"><i class="fa fa-check"></i><b>3</b> Data wrangling - base R</a><ul>
+<li class="chapter" data-level="3.1" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html#useful-functions"><i class="fa fa-check"></i><b>3.1</b> Useful functions</a></li>
+<li class="chapter" data-level="3.2" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html#subsetting"><i class="fa fa-check"></i><b>3.2</b> Subsetting</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html"><i class="fa fa-check"></i><b>4</b> Data wrangling - tidyverse</a><ul>
+<li class="chapter" data-level="4.1" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#tibbles"><i class="fa fa-check"></i><b>4.1</b> Tibbles</a></li>
+<li class="chapter" data-level="4.2" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#dplyr"><i class="fa fa-check"></i><b>4.2</b> dplyr</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#subsetting-1"><i class="fa fa-check"></i><b>4.2.1</b> Subsetting</a></li>
+<li class="chapter" data-level="4.2.2" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#the-pipe"><i class="fa fa-check"></i><b>4.2.2</b> The pipe %&gt;%</a></li>
+<li class="chapter" data-level="4.2.3" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#filter"><i class="fa fa-check"></i><b>4.2.3</b> filter</a></li>
+<li class="chapter" data-level="4.2.4" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#select"><i class="fa fa-check"></i><b>4.2.4</b> select</a></li>
+<li class="chapter" data-level="4.2.5" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#mutate"><i class="fa fa-check"></i><b>4.2.5</b> mutate</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="for-loops.html"><a href="for-loops.html"><i class="fa fa-check"></i><b>5</b> For loops</a></li>
+<li class="chapter" data-level="6" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i><b>6</b> Functions</a></li>
+<li class="chapter" data-level="7" data-path="base-r.html"><a href="base-r.html"><i class="fa fa-check"></i><b>7</b> Base R</a><ul>
+<li class="chapter" data-level="7.1" data-path="base-r.html"><a href="base-r.html#palette"><i class="fa fa-check"></i><b>7.1</b> Palette</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i><b>8</b> ggplot2</a><ul>
+<li class="chapter" data-level="8.1" data-path="ggplot2.html"><a href="ggplot2.html#introduction-1"><i class="fa fa-check"></i><b>8.1</b> Introduction</a><ul>
+<li class="chapter" data-level="8.1.1" data-path="ggplot2.html"><a href="ggplot2.html#geoms"><i class="fa fa-check"></i><b>8.1.1</b> geoms</a></li>
+<li class="chapter" data-level="8.1.2" data-path="ggplot2.html"><a href="ggplot2.html#layering"><i class="fa fa-check"></i><b>8.1.2</b> Layering</a></li>
+<li class="chapter" data-level="8.1.3" data-path="ggplot2.html"><a href="ggplot2.html#aesthetics"><i class="fa fa-check"></i><b>8.1.3</b> Aesthetics</a></li>
+<li class="chapter" data-level="8.1.4" data-path="ggplot2.html"><a href="ggplot2.html#syntax"><i class="fa fa-check"></i><b>8.1.4</b> Syntax</a></li>
+<li class="chapter" data-level="8.1.5" data-path="ggplot2.html"><a href="ggplot2.html#stat"><i class="fa fa-check"></i><b>8.1.5</b> Stat</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="ggplot2.html"><a href="ggplot2.html#geom_point"><i class="fa fa-check"></i><b>8.2</b> geom_point</a><ul>
+<li class="chapter" data-level="8.2.1" data-path="ggplot2.html"><a href="ggplot2.html#jitter"><i class="fa fa-check"></i><b>8.2.1</b> Jitter</a></li>
+<li class="chapter" data-level="8.2.2" data-path="ggplot2.html"><a href="ggplot2.html#labels"><i class="fa fa-check"></i><b>8.2.2</b> Labels</a></li>
+<li class="chapter" data-level="8.2.3" data-path="ggplot2.html"><a href="ggplot2.html#colour-points"><i class="fa fa-check"></i><b>8.2.3</b> Colour points</a></li>
+<li class="chapter" data-level="8.2.4" data-path="ggplot2.html"><a href="ggplot2.html#matrix-of-plots"><i class="fa fa-check"></i><b>8.2.4</b> Matrix of plots</a></li>
+<li class="chapter" data-level="8.2.5" data-path="ggplot2.html"><a href="ggplot2.html#adding-lines"><i class="fa fa-check"></i><b>8.2.5</b> Adding lines</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="ggplot2.html"><a href="ggplot2.html#bar-graphs-histograms"><i class="fa fa-check"></i><b>8.3</b> Bar graphs &amp; histograms</a></li>
+<li class="chapter" data-level="8.4" data-path="ggplot2.html"><a href="ggplot2.html#geom_boxplot"><i class="fa fa-check"></i><b>8.4</b> geom_boxplot</a></li>
+<li class="chapter" data-level="8.5" data-path="ggplot2.html"><a href="ggplot2.html#facets"><i class="fa fa-check"></i><b>8.5</b> Facets</a></li>
+<li class="chapter" data-level="8.6" data-path="ggplot2.html"><a href="ggplot2.html#reordering-factors"><i class="fa fa-check"></i><b>8.6</b> Reordering factors</a></li>
+<li class="chapter" data-level="8.7" data-path="ggplot2.html"><a href="ggplot2.html#coordinate-systems"><i class="fa fa-check"></i><b>8.7</b> Coordinate systems</a></li>
+<li class="chapter" data-level="8.8" data-path="ggplot2.html"><a href="ggplot2.html#reference-lines"><i class="fa fa-check"></i><b>8.8</b> Reference lines</a></li>
+<li class="chapter" data-level="8.9" data-path="ggplot2.html"><a href="ggplot2.html#error-bars"><i class="fa fa-check"></i><b>8.9</b> Error bars</a></li>
+<li class="chapter" data-level="8.10" data-path="ggplot2.html"><a href="ggplot2.html#appearance"><i class="fa fa-check"></i><b>8.10</b> Appearance</a></li>
+<li class="chapter" data-level="8.11" data-path="ggplot2.html"><a href="ggplot2.html#dplyr-ggplot2"><i class="fa fa-check"></i><b>8.11</b> dplyr &amp; ggplot2</a></li>
+<li class="chapter" data-level="8.12" data-path="ggplot2.html"><a href="ggplot2.html#saving-graphs"><i class="fa fa-check"></i><b>8.12</b> Saving graphs</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="other-visualisation-packages.html"><a href="other-visualisation-packages.html"><i class="fa fa-check"></i><b>9</b> Other visualisation packages</a><ul>
+<li class="chapter" data-level="9.1" data-path="other-visualisation-packages.html"><a href="other-visualisation-packages.html#pheatmap"><i class="fa fa-check"></i><b>9.1</b> pheatmap</a></li>
+<li class="chapter" data-level="9.2" data-path="other-visualisation-packages.html"><a href="other-visualisation-packages.html#venndiagram"><i class="fa fa-check"></i><b>9.2</b> VennDiagram</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R notes</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">Chapter 2</span> Introduction</h1>
+<p>Useful references:</p>
+<ul>
+<li>Hadley Wickham’s <a href="http://adv-r.had.co.nz/">Advanced R</a> and <a href="https://r4ds.had.co.nz/">R for data science</a> (Answers to questions by <a href="https://jrnold.github.io/r4ds-exercise-solutions/">jrnold</a>)</li>
+<li><a href="https://info201.github.io/control-structures.html">Technical foundations of informatics</a></li>
+<li>CRAN contributed <a href="https://cran.r-project.org/other-docs.html">documentation</a></li>
+<li><a href="http://www.sthda.com/english/">STHDA</a></li>
+</ul>
+<p>R comes as a single binary executable file and large number of functions. The binary file has been compiled from source code written using C. Most of the analytic functions are written in R, other languages such as C and fortran are used to write the most fundamental R functions.</p>
+<div id="r-files" class="section level2">
+<h2><span class="header-section-number">2.1</span> R files</h2>
+<ul>
+<li>.rdata = saves the objects that exist in a session (i.e. everything in environment). If you load .rdata all the objects will be loaded. These objects are part of your ‘workspace’. When you quit R, it asks if you want to save your workspace by default (you can change this in Tools &gt; Global options). It is referring to all the objects in your environment.</li>
+<li>.rhistory = saves the commands you have executed</li>
+<li>.R = R script</li>
+<li>.Rmd = R markdown file (R markdown or R notebooks saved thus)</li>
+<li>.html = R notebooks can create html file (you can change the output by changing (“output: html_notebook”) at the start of the notebook.).</li>
+<li><p>.Rproj.user = hidden directory, where project specific temp files are stored. This file is automatically added to .gitignore.</p></li>
+<li><p>.rprofile = configuration file, usually does not exist in a fresh install</p></li>
+</ul>
+<div id="memory" class="section level3">
+<h3><span class="header-section-number">2.1.1</span> Memory</h3>
+<p>R sets the environment variable ‘R_MAX_VSIZE’ which specifies the maximal vector heap size. It is generally set to the max of: 16GB and available physical memory. This is to avoid having the R process killed when OS over-commits memory.</p>
+<p>You can override this by creating a temporary environment variable or changing R_MAX_VSIZE in the file ‘.Renviron’.</p>
+<p>You do risk over allocating and killing the process though.</p>
+<p>See <a href="https://stackoverflow.com/questions/51248293/error-vector-memory-exhausted-limit-reached-r-3-5-0-macos">this</a> SO question for more.</p>
+</div>
+<div id="r-project" class="section level3">
+<h3><span class="header-section-number">2.1.2</span> R project</h3>
+<p>R projects is a RStudio product that ‘makes it straightforward to divide your work into multiple contexts, each with their own working directory, workspace, history, and source documents’. Starting a new project creates a .rproj file in the specified working directory. This file contains various project options and can be used as a shortcut for opening the project from the file system. Also creates a hidden directory (.Rproj.user) to store temporary project specific files.</p>
+<p>It is associated with a R working directory but can be created in a directory with existing R code and data.</p>
+<p>It stores ‘metadata’ such that when you close your RStudio session, it saves your .rdata and .rhistory, information about your window state, active tabs to your working direction. When you open the same project, it loads all these files and settings and sets your working directory to the one of this project - so your new session looks just as it were before you closed the project. Scripts (.r or .rmd) files are stored separately.</p>
+<p>The .rproj file is just a text file and looks like this (this is a R package project):</p>
+<pre><code>Version: 1.0
+
+RestoreWorkspace: No
+SaveWorkspace: No
+AlwaysSaveHistory: Default
+
+EnableCodeIndexing: Yes
+Encoding: UTF-8
+
+AutoAppendNewline: Yes
+StripTrailingWhitespace: Yes
+
+BuildType: Package
+PackageUseDevtools: Yes
+PackageInstallArgs: --no-multiarch --with-keep.source
+PackageRoxygenize: rd,collate,namespace</code></pre>
+<p>To modify go into projects menu on the top RHS of RStudio &gt; Project Options: <img src="Images/project-options-2" /></p>
+<p>See <a href="https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects">RStudio</a> and <a href="http://r-pkgs.had.co.nz/package.html">R pacakges</a> for more details.</p>
+</div>
+</div>
+<div id="packages" class="section level2">
+<h2><span class="header-section-number">2.2</span> Packages</h2>
+<p>A package bundles together code, data, documentation, and tests and is an easy way to share code with others. Most are hosting on <a href="http://cran.us.r-project.org/">CRAN</a>.</p>
+<ul>
+<li><code>install.packages(“dplyr”)</code> - downloads package from the internet onto your computer. Package name needs to be in quotes. These are downloaded from CRAN.</li>
+<li><code>library(‘dplyr’)</code> - Opens the library into the current R session. Does NOT need to be quoted.</li>
+<li><code>installed.packages()</code> - Shows you what packages are installed</li>
+<li><code>update.package()</code></li>
+<li><code>remove.package()</code></li>
+</ul>
+<p>On Linux (and maybe Macs?) I’ve found that problems installing packages in R can sometimes be solved by installing using terminal e.g. <code>sudo apt-get install r-cran-rgl</code>.</p>
+<p>To make clear where a function is coming from you can use: <code>package::function()</code> e.g. <code>dplyr::mutate()</code></p>
+<p>When you load a package it may warn you of ‘conflicts’ - this means that some function names of the package are the same as the function name in r-base. This may be because the package has ‘improved’ or changed the base r function intentionally. To use the original r-base function you must fully specify the function to make clear where it is coming from. E.g. for dplyr, <code>filter()</code> is a conflict. To use base-r function: <code>stats::filter()</code></p>
+<div id="library" class="section level3">
+<h3><span class="header-section-number">2.2.1</span> Library</h3>
+<p>A library is a directory containing your installed packages. You generally have 2:</p>
+<ul>
+<li>One for packages that come with every R installation (base, stats etc)</li>
+<li>One for packages that you have installed. They are normally based on the version of R you are using (e.g. if you have have a folder named ‘3.4’, packages installed when using this R version will be stored here). Sometimes it may seems like you lose all of your packages when you reinstall R — they’re still on your hard drive, but R can’t find them.</li>
+</ul>
+<p><code>.libPaths()</code> tells you which libraries are currently active.</p>
+<p>When you use <code>library(package)</code>, R will look through each path in .libPaths to see if a directory called ‘package’ exists.</p>
+<p>See <a href="http://r-pkgs.had.co.nz/package.html">Advanced R</a> for more and <a href="https://stackoverflow.com/questions/24880493/how-to-find-out-r-library-location-in-mac-osx">this</a> SO question to find the location of installed packages.</p>
+</div>
+<div id="bioconductor" class="section level3">
+<h3><span class="header-section-number">2.2.2</span> Bioconductor</h3>
+<p>Bioconductor is a source of open source software especially for genomic data analysis.</p>
+<p>To download packages from bioconductor you will need the top two functions:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">source</span>(<span class="st">&quot;http://bioconductor.org/biocLite.R&quot;</span>)  <span class="co"># Downloads installer script</span>
+<span class="kw">biolite</span>(“limma”)        <span class="co"># installer function</span>
+
+<span class="kw">biolite</span>()               <span class="co">#this will install core packages or update any installed packages</span></code></pre></div>
+<p>Problems with installation of certain packages: Non zero exit status - forgot to copy down why</p>
+<p>Installation using terminal worked, using : sudo apt-get install r-cran-rgl</p>
+<p>However, default installation of rgl is not the current version. You can update in R using (update.packages(checkBuilt = TRUE)) but as the owner of these files is root, you can’t write. One way to deal with this is to change the owner of these files (chown) to lucy. This fixed the problem.</p>
+</div>
+</div>
+<div id="basics" class="section level2">
+<h2><span class="header-section-number">2.3</span> Basics</h2>
+<ul>
+<li>alt + shift + k - shows list of keyboard shortcuts.</li>
+<li>Indexing is base 1 (i.e. you start counting from 1)</li>
+<li>Everything is an object in R. Class is blueprint for object, and object is something created using blueprint for object. Many objects can be made from one blueprint/for one class.</li>
+<li>Create an object by assigning them.
+<ul>
+<li>Assign variable using <code>&lt;-</code>. You can also use <code>=</code> but this is not advised according to R style guides.</li>
+<li>There is a difference between <code>&lt;-</code> and <code>=</code>. With <code>&lt;-</code> you can a assign a variable during a function call e.g. <code>f(x &lt;- 3)</code> - which means ‘assign 3 to x, and call f with the first argument set to the value 3’. See this <a href="https://blog.revolutionanalytics.com/2008/12/use-equals-or-arrow-for-assignment.html">blog</a> for more.</li>
+<li><code>get()</code> will return the value of a named object</li>
+</ul></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">var1 =<span class="st"> &quot;Ice bear&quot;</span>
+<span class="kw">get</span>(<span class="st">&quot;var1&quot;</span>)</code></pre></div>
+<pre><code>## [1] &quot;Ice bear&quot;</code></pre>
+<p>The object name needs to be given as character string. Without quotes this occurs:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">get</span>(var1)</code></pre></div>
+<pre><code>## Error in get(var1): object &#39;Ice bear&#39; not found</code></pre>
+<p>Without quotes it evaluates var1, the result of which is a string called ‘Ice bear’. It then searches for a variable called ‘Ice bear’.</p>
+<ul>
+<li>To set working directory: <code>setwd:('D:/path to wd')</code> or via session -&gt; set working directory.
+<ul>
+<li><code>getwd()</code> to get the working directory.</li>
+</ul></li>
+<li>To cancel commands use Esc. If R is waiting for you to finish code, a <code>+</code> will be shown in the console instead of <code>&gt;</code>. Comparing numbers: ‘==’ fine for integers but use all.equal() for decimals due to machine representing decimals to certain precision, ‘machine numeric tolerance’</li>
+<li>Environment - Objects created in for loops are global objects and objects created in functions are local (See <a href="http://adv-r.had.co.nz/Environments.html">Advanced R</a> for more).</li>
+<li><code>&amp;</code> is vectorised and <code>&amp;&amp;</code> is not. Similar for <code>|</code> and <code>||</code>. See <a href="https://stackoverflow.com/questions/6558921/boolean-operators-and">this</a> SO question for more.</li>
+<li><code>12 | 3</code> is evaluated to be TRUE because if you coerce a number into a logical, any non-zero number will be TRUE and 0 will be FALSE. Thus <code>12 | 3</code> is essentially <code>TRUE | TRUE</code> which is <code>TRUE</code>.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.logical</span>(<span class="dv">0</span>)</code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.logical</span>(<span class="op">-</span><span class="dv">3</span>)</code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div id="arithmetic" class="section level3">
+<h3><span class="header-section-number">2.3.1</span> Arithmetic</h3>
+<ul>
+<li>When comparing numbers <code>==</code> fine for integers but use <code>all.equal()</code> for decimals due to machine representing decimals to certain precision (‘machine numeric tolerance’).
+<ul>
+<li><code>identical()</code> - ‘the safe and reliable way to test two objects for being exactly equal’ Different from <code>all.equal()</code> which allows for small differences in NUMERIC results.</li>
+</ul></li>
+<li>Integer division: divide then round down - <code>598 %/% 100 = 5</code></li>
+<li>Remainder: Gives remainder after division - <code>598 %% 100 = 98</code></li>
+</ul>
+</div>
+</div>
+<div id="help" class="section level2">
+<h2><span class="header-section-number">2.4</span> Help</h2>
+<p>To access the help file for an object use <code>?function_name</code> or <code>help(function_name)</code>.</p>
+<p>If you don’t really know the function, you can do a fuzzy search - <code>??function_name</code>.</p>
+<p>A summary of packages broken down by topic can be found at <a href="https://cran.r-project.org/web/views/">CRAN</a></p>
+<p>When asking for help online these functions will be useful:</p>
+<ul>
+<li><code>dput()</code> - will dump the data you’re working with into a format so that it can be copy and pasted by anyone else into their R session.</li>
+<li><code>sessionInfo()</code> - will print out your current version of R, as well as any packages you have loaded. This can be useful for others to help reproduce and debug your issue.</li>
+</ul>
+</div>
+<div id="data-types" class="section level2">
+<h2><span class="header-section-number">2.5</span> Data types</h2>
+<ul>
+<li>Double (dbl) - decimal e.g. 3.14</li>
+<li>Integer (int) - No decimal e.g. 1 (can be 1L, the L suffix denotes? integer)</li>
+<li>Complex - imaginary number e.g. 1i</li>
+<li>Logical (lgl) - Boolean, TRUE or FALSE (T or F)</li>
+<li>Character (chr) - String</li>
+<li>Factor (fctr) - Categorical values</li>
+<li>Date time (dttm) - Date and time</li>
+<li>Date (date) - Date</li>
+</ul>
+<div id="numeric" class="section level3">
+<h3><span class="header-section-number">2.5.1</span> Numeric</h3>
+<p>Numbers are usually stored as class = numeric. Numeric actually consists of multiple classes: integer, single precision and double precision (the last classes are floating point numbers). This is because R will automatically convert between the numeric classes when needed, thus it does not matter to the casual user if the number ‘3’ is stored as double or integer. Note that most calculations are done using doubles (as they are more flexible and higher range of values can be expressed as double), thus this is the default storage. However, integers require less space, thus if you have large data structure, that will never need to be converted into double, you can specify it to be stored as integer.</p>
+<p>Putting a ‘L’ at the end of a number forces it to be an integer (you cannot do this if the number has a decimal point in it). <code>1:3</code> will also return a vector of integers.</p>
+<p>See <a href="https://stackoverflow.com/questions/23660094/whats-the-difference-between-integer-class-and-numeric-class-in-r">this</a> SO question for more.</p>
+</div>
+<div id="coercion" class="section level3">
+<h3><span class="header-section-number">2.5.2</span> Coercion</h3>
+<p>All elements of an atomic vector must be the same type, so when you attempt to combine different types they will be coerced to the most flexible type. This way no data is lost.</p>
+<p>logical -&gt; integer -&gt; double -&gt; complex -&gt; character (<em>most flexible</em>)</p>
+<p>When a logical vector is coerced into an integer or double, TRUE=1 and FALSE=0. This can be useful to calculate sum() (total number of trues) and mean() (proportion of trues).</p>
+<p>Coercion often happens automatically. Mathematical functions will coerce to double or integer and logical operations (|, &amp;, any) will coerce to logical. Usu get a warning message if coercion may cause loss of info.</p>
+<p>Some string functions will coerce factors to strings e.g. <code>gsub()</code> and <code>grepl()</code>. Some will throw an error, e.g. <code>nchar()</code>. Some will use the underlying integer values <code>c()</code>. It is best to explicitly convert factor vectors to string if you need to perform string functions</p>
+</div>
+<div id="factors" class="section level3">
+<h3><span class="header-section-number">2.5.3</span> Factors</h3>
+<p>Factors are integers ‘under the hood’ - each number corresponds to a level. <code>typeof(factor)</code> will be integer BUT <code>class(factor)</code> will be factor.</p>
+<p>R can store nominal (categorical data) as factors. R will store the nominal values as a vector of integers. (e.g. nominal values are: red, green, blue, R will associate 1 = red, 2 = blue, 3 = green, and store them as such). The “level’s” are stored as ‘attributes’ found with the function <code>attributes()</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_fact &lt;-<span class="st"> </span><span class="kw">as.factor</span>(<span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>))
+<span class="kw">attributes</span>(my_fact)</code></pre></div>
+<pre><code>## $levels
+## [1] &quot;blue&quot; &quot;red&quot; 
+## 
+## $class
+## [1] &quot;factor&quot;</code></pre>
+<p>If data is stored as a factor will treat as categorical data or ordinal data in statistical analysis. This, it can be useful when you know all the values a variable can take. However, you can’t add another nominal value that does not already exist, unless you add that nominal value first.</p>
+<p>Factors can also be used to store ordinal data (i.e small, medium large - data with order but where the intervals not necessarily equal) as ordered factors.</p>
+<p>E.g. a variable coded as “large”, “medium” &amp; “small’ - <code>rating &lt;- ordered(rating)</code> recodes rating to 1,2,3 and associates 1=large, 2=medium, 3=small internally. R now treats <code>rating</code> as ordinal.</p>
+<p>A variable can be converted to a factor using <code>as.factor()</code> or <code>factor()</code>. The difference between these two functions is that <code>as.factor()</code> is like a wrapper for <code>factor()</code> that allows quick return if the input vector is already a factor. Performance of <code>as.factor()</code> is thus better if the input is already a factor. ‘Quick return’ will leave factor levels as they are while factor() will not. See <a href="https://stackoverflow.com/questions/39279238/r-why-use-as-factor-instead-of-just-factor">this</a> SO question for more.</p>
+<div id="changing-factor-order" class="section level4">
+<h4><span class="header-section-number">2.5.3.1</span> Changing factor order</h4>
+<p>You can use options in the <code>factor()</code> and <code>ordered()</code> functions to control the mapping of integers to strings (overriding the alphabetical ordering).</p>
+<p>E.g.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydata &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;case&quot;</span>, <span class="st">&quot;control&quot;</span>, <span class="st">&quot;control&quot;</span>, <span class="st">&quot;case&quot;</span>)
+factor_ordering_example &lt;-<span class="st"> </span><span class="kw">factor</span>(mydata, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&quot;control&quot;</span>, <span class="st">&quot;case&quot;</span>))</code></pre></div>
+<p>This tells R that control = 1 and case = 2.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(factor_ordering_example)</code></pre></div>
+<pre><code>##  Factor w/ 2 levels &quot;control&quot;,&quot;case&quot;: 2 1 1 2</code></pre>
+</div>
+<div id="factors-during-parsing" class="section level4">
+<h4><span class="header-section-number">2.5.3.2</span> Factors during parsing</h4>
+<p>It may not be immediately obvious that a column is stored as factors. When parsing in data there is an option of not using factors. By default, R always transforms character vectors to factors when creating a dataframe with character vectors or converting a character matrix to a dataframe.</p>
+<p>A problem with this default behaviour is that it will convert numerical columns of data into a factor if there is a non-numeric value in your column (e.g. a missing value encoded by a character). This can be a nasty cause of errors in your code if you’re not aware of it.</p>
+<p>To convert factor data into numeric:</p>
+<ol style="list-style-type: decimal">
+<li>remove all character values</li>
+<li>convert to character</li>
+<li>convert to numeric.</li>
+</ol>
+<p>If you just convert straight to double/integer without going through character, you will get the numeric levels of the factor instead of the actual data (levels) of the data.</p>
+<p>You can avoid R converting character data into factors by specifying the argument <code>stringsAsFactors=FALSE</code> when reading in data.</p>
+<p>Or use <code>na.strings</code> is also useful, to specify what should be read in as NA.</p>
+</div>
+</div>
+</div>
+<div id="data-structures" class="section level2">
+<h2><span class="header-section-number">2.6</span> Data structures</h2>
+<table>
+<thead>
+<tr class="header">
+<th align="center">Dimensions</th>
+<th align="center">Homogenous</th>
+<th align="center">Heterogenous</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1D</td>
+<td align="center">Atomic vector</td>
+<td align="center">List</td>
+</tr>
+<tr class="even">
+<td align="center">2D</td>
+<td align="center">Matrix</td>
+<td align="center">Dataframe</td>
+</tr>
+<tr class="odd">
+<td align="center">nD</td>
+<td align="center">Array</td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table>
+<div class="figure">
+<img src="Images/data-structure.png" />
+
+</div>
+<ul>
+<li>Vector is an umbrella term for both atomic vectors and lists, however most people mean atomic vector when they talk about ‘vectors’.</li>
+<li>Matrices and dataframes can be ‘1D’ (by having only one column or row) but will behave differently from vector.</li>
+<li>In a dataframe, different columns can contain different data types but all data within one column has to be the same data type.</li>
+<li>There are no scalar values (0d), individual values are actually atomic vectors with length 1.</li>
+<li>The function <code>str()</code> (structure) is useful to find out the structure of ab object.
+<ul>
+<li>If you are using <code>print(str(c(1,2))</code>, there will be a NULL added to the end of that print. This is because the result of <code>str()</code> has a class NULL. Note that you do not need to add <code>print()</code> because <code>str()</code> prints by default.</li>
+</ul></li>
+</ul>
+<div id="atomic-vector" class="section level3">
+<h3><span class="header-section-number">2.6.1</span> Atomic vector</h3>
+<p>All elements must be same type (mode). All elements have to be of a basic ‘atomic’ vector data type:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><strong>Typeof</strong></th>
+<th align="center"><strong>mode</strong></th>
+<th align="center"><strong>storage.mode</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Logical</td>
+<td align="center">logical</td>
+<td align="center">logical</td>
+</tr>
+<tr class="even">
+<td align="center">Integer</td>
+<td align="center">numeric</td>
+<td align="center">integer</td>
+</tr>
+<tr class="odd">
+<td align="center">Double</td>
+<td align="center">numeric</td>
+<td align="center">double</td>
+</tr>
+<tr class="even">
+<td align="center">Complex</td>
+<td align="center">complex</td>
+<td align="center">complex</td>
+</tr>
+<tr class="odd">
+<td align="center">Character</td>
+<td align="center">character</td>
+<td align="center">character</td>
+</tr>
+<tr class="even">
+<td align="center">Raw</td>
+<td align="center">raw</td>
+<td align="center">raw</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Create with <code>c()</code> which means means combine or concatenate.</li>
+<li>Many arithmetic operations are ‘vectorised’, this means that if you perform an arithmetic function on a dataframe, the result be a dataframe.</li>
+<li>You can test if an object is an atomic vector using <code>is.atomic()</code>.
+<ul>
+<li><code>is.vector()</code> returns true if the object is a vector with no attributes apart from names.</li>
+<li>use <code>is.character()</code>, <code>is.double()</code>, <code>is.integer()</code>, <code>is.logical()</code> to test a vector to see what data type it is composed of.</li>
+<li><code>is.numeric()</code>, is a general test for numberliness and will return true for both integer and double vectors.</li>
+</ul></li>
+</ul>
+</div>
+<div id="lists" class="section level3">
+<h3><span class="header-section-number">2.6.2</span> Lists</h3>
+<p>A list is a 1D ordered collection of objects. Each element can be of any datatype and data structure. For example, you can have a list of lists.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">l1 &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">list</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">4</span>))
+l2 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">list</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">4</span>))
+<span class="kw">str</span>(l2)</code></pre></div>
+<pre><code>## List of 4
+##  $ : num 1
+##  $ : num 2
+##  $ : num 3
+##  $ : num 4</code></pre>
+<p><code>c()</code> will combine several lists into a vector. If given both atomic vectors and lists, will coerce atomic vector into a list before combining.</p>
+<p>Lists are sometimes called recursive vectors as lists can contain other lists. This makes them fundamentally different from atomic vectors, which are ‘flat’.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">l &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">list</span>(<span class="kw">list</span>(<span class="kw">list</span>())))
+<span class="kw">str</span>(l)</code></pre></div>
+<pre><code>## List of 1
+##  $ :List of 1
+##   ..$ :List of 1
+##   .. ..$ : list()</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">l &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="kw">c</span>(<span class="dv">2</span>, <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">4</span>)))
+<span class="kw">str</span>(l)</code></pre></div>
+<pre><code>##  num [1:4] 1 2 3 4</code></pre>
+<p><code>unlist()</code> will turn a list into an atomic vector, if there are different data types in the list, it will coerce them to be the same type. <code>as.vector()</code> will not do this.</p>
+</div>
+<div id="matrix" class="section level3">
+<h3><span class="header-section-number">2.6.3</span> Matrix</h3>
+<p>2D data structure, made up of vectors. All vectors must be of the same data type.</p>
+<p>Create using:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">matrix</span>(vector, <span class="dt">nrow=</span>x, <span class="dt">ncol=</span>y, <span class="dt">byrow=</span><span class="ot">FALSE</span>    <span class="co">#matrix fills by columns, which is the default. </span>
+       <span class="dt">dimnames=</span>(row_names, column_names))    <span class="co">#name your cols and rows</span></code></pre></div>
+<p>Can also modify a vector into a matrix by setting the <code>dim()</code> attribute.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">v &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">6</span>
+<span class="kw">dim</span>(v) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">2</span>)
+
+<span class="kw">class</span>(v)</code></pre></div>
+<pre><code>## [1] &quot;matrix&quot;</code></pre>
+<p>You can have matrix where each ELEMENT is a list!</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m_list&lt;-<span class="kw">matrix</span>(<span class="kw">list</span>(<span class="st">&#39;1&#39;</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>),<span class="dv">2</span>,<span class="dv">2</span>)
+m_list</code></pre></div>
+<pre><code>##      [,1] [,2]
+## [1,] &quot;1&quot;  3   
+## [2,] 2    4</code></pre>
+<p>Here the output looks like the matrix is of character and integer. However, each element in the matrix is a list of one!</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m1 &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="kw">list</span>(<span class="dv">1</span>), <span class="kw">list</span>(<span class="dv">2</span>), <span class="kw">list</span>(<span class="dv">3</span>), <span class="kw">list</span>(<span class="dv">4</span>)), <span class="dv">2</span>, <span class="dv">2</span>)
+<span class="kw">str</span>(m1)</code></pre></div>
+<pre><code>## List of 4
+##  $ : num 1
+##  $ : num 2
+##  $ : num 3
+##  $ : num 4
+##  - attr(*, &quot;dim&quot;)= int [1:2] 2 2</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">typeof</span>(m1)</code></pre></div>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m2 &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">2</span>)
+<span class="kw">str</span>(m2)</code></pre></div>
+<pre><code>##  int [1:2, 1:2] 1 2 3 4</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">typeof</span>(m2)</code></pre></div>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+</div>
+<div id="array" class="section level3">
+<h3><span class="header-section-number">2.6.4</span> Array</h3>
+<p>An array is like a matrix but can have &gt;2 dimensions.</p>
+<p>Like vectors, the content of the array is stored in a vector in column-major order and the dim attribute is a vector of integers specifying the respective extents of the array. There is no difference between a matrix and a 2D array.</p>
+</div>
+<div id="dataframes" class="section level3">
+<h3><span class="header-section-number">2.6.5</span> Dataframes</h3>
+<p>Dataframes consist of a list of equal length vectors. <code>class()</code> is dataframe but <code>typeof()</code> gives list. <code>length()</code> will give the length of the list (i.e. <code>ncol()</code>).</p>
+<p>You can create a dataframe by joining vectors:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">employee &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;John Doe&#39;</span>,<span class="st">&#39;Peter Gynn&#39;</span>,<span class="st">&#39;Jolie Hope&#39;</span>)
+salary &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">21000</span>, <span class="dv">23400</span>, <span class="dv">26800</span>)
+employ.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(employee, salary) </code></pre></div>
+<p><code>cbind()</code> (with vectors) will create matrix unless one of the arguments is already a dataframe.</p>
+<p>When combining column-wise, the number of rows must match, but row names are ignored. When combining row-wise, both the number and names of columns must match. You an use <code>plyr::rbind.fill()</code> to combine data frames that don’t have the same columns.</p>
+<p>You can also coerce an object to a data frame with <code>as.data.frame()</code>.</p>
+<ul>
+<li>A vector will create a one-column data frame.</li>
+<li>A list will create one column for each element; there will be an error if they’re not all the same length.</li>
+<li>A matrix will create a dataframe with the same number of columns and rows as the matrix.</li>
+</ul>
+<p>It is possible to store a list as a column in a dataframe:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)
+df<span class="op">$</span>y &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>)
+df</code></pre></div>
+<pre><code>##   x          y
+## 1 1       1, 2
+## 2 2    1, 2, 3
+## 3 3 1, 2, 3, 4</code></pre>
+<p>However, this will give an error as it tries to put each item of the list into its own column, which fails as they have different number of rows.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data.frame</span>(<span class="dt">x =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dt">y =</span> <span class="kw">list</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>))</code></pre></div>
+<pre><code>## Error in (function (..., row.names = NULL, check.rows = FALSE, check.names = TRUE, : arguments imply differing number of rows: 2, 3, 4</code></pre>
+<p>You can use <code>I()</code>, which causes the dataframe to treat list as one unit:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dfl &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dt">y =</span> <span class="kw">I</span>(<span class="kw">list</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>)))
+dfl</code></pre></div>
+<pre><code>##   x          y
+## 1 1       1, 2
+## 2 2    1, 2, 3
+## 3 3 1, 2, 3, 4</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(dfl)</code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    3 obs. of  2 variables:
+##  $ x: int  1 2 3
+##  $ y:List of 3
+##   ..$ : int  1 2
+##   ..$ : int  1 2 3
+##   ..$ : int  1 2 3 4
+##   ..- attr(*, &quot;class&quot;)= chr &quot;AsIs&quot;</code></pre>
+<p>The class AsIs is added but this can be safely ignored.</p>
+<p>It is NOT wise to do this though as many functions that work on dataframes will assume that all columns are atomic vectors.</p>
+<p>You can subsetting dataframe a number of different ways:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">name_of_table<span class="op">$</span>name_of_column
+name_of_table[row,column]   
+name_of_table[,<span class="kw">c</span>(<span class="st">&#39;name_of_col_1&#39;</span>)] </code></pre></div>
+</div>
+<div id="high-dimension-structures" class="section level3">
+<h3><span class="header-section-number">2.6.6</span> High dimension structures</h3>
+<p>The high dimension equivalent of vector functions:</p>
+<ul>
+<li><code>length()</code> - <code>dim()</code>. You can also use <code>row()</code> and <code>ncol()</code> for matrices.</li>
+<li><code>names()</code> - <code>dimnames()</code> outputs a list of character vectors of the names. You can also use <code>rownames()</code> and <code>colnames()</code> for matrices.</li>
+<li><code>c()</code> - <code>cbind()</code> and <code>rbind()</code></li>
+</ul>
+<p>There is a <code>drop</code> argument when using <code>[ ]</code> to subset high dimension data structures. Drop = Drop Redundant Extent Information. It is a logical which determines whether the dimensions of an array which have only one level should be deleted.</p>
+<p>What is does is, when subsetting to get only one row/column (from a matrix/array), you can set drop=TRUE to get a vector.</p>
+<p>If drop=FALSE, you get the same data structure, but with just one row.</p>
+<p>See <a href="https://discuss.analyticsvidhya.com/t/what-does-the-drop-f-argument-in-a-matrix-do-in-r/1586/2">this</a> question for more.</p>
+</div>
+<div id="attributes" class="section level3">
+<h3><span class="header-section-number">2.6.7</span> Attributes</h3>
+<p>All objects can have attributes, used to store metadata about the object. They can be thought of as a named list.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">y &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">10</span>
+<span class="kw">attr</span>(y, <span class="st">&quot;my_attribute&quot;</span>) &lt;-<span class="st"> &quot;This is a vector&quot;</span> 
+<span class="co"># create an attribute called “my_attribute” and give it some content</span>
+<span class="kw">attr</span>(y, <span class="st">&quot;my_attribute&quot;</span>)         </code></pre></div>
+<pre><code>## [1] &quot;This is a vector&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># access an individual attribute with attr()</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(<span class="kw">attributes</span>(y))        </code></pre></div>
+<pre><code>## List of 1
+##  $ my_attribute: chr &quot;This is a vector&quot;</code></pre>
+<p><code>structure()</code> (instead of <code>str()</code>) will return the object with attribute set as well.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">structure</span>(y)</code></pre></div>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10
+## attr(,&quot;my_attribute&quot;)
+## [1] &quot;This is a vector&quot;</code></pre>
+<p>By default you lost most (NOT all) attributes when modifying a vector.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">attributes</span>(<span class="kw">sum</span>(y))</code></pre></div>
+<pre><code>## NULL</code></pre>
+<p>Attributes you don’t lose:</p>
+<ul>
+<li>Names</li>
+<li>Dimensions (can be used to turn vectors into matrices and arrays)</li>
+<li>Class</li>
+</ul>
+<p>Each of these attributes has a special accessor function; <code>names()</code>, <code>dim()</code>, <code>class()</code>. (Do not use <code>attr(x, 'names')</code>)</p>
+<div id="names" class="section level4">
+<h4><span class="header-section-number">2.6.7.1</span> Names</h4>
+<p>You can name a vector a number of ways:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">a =</span> <span class="dv">1</span>, <span class="dt">b =</span> <span class="dv">2</span>, <span class="dt">c =</span> <span class="dv">3</span>)
+x &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">3</span>; <span class="kw">names</span>(x) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>)
+x &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">3</span>; <span class="kw">names</span>(x)[[<span class="dv">1</span>]] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;a&quot;</span>)
+x &lt;-<span class="st"> </span><span class="kw">setNames</span>(x, <span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>))    <span class="co">#assigns names to an object and returns the object</span></code></pre></div>
+<ul>
+<li>Names don’t have to be unique but you can subset by names when they are</li>
+<li>Not all elements need to have a name. If some are missing when you create the vector the name will be set to be an empty string
+<ul>
+<li>However if you modify a vector ‘in place’ by setting name, <code>names()</code> will return NA for the missing ones.</li>
+</ul></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">y &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">a =</span> <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)
+<span class="kw">names</span>(y)</code></pre></div>
+<pre><code>## [1] &quot;a&quot; &quot;&quot;  &quot;&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">v &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)
+<span class="kw">names</span>(v) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;a&#39;</span>)
+<span class="kw">names</span>(v)</code></pre></div>
+<pre><code>## [1] &quot;a&quot; NA  NA</code></pre>
+<p>If all names are missing, <code>names()</code> will return NULL.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">z &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)        
+<span class="kw">names</span>(z)</code></pre></div>
+<pre><code>## NULL</code></pre>
+<ul>
+<li>To remove names from vector use <code>names(x) &lt;- NULL</code> or <code>unname()</code>.</li>
+<li>There is a package called ‘sticky’ which will force defined attributes to be kept - as they are lost when common functions (e.g. subset/extend/extract are used).</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="nas" class="section level2">
+<h2><span class="header-section-number">2.7</span> NAs</h2>
+<p>NAs = not availables</p>
+<p>‘NAs are contagious’ - most equations involving NA returns NA.</p>
+<p>If there is a NA value, <code>mean()</code> will return NA. It makes sense that the mean of a group of numbers plus a missing value that could be anything is NA.</p>
+<p>To get it to return the mean of the non-missing values use <code>mean(x, na.rm=TRUE)</code></p>
+<p>As all values in an atomic vector must be of the same data type, there are several ‘types’ of NAs.</p>
+<p>The default type is logical:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(<span class="ot">NA</span>)</code></pre></div>
+<pre><code>##  logi NA</code></pre>
+<p>NA will be coerced into the correct type if used within <code>c()</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">v &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>, <span class="ot">NA</span>)
+<span class="kw">str</span>(v[<span class="dv">6</span>])</code></pre></div>
+<pre><code>##  num NA</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">v &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;one&quot;</span>, <span class="st">&quot;two&quot;</span>, <span class="st">&quot;three&quot;</span>, <span class="ot">NA</span>)
+<span class="kw">str</span>(v[<span class="dv">4</span>])</code></pre></div>
+<pre><code>##  chr NA</code></pre>
+<p>Many functions will have a <code>na.rm</code> argument. You can also remove NA’s using <code>is.na()</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">v &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="ot">NA</span>)
+<span class="kw">is.na</span>(v)</code></pre></div>
+<pre><code>## [1] FALSE FALSE FALSE  TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">v[<span class="op">!</span><span class="st"> </span><span class="kw">is.na</span>(v)]</code></pre></div>
+<pre><code>## [1] 1 2 3</code></pre>
+<p>In certain equations, including NA will not return NA. This is when the result of the operation would be the same for all possible values of NA:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="ot">NA</span> <span class="op">^</span><span class="st"> </span><span class="dv">0</span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<p>This is because any number to the power of 0 is 1 (including 0^0).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="ot">NA</span> <span class="op">|</span><span class="st"> </span><span class="ot">TRUE</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>Here TRUE is returned and NOT NA because no matter if the NA value is TRUE or FALSE, both will be TRUE.</p>
+<p>It is ignored by functions such as <code>filter()</code>.</p>
+<div id="na-vs-nan" class="section level4">
+<h4><span class="header-section-number">2.7.0.1</span> NA vs NaN</h4>
+<p>There is a difference.</p>
+<ul>
+<li>NaN - Not a Number e.g. undefined calculations such as 3/0. Exists only as double type for real or imaginary components of the complex type.
+<ul>
+<li><code>is.nan()</code> only checks for NaN. Does not return true for NAs. <code>is.na()</code> returns TRUE for NA and NaNs.</li>
+<li>When matching - NaN will match NaN only (not NA).</li>
+</ul></li>
+<li>NA - Not Available - usually a missing value. From R1.5.0 the string ‘NA’ is distinct from NA of character type. String ‘NA’ should be written as <code>as.character(NA)</code>.</li>
+</ul>
+<p>For more see <a href="https://www.r-bloggers.com/difference-between-na-and-nan-in-r/">this</a> blog.</p>
+</div>
+</div>
+<div id="saving-objects" class="section level2">
+<h2><span class="header-section-number">2.8</span> Saving objects</h2>
+<p>You can save objects in your environment as a .Rdata file using <code>save()</code> and laod then into a new session using <code>load()</code>.</p>
+<p>YiHui recommends <code>saveRDS()</code> and <code>loadRDS()</code> because you can silently overwrite current object using <code>save()</code> and <code>load()</code>.</p>
+<div id="feather" class="section level3">
+<h3><span class="header-section-number">2.8.1</span> feather</h3>
+<p>The feather package allows you to save objects in fast binary format that can be shared across programming languages (i.e. usable outside of R). Tends to be faster than ‘RDS’.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(feather)
+<span class="kw">write_feather</span>(challenge, <span class="st">&quot;challenge.feather&quot;</span>)
+<span class="kw">read_feather</span>(<span class="st">&quot;challenge.feather&quot;</span>)</code></pre></div>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="data-wrangling-base-r.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/01-Intro.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["R notes.pdf", "R notes.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

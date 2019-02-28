@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Chapter 13 Package development | R notes</title>
+  <meta name="description" content="Guide to R.">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="Chapter 13 Package development | R notes />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Guide to R." />
+  <meta name="github-repo" content="lucyleeow/R_notes" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 13 Package development | R notes />
+  
+  <meta name="twitter:description" content="Guide to R." />
+  
+
+<meta name="author" content="Lucy Liu">
+
+
+<meta name="date" content="2018-12-26">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="rmarkdown.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">R notes</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a></li>
+<li class="chapter" data-level="2" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>2</b> Introduction</a><ul>
+<li class="chapter" data-level="2.1" data-path="introduction.html"><a href="introduction.html#r-files"><i class="fa fa-check"></i><b>2.1</b> R files</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="introduction.html"><a href="introduction.html#memory"><i class="fa fa-check"></i><b>2.1.1</b> Memory</a></li>
+<li class="chapter" data-level="2.1.2" data-path="introduction.html"><a href="introduction.html#r-project"><i class="fa fa-check"></i><b>2.1.2</b> R project</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="introduction.html"><a href="introduction.html#packages"><i class="fa fa-check"></i><b>2.2</b> Packages</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="introduction.html"><a href="introduction.html#library"><i class="fa fa-check"></i><b>2.2.1</b> Library</a></li>
+<li class="chapter" data-level="2.2.2" data-path="introduction.html"><a href="introduction.html#bioconductor"><i class="fa fa-check"></i><b>2.2.2</b> Bioconductor</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="introduction.html"><a href="introduction.html#basics"><i class="fa fa-check"></i><b>2.3</b> Basics</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="introduction.html"><a href="introduction.html#arithmetic"><i class="fa fa-check"></i><b>2.3.1</b> Arithmetic</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="introduction.html"><a href="introduction.html#help"><i class="fa fa-check"></i><b>2.4</b> Help</a></li>
+<li class="chapter" data-level="2.5" data-path="introduction.html"><a href="introduction.html#data-types"><i class="fa fa-check"></i><b>2.5</b> Data types</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="introduction.html"><a href="introduction.html#numeric"><i class="fa fa-check"></i><b>2.5.1</b> Numeric</a></li>
+<li class="chapter" data-level="2.5.2" data-path="introduction.html"><a href="introduction.html#coercion"><i class="fa fa-check"></i><b>2.5.2</b> Coercion</a></li>
+<li class="chapter" data-level="2.5.3" data-path="introduction.html"><a href="introduction.html#factors"><i class="fa fa-check"></i><b>2.5.3</b> Factors</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="introduction.html"><a href="introduction.html#data-structures"><i class="fa fa-check"></i><b>2.6</b> Data structures</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="introduction.html"><a href="introduction.html#atomic-vector"><i class="fa fa-check"></i><b>2.6.1</b> Atomic vector</a></li>
+<li class="chapter" data-level="2.6.2" data-path="introduction.html"><a href="introduction.html#lists"><i class="fa fa-check"></i><b>2.6.2</b> Lists</a></li>
+<li class="chapter" data-level="2.6.3" data-path="introduction.html"><a href="introduction.html#matrix"><i class="fa fa-check"></i><b>2.6.3</b> Matrix</a></li>
+<li class="chapter" data-level="2.6.4" data-path="introduction.html"><a href="introduction.html#array"><i class="fa fa-check"></i><b>2.6.4</b> Array</a></li>
+<li class="chapter" data-level="2.6.5" data-path="introduction.html"><a href="introduction.html#dataframes"><i class="fa fa-check"></i><b>2.6.5</b> Dataframes</a></li>
+<li class="chapter" data-level="2.6.6" data-path="introduction.html"><a href="introduction.html#high-dimension-structures"><i class="fa fa-check"></i><b>2.6.6</b> High dimension structures</a></li>
+<li class="chapter" data-level="2.6.7" data-path="introduction.html"><a href="introduction.html#attributes"><i class="fa fa-check"></i><b>2.6.7</b> Attributes</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="introduction.html"><a href="introduction.html#nas"><i class="fa fa-check"></i><b>2.7</b> NAs</a></li>
+<li class="chapter" data-level="2.8" data-path="introduction.html"><a href="introduction.html#importing-exporting"><i class="fa fa-check"></i><b>2.8</b> Importing &amp; exporting</a></li>
+<li class="chapter" data-level="2.9" data-path="introduction.html"><a href="introduction.html#saving-objects"><i class="fa fa-check"></i><b>2.9</b> Saving objects</a><ul>
+<li class="chapter" data-level="2.9.1" data-path="introduction.html"><a href="introduction.html#feather"><i class="fa fa-check"></i><b>2.9.1</b> feather</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html"><i class="fa fa-check"></i><b>3</b> Data wrangling - base R</a><ul>
+<li class="chapter" data-level="3.1" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html#useful-functions"><i class="fa fa-check"></i><b>3.1</b> Useful functions</a></li>
+<li class="chapter" data-level="3.2" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html#subsetting"><i class="fa fa-check"></i><b>3.2</b> Subsetting</a></li>
+<li class="chapter" data-level="3.3" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html#apply-family"><i class="fa fa-check"></i><b>3.3</b> Apply family</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html#uses"><i class="fa fa-check"></i><b>3.3.1</b> Uses</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html#docall"><i class="fa fa-check"></i><b>3.4</b> do.call()</a></li>
+<li class="chapter" data-level="3.5" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html#do.call-vs-lapply-vs-map"><i class="fa fa-check"></i><b>3.5</b> do.call vs lapply vs map</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html"><i class="fa fa-check"></i><b>4</b> Data wrangling - tidyverse</a><ul>
+<li class="chapter" data-level="4.1" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#tibbles"><i class="fa fa-check"></i><b>4.1</b> Tibbles</a></li>
+<li class="chapter" data-level="4.2" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#readr"><i class="fa fa-check"></i><b>4.2</b> readr</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#parsing"><i class="fa fa-check"></i><b>4.2.1</b> Parsing</a></li>
+<li class="chapter" data-level="4.2.2" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#exporting"><i class="fa fa-check"></i><b>4.2.2</b> Exporting</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#dplyr"><i class="fa fa-check"></i><b>4.3</b> dplyr</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#subsetting-1"><i class="fa fa-check"></i><b>4.3.1</b> Subsetting</a></li>
+<li class="chapter" data-level="4.3.2" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#the-pipe"><i class="fa fa-check"></i><b>4.3.2</b> The pipe %&gt;%</a></li>
+<li class="chapter" data-level="4.3.3" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#filter"><i class="fa fa-check"></i><b>4.3.3</b> filter</a></li>
+<li class="chapter" data-level="4.3.4" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#select"><i class="fa fa-check"></i><b>4.3.4</b> select</a></li>
+<li class="chapter" data-level="4.3.5" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#mutate"><i class="fa fa-check"></i><b>4.3.5</b> mutate</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="string-manipulation.html"><a href="string-manipulation.html"><i class="fa fa-check"></i><b>5</b> String manipulation</a><ul>
+<li class="chapter" data-level="5.1" data-path="string-manipulation.html"><a href="string-manipulation.html#grep-family"><i class="fa fa-check"></i><b>5.1</b> Grep family</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="string-manipulation.html"><a href="string-manipulation.html#locating-pattern-within-string"><i class="fa fa-check"></i><b>5.1.1</b> Locating pattern within string</a></li>
+<li class="chapter" data-level="5.1.2" data-path="string-manipulation.html"><a href="string-manipulation.html#replacments"><i class="fa fa-check"></i><b>5.1.2</b> Replacments</a></li>
+<li class="chapter" data-level="5.1.3" data-path="string-manipulation.html"><a href="string-manipulation.html#backreferences"><i class="fa fa-check"></i><b>5.1.3</b> Backreferences</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="string-manipulation.html"><a href="string-manipulation.html#regular-expressions"><i class="fa fa-check"></i><b>5.2</b> Regular expressions</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="string-manipulation.html"><a href="string-manipulation.html#quantifiers"><i class="fa fa-check"></i><b>5.2.1</b> Quantifiers</a></li>
+<li class="chapter" data-level="5.2.2" data-path="string-manipulation.html"><a href="string-manipulation.html#position"><i class="fa fa-check"></i><b>5.2.2</b> Position</a></li>
+<li class="chapter" data-level="5.2.3" data-path="string-manipulation.html"><a href="string-manipulation.html#operators"><i class="fa fa-check"></i><b>5.2.3</b> Operators</a></li>
+<li class="chapter" data-level="5.2.4" data-path="string-manipulation.html"><a href="string-manipulation.html#character-classes"><i class="fa fa-check"></i><b>5.2.4</b> Character classes</a></li>
+<li class="chapter" data-level="5.2.5" data-path="string-manipulation.html"><a href="string-manipulation.html#examples"><i class="fa fa-check"></i><b>5.2.5</b> Examples</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="control-flow.html"><a href="control-flow.html"><i class="fa fa-check"></i><b>6</b> Control flow</a><ul>
+<li class="chapter" data-level="6.1" data-path="control-flow.html"><a href="control-flow.html#for-loops"><i class="fa fa-check"></i><b>6.1</b> For loops</a><ul>
+<li class="chapter" data-level="6.1.1" data-path="control-flow.html"><a href="control-flow.html#creating-empty-data-structures"><i class="fa fa-check"></i><b>6.1.1</b> Creating empty data structures</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i><b>7</b> Functions</a><ul>
+<li class="chapter" data-level="7.1" data-path="functions.html"><a href="functions.html#source-code"><i class="fa fa-check"></i><b>7.1</b> Source code</a></li>
+<li class="chapter" data-level="7.2" data-path="functions.html"><a href="functions.html#writing-functions"><i class="fa fa-check"></i><b>7.2</b> Writing functions</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="functions.html"><a href="functions.html#evaluation"><i class="fa fa-check"></i><b>7.2.1</b> Evaluation</a></li>
+<li class="chapter" data-level="7.2.2" data-path="functions.html"><a href="functions.html#checking-inputs"><i class="fa fa-check"></i><b>7.2.2</b> Checking inputs</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="functions.html"><a href="functions.html#messages"><i class="fa fa-check"></i><b>7.3</b> Messages</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="functions.html"><a href="functions.html#optional-arguments"><i class="fa fa-check"></i><b>7.3.1</b> Optional arguments</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="functions.html"><a href="functions.html#functions-with-dplyr"><i class="fa fa-check"></i><b>7.4</b> Functions with dplyr</a><ul>
+<li class="chapter" data-level="7.4.1" data-path="functions.html"><a href="functions.html#non-standard-evaluation"><i class="fa fa-check"></i><b>7.4.1</b> Non standard evaluation</a></li>
+<li class="chapter" data-level="7.4.2" data-path="functions.html"><a href="functions.html#writing-dplyr-functions"><i class="fa fa-check"></i><b>7.4.2</b> Writing dplyr functions</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="functions.html"><a href="functions.html#ggplot"><i class="fa fa-check"></i><b>7.5</b> ggplot</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="base-r.html"><a href="base-r.html"><i class="fa fa-check"></i><b>8</b> Base R</a><ul>
+<li class="chapter" data-level="8.1" data-path="base-r.html"><a href="base-r.html#palette"><i class="fa fa-check"></i><b>8.1</b> Palette</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i><b>9</b> ggplot2</a><ul>
+<li class="chapter" data-level="9.1" data-path="ggplot2.html"><a href="ggplot2.html#introduction-1"><i class="fa fa-check"></i><b>9.1</b> Introduction</a><ul>
+<li class="chapter" data-level="9.1.1" data-path="ggplot2.html"><a href="ggplot2.html#geoms"><i class="fa fa-check"></i><b>9.1.1</b> geoms</a></li>
+<li class="chapter" data-level="9.1.2" data-path="ggplot2.html"><a href="ggplot2.html#layering"><i class="fa fa-check"></i><b>9.1.2</b> Layering</a></li>
+<li class="chapter" data-level="9.1.3" data-path="ggplot2.html"><a href="ggplot2.html#aesthetics"><i class="fa fa-check"></i><b>9.1.3</b> Aesthetics</a></li>
+<li class="chapter" data-level="9.1.4" data-path="ggplot2.html"><a href="ggplot2.html#syntax"><i class="fa fa-check"></i><b>9.1.4</b> Syntax</a></li>
+<li class="chapter" data-level="9.1.5" data-path="ggplot2.html"><a href="ggplot2.html#stat"><i class="fa fa-check"></i><b>9.1.5</b> Stat</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="ggplot2.html"><a href="ggplot2.html#geom_point"><i class="fa fa-check"></i><b>9.2</b> geom_point</a><ul>
+<li class="chapter" data-level="9.2.1" data-path="ggplot2.html"><a href="ggplot2.html#jitter"><i class="fa fa-check"></i><b>9.2.1</b> Jitter</a></li>
+<li class="chapter" data-level="9.2.2" data-path="ggplot2.html"><a href="ggplot2.html#labels"><i class="fa fa-check"></i><b>9.2.2</b> Labels</a></li>
+<li class="chapter" data-level="9.2.3" data-path="ggplot2.html"><a href="ggplot2.html#colour-points"><i class="fa fa-check"></i><b>9.2.3</b> Colour points</a></li>
+<li class="chapter" data-level="9.2.4" data-path="ggplot2.html"><a href="ggplot2.html#matrix-of-plots"><i class="fa fa-check"></i><b>9.2.4</b> Matrix of plots</a></li>
+<li class="chapter" data-level="9.2.5" data-path="ggplot2.html"><a href="ggplot2.html#adding-lines"><i class="fa fa-check"></i><b>9.2.5</b> Adding lines</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="ggplot2.html"><a href="ggplot2.html#bar-graphs-histograms"><i class="fa fa-check"></i><b>9.3</b> Bar graphs &amp; histograms</a></li>
+<li class="chapter" data-level="9.4" data-path="ggplot2.html"><a href="ggplot2.html#geom_boxplot"><i class="fa fa-check"></i><b>9.4</b> geom_boxplot</a></li>
+<li class="chapter" data-level="9.5" data-path="ggplot2.html"><a href="ggplot2.html#facets"><i class="fa fa-check"></i><b>9.5</b> Facets</a></li>
+<li class="chapter" data-level="9.6" data-path="ggplot2.html"><a href="ggplot2.html#reordering-factors"><i class="fa fa-check"></i><b>9.6</b> Reordering factors</a></li>
+<li class="chapter" data-level="9.7" data-path="ggplot2.html"><a href="ggplot2.html#coordinate-systems"><i class="fa fa-check"></i><b>9.7</b> Coordinate systems</a></li>
+<li class="chapter" data-level="9.8" data-path="ggplot2.html"><a href="ggplot2.html#reference-lines"><i class="fa fa-check"></i><b>9.8</b> Reference lines</a></li>
+<li class="chapter" data-level="9.9" data-path="ggplot2.html"><a href="ggplot2.html#error-bars"><i class="fa fa-check"></i><b>9.9</b> Error bars</a></li>
+<li class="chapter" data-level="9.10" data-path="ggplot2.html"><a href="ggplot2.html#appearance"><i class="fa fa-check"></i><b>9.10</b> Appearance</a></li>
+<li class="chapter" data-level="9.11" data-path="ggplot2.html"><a href="ggplot2.html#dplyr-ggplot2"><i class="fa fa-check"></i><b>9.11</b> dplyr &amp; ggplot2</a></li>
+<li class="chapter" data-level="9.12" data-path="ggplot2.html"><a href="ggplot2.html#saving-graphs"><i class="fa fa-check"></i><b>9.12</b> Saving graphs</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="other-visualisation-packages.html"><a href="other-visualisation-packages.html"><i class="fa fa-check"></i><b>10</b> Other visualisation packages</a><ul>
+<li class="chapter" data-level="10.1" data-path="other-visualisation-packages.html"><a href="other-visualisation-packages.html#pheatmap"><i class="fa fa-check"></i><b>10.1</b> pheatmap</a></li>
+<li class="chapter" data-level="10.2" data-path="other-visualisation-packages.html"><a href="other-visualisation-packages.html#venndiagram"><i class="fa fa-check"></i><b>10.2</b> VennDiagram</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="data-table.html"><a href="data-table.html"><i class="fa fa-check"></i><b>11</b> data.table</a></li>
+<li class="chapter" data-level="12" data-path="rmarkdown.html"><a href="rmarkdown.html"><i class="fa fa-check"></i><b>12</b> Rmarkdown</a></li>
+<li class="chapter" data-level="13" data-path="package-development.html"><a href="package-development.html"><i class="fa fa-check"></i><b>13</b> Package development</a><ul>
+<li class="chapter" data-level="13.1" data-path="package-development.html"><a href="package-development.html#naming"><i class="fa fa-check"></i><b>13.1</b> Naming</a></li>
+<li class="chapter" data-level="13.2" data-path="package-development.html"><a href="package-development.html#states"><i class="fa fa-check"></i><b>13.2</b> States</a><ul>
+<li class="chapter" data-level="13.2.1" data-path="package-development.html"><a href="package-development.html#source"><i class="fa fa-check"></i><b>13.2.1</b> Source</a></li>
+<li class="chapter" data-level="13.2.2" data-path="package-development.html"><a href="package-development.html#bundled"><i class="fa fa-check"></i><b>13.2.2</b> Bundled</a></li>
+<li class="chapter" data-level="13.2.3" data-path="package-development.html"><a href="package-development.html#binary-package"><i class="fa fa-check"></i><b>13.2.3</b> Binary package</a></li>
+<li class="chapter" data-level="13.2.4" data-path="package-development.html"><a href="package-development.html#installed"><i class="fa fa-check"></i><b>13.2.4</b> Installed</a></li>
+<li class="chapter" data-level="13.2.5" data-path="package-development.html"><a href="package-development.html#in-memory"><i class="fa fa-check"></i><b>13.2.5</b> In memory</a></li>
+<li class="chapter" data-level="13.2.6" data-path="package-development.html"><a href="package-development.html#summary"><i class="fa fa-check"></i><b>13.2.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="package-development.html"><a href="package-development.html#r-cmd-install"><i class="fa fa-check"></i><b>13.3</b> R CMD install</a></li>
+<li class="chapter" data-level="13.4" data-path="package-development.html"><a href="package-development.html#workflow"><i class="fa fa-check"></i><b>13.4</b> Workflow</a></li>
+<li class="chapter" data-level="13.5" data-path="package-development.html"><a href="package-development.html#file-system"><i class="fa fa-check"></i><b>13.5</b> File system</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R notes</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="package-development" class="section level1">
+<h1><span class="header-section-number">Chapter 13</span> Package development</h1>
+<p>Useful references:</p>
+<ul>
+<li>Hadley Wickham’s <a href="http://r-pkgs.had.co.nz/intro.html">R packages</a></li>
+<li>Hillary Parker’s <a href="https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/">quick guide</a></li>
+<li>Damjan Vukcevic’s <a href="http://damjan.vukcevic.net/2016/09/20/writing-and-managing-r-packages/">slides</a></li>
+</ul>
+<div id="naming" class="section level2">
+<h2><span class="header-section-number">13.1</span> Naming</h2>
+<ul>
+<li>Can only contain letters, numbers and periods (‘.’)</li>
+<li>Must start with letter</li>
+<li>Cannot end with a period</li>
+<li>Hadley recommends against using periods</li>
+</ul>
+</div>
+<div id="states" class="section level2">
+<h2><span class="header-section-number">13.2</span> States</h2>
+<p>An R package can exist in five states:</p>
+<div id="source" class="section level3">
+<h3><span class="header-section-number">13.2.1</span> Source</h3>
+<p>Development version. Lives on your computer. It is just a directory with DESCRIPTION file, R/ folder etc.</p>
+</div>
+<div id="bundled" class="section level3">
+<h3><span class="header-section-number">13.2.2</span> Bundled</h3>
+<p>Package that has been compressed into a single file. By convention, uses the extension ‘.tar.gz’. This means that several files have been reduced to a single file (.tar) then compressed (gz). <code>devtools::build()</code> will create a bundle of your package.</p>
+<p>When you decompress a bundle it will look almost the same as your source package. The differences are:</p>
+<ul>
+<li>Vignettes are built already. In source you may have markdown or latex input. In decompressed bundle, you will only have the html and pdf output. Temp files in source will not be included in the decompressed bundle e.g. things in the ‘src/’ fold.</li>
+<li>Any files listed in ‘.Rbuildignore’ will not be included. This is useful for files that are needed to generate the output. In the bundle you only need the output file, thus do not need to include the files used to generate it.</li>
+</ul>
+</div>
+<div id="binary-package" class="section level3">
+<h3><span class="header-section-number">13.2.3</span> Binary package</h3>
+<p>Single file (like a package bundle) but internal structure is different when uncompressed:</p>
+<ul>
+<li>Instead of R/, there are 3 files that store the parsed functions in an efficient file format. It is basically the result of loading all the R code and then saving the functions with <code>save()</code>. This is what it looks like:</li>
+</ul>
+<div class="figure">
+<img src="Images/bundle.png" />
+
+</div>
+<p>The is a ‘Meta/’ directory (one above) that contains a number of Rds files. These files contact cached metadata about the package - like what topics the help files cover and parsed versions of the DESCRIPTION files. These files make package loading faster by caching costly computations.</p>
+<p>The ‘html/’ directory contains files for html help files. Binaries are platform specific.</p>
+</div>
+<div id="installed" class="section level3">
+<h3><span class="header-section-number">13.2.4</span> Installed</h3>
+<p>Binary package that’s been decompressed into a package library. Installation involves these steps: source -&gt; bundle, bundle -&gt; binary, binary -&gt; installed - however there are often shortcuts available.</p>
+<p>See section <a href="package-development.html#r-cmd-install">13.3</a> (R CMD install) for more details.</p>
+</div>
+<div id="in-memory" class="section level3">
+<h3><span class="header-section-number">13.2.5</span> In memory</h3>
+<p>Packages must be loaded into memory to use. There is difference between loading and attaching a package - see section 888 (NAMESPACE) for more.</p>
+</div>
+<div id="summary" class="section level3">
+<h3><span class="header-section-number">13.2.6</span> Summary</h3>
+<p>Files present in the root directory for source, bundled and binary versions of devtools.</p>
+<div class="figure">
+<img src="Images/package-files.png" />
+
+</div>
+</div>
+</div>
+<div id="r-cmd-install" class="section level2">
+<h2><span class="header-section-number">13.3</span> R CMD install</h2>
+<p>The command line tool ‘R CMD INSTALL’ can install a source, bundle or binary package. Devtools functions provide wrappers that allow you to access this tool from R rather than from the command line.</p>
+<ul>
+<li><code>build()</code> - converts a package source directory into a single bundled file then intalls the package. Wrapper for R CMD build.</li>
+<li><code>install()</code> - install a local development package (into your R system library). Wrapper for R CMD install.
+<ul>
+<li>It reinstalls the package, detaches the currently loaded version the reloads the new version with <code>library()</code></li>
+</ul></li>
+<li><code>load_all()</code> - roughly simulates what happens when a package is installed and loaded with <code>library()</code>.
+<ul>
+<li>It will load R code in the /R folder (and compiled shared objects in /src and data files in /data).</li>
+<li>Won’t be available when you close your R session.</li>
+<li>It allows you to ‘skip’ install and load a source package directly into memory.</li>
+</ul></li>
+</ul>
+<p>Note that you need to use the above three functions from a working directory OUTSIDE of your package directory! This can be easily done with <code>setwd('..')</code>.</p>
+<ul>
+<li><code>install_github()</code> - downloads a source package from GitHub, runs <code>build()</code> to make vignettes then uses R CMD install to install.</li>
+<li><code>install_url()</code>, <code>install_gitorious()</code>, <code>install_bitbucket()</code> do similar things but just from different websites.</li>
+<li><code>install.packages()</code> - looks on CRAN for package, downloads and then installs.
+<ul>
+<li>The difference between <code>install_github()</code> and <code>install.packages()</code> is that for the latter, packages are often in binary format on CRAN thus do not need to be built before installed.</li>
+</ul></li>
+</ul>
+<p>See the <a href="https://cran.r-project.org/web/packages/devtools/readme/README.html">devtools</a> package documentation for more.</p>
+<p>RStudio’s ‘build and reload’ or ‘install and restart’ (depending on the RStudio version) button (or keyboard ‘Ctrl/Cmd + Shift + B’) is similar to <code>load_all()</code>. It lets you skip install and load a source package into memory. It is slower than <code>install_all()</code>. It does not build vignettes like <code>install()</code> does.</p>
+<p>Build will make a copy of many of the files - problem for large data files. (See <a href="https://stackoverflow.com/questions/46724623/difference-between-load-all-and-build-reload">this</a> question SO for more).</p>
+<p>As discussed below in section <a href="package-development.html#workflow">13.4</a> (Workflow), build and reload will show links between your documentation pages.</p>
+<p>Comparison:</p>
+<div class="figure">
+<img src="Images/loading.png" />
+
+</div>
+<p>Summary of the build functions:</p>
+<div class="figure">
+<img src="Images/installation.png" />
+
+</div>
+<p>An installed package is just a binary package that’s been decompressed into a package library.</p>
+</div>
+<div id="workflow" class="section level2">
+<h2><span class="header-section-number">13.4</span> Workflow</h2>
+<p>This describes the package writing workflow using roxygen2 to create the documentation and the NAMESPACE files. You can choose to use roxygen2 to only create the documentation or NAMESPACE. If you do not use any of the tags associated with one, it will not alter either the /man or NAMESPACE files.</p>
+<ol style="list-style-type: decimal">
+<li>Create file structure (see section <a href="package-development.html#file-system">13.5</a> (file system)).</li>
+<li>Update DESCRIPTION file.</li>
+<li>Write your functions and put them in your R/ folder.</li>
+<li>Add roxygen2 comments to your R script to generate documentation and/or update the NAMESPACE file.</li>
+<li>Use the function <code>document()</code> to generate the documentation and/or NAMESPACE.
+<ul>
+<li>You do not need to install or load your package first.</li>
+<li>You do not need to give document any arguments. The default is <code>pgk = '.'</code>.</li>
+</ul></li>
+</ol>
+<p><code>roxygenise()</code> vs <code>document()</code> -</p>
+<p>Roxygen does live analysis of your source code - loads the code in your package so it can create documentation using values in an R environment, not just source code.</p>
+<p><code>roxygenise()</code> - sources all files in R/ <code>document()</code> - sources all files in R/, compiles source code in src/, loads data and generally does an accurate job of simulating package loading It is recommended to use <code>roxygenise()</code> only for simple packages. (See <a href="https://stackoverflow.com/questions/25104108/devtoolsdocument-vs-roxygen2roxygenize">this</a> SO question for more.)</p>
+<ol start="6" style="list-style-type: decimal">
+<li>Preview documentation with <code>?fun</code> or <code>help(fun)</code>.
+<ul>
+<li>R looks for an .Rd file containing , parses the file, converts it to HTML and displays it. Generally this looks for Rd files in installed packages BUT if you use <code>load_all()</code>, devtools tells the <code>help()</code> and <code>?</code> how to work with source packages. This preview does NOT work with intra-package links through! You need to install your package for these to work.</li>
+</ul></li>
+<li>Install your package.</li>
+</ol>
+</div>
+<div id="file-system" class="section level2">
+<h2><span class="header-section-number">13.5</span> File system</h2>
+<p>The minimum files required for an R package are:</p>
+<ul>
+<li>/R fold with all your function files (.R)</li>
+<li>DESCRIPTION file</li>
+<li>NAMESPACE file</li>
+</ul>
+<div class="figure">
+<img src="Images/file_struct.png" />
+
+</div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="rmarkdown.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/12-package.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["R notes.pdf", "R notes.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Chapter 7 Functions | R notes</title>
+  <meta name="description" content="Guide to R.">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="Chapter 7 Functions | R notes />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Guide to R." />
+  <meta name="github-repo" content="lucyleeow/R_notes" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 7 Functions | R notes />
+  
+  <meta name="twitter:description" content="Guide to R." />
+  
+
+<meta name="author" content="Lucy Liu">
+
+
+<meta name="date" content="2018-12-26">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="control-flow.html">
+<link rel="next" href="base-r.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">R notes</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a></li>
+<li class="chapter" data-level="2" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>2</b> Introduction</a><ul>
+<li class="chapter" data-level="2.1" data-path="introduction.html"><a href="introduction.html#r-files"><i class="fa fa-check"></i><b>2.1</b> R files</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="introduction.html"><a href="introduction.html#memory"><i class="fa fa-check"></i><b>2.1.1</b> Memory</a></li>
+<li class="chapter" data-level="2.1.2" data-path="introduction.html"><a href="introduction.html#r-project"><i class="fa fa-check"></i><b>2.1.2</b> R project</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="introduction.html"><a href="introduction.html#packages"><i class="fa fa-check"></i><b>2.2</b> Packages</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="introduction.html"><a href="introduction.html#library"><i class="fa fa-check"></i><b>2.2.1</b> Library</a></li>
+<li class="chapter" data-level="2.2.2" data-path="introduction.html"><a href="introduction.html#bioconductor"><i class="fa fa-check"></i><b>2.2.2</b> Bioconductor</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="introduction.html"><a href="introduction.html#basics"><i class="fa fa-check"></i><b>2.3</b> Basics</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="introduction.html"><a href="introduction.html#arithmetic"><i class="fa fa-check"></i><b>2.3.1</b> Arithmetic</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="introduction.html"><a href="introduction.html#help"><i class="fa fa-check"></i><b>2.4</b> Help</a></li>
+<li class="chapter" data-level="2.5" data-path="introduction.html"><a href="introduction.html#data-types"><i class="fa fa-check"></i><b>2.5</b> Data types</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="introduction.html"><a href="introduction.html#numeric"><i class="fa fa-check"></i><b>2.5.1</b> Numeric</a></li>
+<li class="chapter" data-level="2.5.2" data-path="introduction.html"><a href="introduction.html#coercion"><i class="fa fa-check"></i><b>2.5.2</b> Coercion</a></li>
+<li class="chapter" data-level="2.5.3" data-path="introduction.html"><a href="introduction.html#factors"><i class="fa fa-check"></i><b>2.5.3</b> Factors</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="introduction.html"><a href="introduction.html#data-structures"><i class="fa fa-check"></i><b>2.6</b> Data structures</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="introduction.html"><a href="introduction.html#atomic-vector"><i class="fa fa-check"></i><b>2.6.1</b> Atomic vector</a></li>
+<li class="chapter" data-level="2.6.2" data-path="introduction.html"><a href="introduction.html#lists"><i class="fa fa-check"></i><b>2.6.2</b> Lists</a></li>
+<li class="chapter" data-level="2.6.3" data-path="introduction.html"><a href="introduction.html#matrix"><i class="fa fa-check"></i><b>2.6.3</b> Matrix</a></li>
+<li class="chapter" data-level="2.6.4" data-path="introduction.html"><a href="introduction.html#array"><i class="fa fa-check"></i><b>2.6.4</b> Array</a></li>
+<li class="chapter" data-level="2.6.5" data-path="introduction.html"><a href="introduction.html#dataframes"><i class="fa fa-check"></i><b>2.6.5</b> Dataframes</a></li>
+<li class="chapter" data-level="2.6.6" data-path="introduction.html"><a href="introduction.html#high-dimension-structures"><i class="fa fa-check"></i><b>2.6.6</b> High dimension structures</a></li>
+<li class="chapter" data-level="2.6.7" data-path="introduction.html"><a href="introduction.html#attributes"><i class="fa fa-check"></i><b>2.6.7</b> Attributes</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="introduction.html"><a href="introduction.html#nas"><i class="fa fa-check"></i><b>2.7</b> NAs</a></li>
+<li class="chapter" data-level="2.8" data-path="introduction.html"><a href="introduction.html#importing-exporting"><i class="fa fa-check"></i><b>2.8</b> Importing &amp; exporting</a></li>
+<li class="chapter" data-level="2.9" data-path="introduction.html"><a href="introduction.html#saving-objects"><i class="fa fa-check"></i><b>2.9</b> Saving objects</a><ul>
+<li class="chapter" data-level="2.9.1" data-path="introduction.html"><a href="introduction.html#feather"><i class="fa fa-check"></i><b>2.9.1</b> feather</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html"><i class="fa fa-check"></i><b>3</b> Data wrangling - base R</a><ul>
+<li class="chapter" data-level="3.1" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html#useful-functions"><i class="fa fa-check"></i><b>3.1</b> Useful functions</a></li>
+<li class="chapter" data-level="3.2" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html#subsetting"><i class="fa fa-check"></i><b>3.2</b> Subsetting</a></li>
+<li class="chapter" data-level="3.3" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html#apply-family"><i class="fa fa-check"></i><b>3.3</b> Apply family</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html#uses"><i class="fa fa-check"></i><b>3.3.1</b> Uses</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html#docall"><i class="fa fa-check"></i><b>3.4</b> do.call()</a></li>
+<li class="chapter" data-level="3.5" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html#do.call-vs-lapply-vs-map"><i class="fa fa-check"></i><b>3.5</b> do.call vs lapply vs map</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html"><i class="fa fa-check"></i><b>4</b> Data wrangling - tidyverse</a><ul>
+<li class="chapter" data-level="4.1" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#tibbles"><i class="fa fa-check"></i><b>4.1</b> Tibbles</a></li>
+<li class="chapter" data-level="4.2" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#readr"><i class="fa fa-check"></i><b>4.2</b> readr</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#parsing"><i class="fa fa-check"></i><b>4.2.1</b> Parsing</a></li>
+<li class="chapter" data-level="4.2.2" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#exporting"><i class="fa fa-check"></i><b>4.2.2</b> Exporting</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#dplyr"><i class="fa fa-check"></i><b>4.3</b> dplyr</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#subsetting-1"><i class="fa fa-check"></i><b>4.3.1</b> Subsetting</a></li>
+<li class="chapter" data-level="4.3.2" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#the-pipe"><i class="fa fa-check"></i><b>4.3.2</b> The pipe %&gt;%</a></li>
+<li class="chapter" data-level="4.3.3" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#filter"><i class="fa fa-check"></i><b>4.3.3</b> filter</a></li>
+<li class="chapter" data-level="4.3.4" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#select"><i class="fa fa-check"></i><b>4.3.4</b> select</a></li>
+<li class="chapter" data-level="4.3.5" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#mutate"><i class="fa fa-check"></i><b>4.3.5</b> mutate</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="string-manipulation.html"><a href="string-manipulation.html"><i class="fa fa-check"></i><b>5</b> String manipulation</a><ul>
+<li class="chapter" data-level="5.1" data-path="string-manipulation.html"><a href="string-manipulation.html#grep-family"><i class="fa fa-check"></i><b>5.1</b> Grep family</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="string-manipulation.html"><a href="string-manipulation.html#locating-pattern-within-string"><i class="fa fa-check"></i><b>5.1.1</b> Locating pattern within string</a></li>
+<li class="chapter" data-level="5.1.2" data-path="string-manipulation.html"><a href="string-manipulation.html#replacments"><i class="fa fa-check"></i><b>5.1.2</b> Replacments</a></li>
+<li class="chapter" data-level="5.1.3" data-path="string-manipulation.html"><a href="string-manipulation.html#backreferences"><i class="fa fa-check"></i><b>5.1.3</b> Backreferences</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="string-manipulation.html"><a href="string-manipulation.html#regular-expressions"><i class="fa fa-check"></i><b>5.2</b> Regular expressions</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="string-manipulation.html"><a href="string-manipulation.html#quantifiers"><i class="fa fa-check"></i><b>5.2.1</b> Quantifiers</a></li>
+<li class="chapter" data-level="5.2.2" data-path="string-manipulation.html"><a href="string-manipulation.html#position"><i class="fa fa-check"></i><b>5.2.2</b> Position</a></li>
+<li class="chapter" data-level="5.2.3" data-path="string-manipulation.html"><a href="string-manipulation.html#operators"><i class="fa fa-check"></i><b>5.2.3</b> Operators</a></li>
+<li class="chapter" data-level="5.2.4" data-path="string-manipulation.html"><a href="string-manipulation.html#character-classes"><i class="fa fa-check"></i><b>5.2.4</b> Character classes</a></li>
+<li class="chapter" data-level="5.2.5" data-path="string-manipulation.html"><a href="string-manipulation.html#examples"><i class="fa fa-check"></i><b>5.2.5</b> Examples</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="control-flow.html"><a href="control-flow.html"><i class="fa fa-check"></i><b>6</b> Control flow</a><ul>
+<li class="chapter" data-level="6.1" data-path="control-flow.html"><a href="control-flow.html#for-loops"><i class="fa fa-check"></i><b>6.1</b> For loops</a><ul>
+<li class="chapter" data-level="6.1.1" data-path="control-flow.html"><a href="control-flow.html#creating-empty-data-structures"><i class="fa fa-check"></i><b>6.1.1</b> Creating empty data structures</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i><b>7</b> Functions</a><ul>
+<li class="chapter" data-level="7.1" data-path="functions.html"><a href="functions.html#source-code"><i class="fa fa-check"></i><b>7.1</b> Source code</a></li>
+<li class="chapter" data-level="7.2" data-path="functions.html"><a href="functions.html#writing-functions"><i class="fa fa-check"></i><b>7.2</b> Writing functions</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="functions.html"><a href="functions.html#evaluation"><i class="fa fa-check"></i><b>7.2.1</b> Evaluation</a></li>
+<li class="chapter" data-level="7.2.2" data-path="functions.html"><a href="functions.html#checking-inputs"><i class="fa fa-check"></i><b>7.2.2</b> Checking inputs</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="functions.html"><a href="functions.html#messages"><i class="fa fa-check"></i><b>7.3</b> Messages</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="functions.html"><a href="functions.html#optional-arguments"><i class="fa fa-check"></i><b>7.3.1</b> Optional arguments</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="functions.html"><a href="functions.html#functions-with-dplyr"><i class="fa fa-check"></i><b>7.4</b> Functions with dplyr</a><ul>
+<li class="chapter" data-level="7.4.1" data-path="functions.html"><a href="functions.html#non-standard-evaluation"><i class="fa fa-check"></i><b>7.4.1</b> Non standard evaluation</a></li>
+<li class="chapter" data-level="7.4.2" data-path="functions.html"><a href="functions.html#writing-dplyr-functions"><i class="fa fa-check"></i><b>7.4.2</b> Writing dplyr functions</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="functions.html"><a href="functions.html#ggplot"><i class="fa fa-check"></i><b>7.5</b> ggplot</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="base-r.html"><a href="base-r.html"><i class="fa fa-check"></i><b>8</b> Base R</a><ul>
+<li class="chapter" data-level="8.1" data-path="base-r.html"><a href="base-r.html#palette"><i class="fa fa-check"></i><b>8.1</b> Palette</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i><b>9</b> ggplot2</a><ul>
+<li class="chapter" data-level="9.1" data-path="ggplot2.html"><a href="ggplot2.html#introduction-1"><i class="fa fa-check"></i><b>9.1</b> Introduction</a><ul>
+<li class="chapter" data-level="9.1.1" data-path="ggplot2.html"><a href="ggplot2.html#geoms"><i class="fa fa-check"></i><b>9.1.1</b> geoms</a></li>
+<li class="chapter" data-level="9.1.2" data-path="ggplot2.html"><a href="ggplot2.html#layering"><i class="fa fa-check"></i><b>9.1.2</b> Layering</a></li>
+<li class="chapter" data-level="9.1.3" data-path="ggplot2.html"><a href="ggplot2.html#aesthetics"><i class="fa fa-check"></i><b>9.1.3</b> Aesthetics</a></li>
+<li class="chapter" data-level="9.1.4" data-path="ggplot2.html"><a href="ggplot2.html#syntax"><i class="fa fa-check"></i><b>9.1.4</b> Syntax</a></li>
+<li class="chapter" data-level="9.1.5" data-path="ggplot2.html"><a href="ggplot2.html#stat"><i class="fa fa-check"></i><b>9.1.5</b> Stat</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="ggplot2.html"><a href="ggplot2.html#geom_point"><i class="fa fa-check"></i><b>9.2</b> geom_point</a><ul>
+<li class="chapter" data-level="9.2.1" data-path="ggplot2.html"><a href="ggplot2.html#jitter"><i class="fa fa-check"></i><b>9.2.1</b> Jitter</a></li>
+<li class="chapter" data-level="9.2.2" data-path="ggplot2.html"><a href="ggplot2.html#labels"><i class="fa fa-check"></i><b>9.2.2</b> Labels</a></li>
+<li class="chapter" data-level="9.2.3" data-path="ggplot2.html"><a href="ggplot2.html#colour-points"><i class="fa fa-check"></i><b>9.2.3</b> Colour points</a></li>
+<li class="chapter" data-level="9.2.4" data-path="ggplot2.html"><a href="ggplot2.html#matrix-of-plots"><i class="fa fa-check"></i><b>9.2.4</b> Matrix of plots</a></li>
+<li class="chapter" data-level="9.2.5" data-path="ggplot2.html"><a href="ggplot2.html#adding-lines"><i class="fa fa-check"></i><b>9.2.5</b> Adding lines</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="ggplot2.html"><a href="ggplot2.html#bar-graphs-histograms"><i class="fa fa-check"></i><b>9.3</b> Bar graphs &amp; histograms</a></li>
+<li class="chapter" data-level="9.4" data-path="ggplot2.html"><a href="ggplot2.html#geom_boxplot"><i class="fa fa-check"></i><b>9.4</b> geom_boxplot</a></li>
+<li class="chapter" data-level="9.5" data-path="ggplot2.html"><a href="ggplot2.html#facets"><i class="fa fa-check"></i><b>9.5</b> Facets</a></li>
+<li class="chapter" data-level="9.6" data-path="ggplot2.html"><a href="ggplot2.html#reordering-factors"><i class="fa fa-check"></i><b>9.6</b> Reordering factors</a></li>
+<li class="chapter" data-level="9.7" data-path="ggplot2.html"><a href="ggplot2.html#coordinate-systems"><i class="fa fa-check"></i><b>9.7</b> Coordinate systems</a></li>
+<li class="chapter" data-level="9.8" data-path="ggplot2.html"><a href="ggplot2.html#reference-lines"><i class="fa fa-check"></i><b>9.8</b> Reference lines</a></li>
+<li class="chapter" data-level="9.9" data-path="ggplot2.html"><a href="ggplot2.html#error-bars"><i class="fa fa-check"></i><b>9.9</b> Error bars</a></li>
+<li class="chapter" data-level="9.10" data-path="ggplot2.html"><a href="ggplot2.html#appearance"><i class="fa fa-check"></i><b>9.10</b> Appearance</a></li>
+<li class="chapter" data-level="9.11" data-path="ggplot2.html"><a href="ggplot2.html#dplyr-ggplot2"><i class="fa fa-check"></i><b>9.11</b> dplyr &amp; ggplot2</a></li>
+<li class="chapter" data-level="9.12" data-path="ggplot2.html"><a href="ggplot2.html#saving-graphs"><i class="fa fa-check"></i><b>9.12</b> Saving graphs</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="other-visualisation-packages.html"><a href="other-visualisation-packages.html"><i class="fa fa-check"></i><b>10</b> Other visualisation packages</a><ul>
+<li class="chapter" data-level="10.1" data-path="other-visualisation-packages.html"><a href="other-visualisation-packages.html#pheatmap"><i class="fa fa-check"></i><b>10.1</b> pheatmap</a></li>
+<li class="chapter" data-level="10.2" data-path="other-visualisation-packages.html"><a href="other-visualisation-packages.html#venndiagram"><i class="fa fa-check"></i><b>10.2</b> VennDiagram</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="data-table.html"><a href="data-table.html"><i class="fa fa-check"></i><b>11</b> data.table</a><ul>
+<li class="chapter" data-level="11.1" data-path="data-table.html"><a href="data-table.html#fread"><i class="fa fa-check"></i><b>11.1</b> fread</a></li>
+<li class="chapter" data-level="11.2" data-path="data-table.html"><a href="data-table.html#subsetting-2"><i class="fa fa-check"></i><b>11.2</b> Subsetting</a><ul>
+<li class="chapter" data-level="11.2.1" data-path="data-table.html"><a href="data-table.html#rows"><i class="fa fa-check"></i><b>11.2.1</b> Rows</a></li>
+<li class="chapter" data-level="11.2.2" data-path="data-table.html"><a href="data-table.html#columns"><i class="fa fa-check"></i><b>11.2.2</b> Columns</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="rmarkdown.html"><a href="rmarkdown.html"><i class="fa fa-check"></i><b>12</b> Rmarkdown</a></li>
+<li class="chapter" data-level="13" data-path="package-development.html"><a href="package-development.html"><i class="fa fa-check"></i><b>13</b> Package development</a><ul>
+<li class="chapter" data-level="13.1" data-path="package-development.html"><a href="package-development.html#naming"><i class="fa fa-check"></i><b>13.1</b> Naming</a></li>
+<li class="chapter" data-level="13.2" data-path="package-development.html"><a href="package-development.html#states"><i class="fa fa-check"></i><b>13.2</b> States</a><ul>
+<li class="chapter" data-level="13.2.1" data-path="package-development.html"><a href="package-development.html#source"><i class="fa fa-check"></i><b>13.2.1</b> Source</a></li>
+<li class="chapter" data-level="13.2.2" data-path="package-development.html"><a href="package-development.html#bundled"><i class="fa fa-check"></i><b>13.2.2</b> Bundled</a></li>
+<li class="chapter" data-level="13.2.3" data-path="package-development.html"><a href="package-development.html#binary-package"><i class="fa fa-check"></i><b>13.2.3</b> Binary package</a></li>
+<li class="chapter" data-level="13.2.4" data-path="package-development.html"><a href="package-development.html#installed"><i class="fa fa-check"></i><b>13.2.4</b> Installed</a></li>
+<li class="chapter" data-level="13.2.5" data-path="package-development.html"><a href="package-development.html#in-memory"><i class="fa fa-check"></i><b>13.2.5</b> In memory</a></li>
+<li class="chapter" data-level="13.2.6" data-path="package-development.html"><a href="package-development.html#summary"><i class="fa fa-check"></i><b>13.2.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="package-development.html"><a href="package-development.html#r-cmd-install"><i class="fa fa-check"></i><b>13.3</b> R CMD install</a></li>
+<li class="chapter" data-level="13.4" data-path="package-development.html"><a href="package-development.html#workflow"><i class="fa fa-check"></i><b>13.4</b> Workflow</a></li>
+<li class="chapter" data-level="13.5" data-path="package-development.html"><a href="package-development.html#file-structure"><i class="fa fa-check"></i><b>13.5</b> File structure</a></li>
+<li class="chapter" data-level="13.6" data-path="package-development.html"><a href="package-development.html#description"><i class="fa fa-check"></i><b>13.6</b> DESCRIPTION</a><ul>
+<li class="chapter" data-level="13.6.1" data-path="package-development.html"><a href="package-development.html#imports"><i class="fa fa-check"></i><b>13.6.1</b> Imports</a></li>
+<li class="chapter" data-level="13.6.2" data-path="package-development.html"><a href="package-development.html#suggests"><i class="fa fa-check"></i><b>13.6.2</b> Suggests</a></li>
+</ul></li>
+<li class="chapter" data-level="13.7" data-path="package-development.html"><a href="package-development.html#namespace"><i class="fa fa-check"></i><b>13.7</b> NAMESPACE</a><ul>
+<li class="chapter" data-level="13.7.1" data-path="package-development.html"><a href="package-development.html#search-paths"><i class="fa fa-check"></i><b>13.7.1</b> Search paths</a></li>
+<li class="chapter" data-level="13.7.2" data-path="package-development.html"><a href="package-development.html#file-syntax"><i class="fa fa-check"></i><b>13.7.2</b> File syntax</a></li>
+<li class="chapter" data-level="13.7.3" data-path="package-development.html"><a href="package-development.html#exporting-1"><i class="fa fa-check"></i><b>13.7.3</b> Exporting</a></li>
+<li class="chapter" data-level="13.7.4" data-path="package-development.html"><a href="package-development.html#importing"><i class="fa fa-check"></i><b>13.7.4</b> Importing</a></li>
+<li class="chapter" data-level="13.7.5" data-path="package-development.html"><a href="package-development.html#exporting-2"><i class="fa fa-check"></i><b>13.7.5</b> Exporting</a></li>
+</ul></li>
+<li class="chapter" data-level="13.8" data-path="package-development.html"><a href="package-development.html#documentation"><i class="fa fa-check"></i><b>13.8</b> Documentation</a><ul>
+<li class="chapter" data-level="13.8.1" data-path="package-development.html"><a href="package-development.html#roxygen2"><i class="fa fa-check"></i><b>13.8.1</b> Roxygen2</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R notes</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="functions" class="section level1">
+<h1><span class="header-section-number">Chapter 7</span> Functions</h1>
+<p>Useful definition:</p>
+<ul>
+<li>parameter is what is given in the function declaration/definition.</li>
+<li>argument is what is passed when called the function.</li>
+</ul>
+<div id="source-code" class="section level2">
+<h2><span class="header-section-number">7.1</span> Source code</h2>
+<p>You can view the source code of functions in R.</p>
+<p>For ‘Generic’ S3 objects (in RStudio):</p>
+<ul>
+<li>Type in the function name with no ‘()’.</li>
+<li>Press F2 when your cursor is over the function</li>
+</ul>
+<p><code>methods()</code> will list all the methods for a particular generic function or class.</p>
+<p>For S4 objects just typing in the function name does not give you the source code. It will give some other useful information - e.g. if it says ‘standardGeneric’ means tells you that it is a S4 function.</p>
+<p><code>showMethods()</code> - tells you the available methods for that function (e.g. if a function performs a slightly different thing depending on the class of object given to it). <code>getMethod()</code> - can then be used to see the source code for one of the available methods in showMethods.</p>
+<p>(see <a href="https://stackoverflow.com/questions/19226816/how-can-i-view-the-source-code-for-a-function">this</a> SO question for more).</p>
+</div>
+<div id="writing-functions" class="section level2">
+<h2><span class="header-section-number">7.2</span> Writing functions</h2>
+<p>Standard syntax:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">function_name &lt;-<span class="st"> </span><span class="cf">function</span>(param1, param2) {
+  result &lt;-<span class="st">  </span>param1 <span class="op">-</span><span class="st"> </span>param2
+  <span class="kw">return</span>(result)
+}</code></pre></div>
+<div id="evaluation" class="section level3">
+<h3><span class="header-section-number">7.2.1</span> Evaluation</h3>
+<p>For column names the <code>$</code> operator will not work if passed in as argument.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">foo &lt;-<span class="st"> </span><span class="cf">function</span>(df,col_name, col1,col2){
+      df<span class="op">$</span>col_name &lt;-<span class="st"> </span>df<span class="op">$</span>col1 <span class="op">+</span><span class="st"> </span>df<span class="op">$</span>col2
+      df
+}</code></pre></div>
+<p>Above function does not work - as the function will look for a column called ‘col1’ instead of evaluating expression col1 (i.e. the column name assigned to the argument col1).</p>
+<p>The easiest solution is to use <code>[[</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">new_column1 &lt;-<span class="st"> </span><span class="cf">function</span>(df,col_name,col1,col2){
+    <span class="co">#Create new column col_name as sum of col1 and col2</span>
+    df[[col_name]] &lt;-<span class="st"> </span>df[[col1]] <span class="op">+</span><span class="st"> </span>df[[col2]]
+    df
+}</code></pre></div>
+<p>Note when using <code>[[</code> , you need to quote the column names, thus the argument should be given as a string.</p>
+<p>See <a href="https://stackoverflow.com/questions/2641653/pass-a-data-frame-column-name-to-a-function">this</a> question on SO for more.</p>
+</div>
+<div id="checking-inputs" class="section level3">
+<h3><span class="header-section-number">7.2.2</span> Checking inputs</h3>
+<p><code>assert_that()</code> from the asserthat package lets you check inputs and provdie error messages.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">assert_that</span>(<span class="kw">is.logical</span>(reps), <span class="kw">length</span>(reps) <span class="op">==</span><span class="st"> </span><span class="dv">1</span>,     
+              <span class="dt">msg =</span> <span class="st">&quot;error message&quot;</span>)  </code></pre></div>
+<p>The function will stop and the error message displayed if EITHER of the two conditions are not met.</p>
+<p>assert_that will automatically format your error messages so that even if you put a newline in your code, it will print well for the user.</p>
+<p>If you are not using <code>assert_that()</code>, you can use <code>strwrap()</code> to wrap long error messages, so they do not overflow 80 characters in your code but when printed it will fit screen of the user.</p>
+<p>See <a href="https://stackoverflow.com/questions/45693010/how-do-you-format-multiline-r-package-messages">this</a> question on SO for more.</p>
+</div>
+</div>
+<div id="messages" class="section level2">
+<h2><span class="header-section-number">7.3</span> Messages</h2>
+<p>There are two types of output messages:</p>
+<ul>
+<li>Standard output - `print() and cat() sends to stdout</li>
+<li>Standard error - these are able to be suppressed using <code>supressWarnings()</code>. Useful if the user is using knitr/sweave.</li>
+</ul>
+<p>When using a R script on the command line - you can redirect standard out and standard error (recall 1 is standard out, 2 is standard error).</p>
+<ul>
+<li><strong>Standard out</strong>
+<ul>
+<li><strong>print()</strong>
+<ul>
+<li>Need to use with paste to concatenate terms.</li>
+<li>Prints [x] at the start, where x indicates the element of the term.</li>
+</ul></li>
+<li><strong>cat()</strong>
+<ul>
+<li>Allows concatenation and has the sep argument.</li>
+<li>Need to either for new lines with ‘’ or <code>fill = TRUE</code> (uses default print width).</li>
+</ul></li>
+</ul></li>
+<li><strong>Standard error</strong>
+<ul>
+<li><strong>message()</strong>
+<ul>
+<li>Output is usually red.</li>
+<li>Allows concatenation but no <code>sep</code> argument.</li>
+</ul></li>
+<li><strong>warning()</strong>
+<ul>
+<li>‘Warning message’ line preappended to it.</li>
+<li>Do not use lightly - sometimes treated as errors during testing.</li>
+</ul></li>
+<li><strong>stop()</strong>
+<ul>
+<li>Stops the task at hand.</li>
+<li>‘Error:’ printed at the start of the line.</li>
+</ul></li>
+</ul></li>
+</ul>
+<div id="optional-arguments" class="section level3">
+<h3><span class="header-section-number">7.3.1</span> Optional arguments</h3>
+<p>Use <code>missing()</code>. Below, <code>y</code> is an optional argument.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fooBar &lt;-<span class="st"> </span><span class="cf">function</span>(x,y){
+    <span class="cf">if</span>(<span class="kw">missing</span>(y)) {
+        x
+    } <span class="cf">else</span> {
+        x <span class="op">+</span><span class="st"> </span>y
+    }
+}</code></pre></div>
+</div>
+</div>
+<div id="functions-with-dplyr" class="section level2">
+<h2><span class="header-section-number">7.4</span> Functions with dplyr</h2>
+<p>References: <a href="https://dplyr.tidyverse.org/articles/programming.html">dplyr documentation</a>, <a href="https://stackoverflow.com/questions/27197617/filter-data-frame-by-character-column-name-in-dplyr">SO</a></p>
+<div id="non-standard-evaluation" class="section level3">
+<h3><span class="header-section-number">7.4.1</span> Non standard evaluation</h3>
+<p>Non standard evalation is a catch-all term that means dplyr functions do not follow the usual R rules of evaluation. There are two main benefits of this:</p>
+<ol style="list-style-type: decimal">
+<li>Saving on typing. You do not have to type df name again:</li>
+</ol>
+<p><code>filter(df, x == 1, y == 2, z == 3)</code> instead of <code>df[df$x == 1 &amp; df$y ==2 &amp; df$z == 3, ]</code>.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>dplyr can choose to compute results in a different way to base R. This is important for database backends because dplyr itself doesn’t do any work, but instead generates the SQL that tells the database what to do.</li>
+</ol>
+<p>The drawbacks:</p>
+<ol style="list-style-type: decimal">
+<li>dplyr arguments are not ‘referentially transparent’. You cannot replace a value with a seemingly equivalence object that you’ve defined elsewhere.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># define df</span>
+df &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">x =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dt">y =</span> <span class="dv">3</span><span class="op">:</span><span class="dv">1</span>)</code></pre></div>
+<p>This code:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">filter</span>(df, x <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)</code></pre></div>
+<pre><code>## # A tibble: 1 x 2
+##       x     y
+##   &lt;int&gt; &lt;int&gt;
+## 1     1     3</code></pre>
+<p>is NOT the same as this code:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_var &lt;-<span class="st"> </span>x</code></pre></div>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;x&#39; not found</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">filter</span>(df, my_var <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)</code></pre></div>
+<pre><code>## Error in filter_impl(.data, quo): Evaluation error: object &#39;my_var&#39; not found.</code></pre>
+<p>Nor this code:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_var &lt;-<span class="st"> &quot;x&quot;</span>
+<span class="kw">filter</span>(df, my_var <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)</code></pre></div>
+<pre><code>## # A tibble: 0 x 2
+## # ... with 2 variables: x &lt;int&gt;, y &lt;int&gt;</code></pre>
+<p>This makes creating functions with arguments that need to be used with dplyr functions.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>The code is ambiguous. Depending on what variables are defined where, <code>filter(df, x == y)</code> could be equivalent to any of:</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df[df<span class="op">$</span>x <span class="op">==</span><span class="st"> </span>df<span class="op">$</span>y, ]
+df[df<span class="op">$</span>x <span class="op">==</span><span class="st"> </span>y, ]
+df[x <span class="op">==</span><span class="st"> </span>df<span class="op">$</span>y, ]
+df[x <span class="op">==</span><span class="st"> </span>y, ]</code></pre></div>
+<p>Analogous evaluation problem:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">greet &lt;-<span class="st"> </span><span class="cf">function</span>(name) {
+  <span class="st">&quot;How do you do, name?&quot;</span>
+}
+<span class="kw">greet</span>(<span class="st">&quot;Hadley&quot;</span>)</code></pre></div>
+<pre><code>## [1] &quot;How do you do, name?&quot;</code></pre>
+<p>The quotes in: <code>&quot;How do you do, name?&quot;</code> mean that it doesn’t interpret what you’ve typed. It just stores it in a string.</p>
+</div>
+<div id="writing-dplyr-functions" class="section level3">
+<h3><span class="header-section-number">7.4.2</span> Writing dplyr functions</h3>
+<p>dplyr does not do anything special with the 1st argument, the data object.</p>
+<p>This works fine:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mutate_y &lt;-<span class="st"> </span><span class="cf">function</span>(df) {
+  <span class="kw">mutate</span>(df, <span class="dt">y =</span> a <span class="op">+</span><span class="st"> </span>x)
+}</code></pre></div>
+<p>Though, it can silently fail if one of the variables is not present in the data frame but present in the global environment.</p>
+<p>For example, if you function added two columns: ‘y = column a + column x’ but there is no column <code>a</code> but in the global environment is a variable <code>a</code> (<code>a &lt;- 3</code>) -</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mutate_y &lt;-<span class="st"> </span><span class="cf">function</span>(df) {
+  <span class="kw">mutate</span>(df, <span class="dt">y =</span> a <span class="op">+</span><span class="st"> </span>x)
+}</code></pre></div>
+<p>Will add the variable <code>a</code>, to the column x.</p>
+<p>To prevent this, you can use this more explicit code:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mutate_y &lt;-<span class="st"> </span><span class="cf">function</span>(df) {
+  <span class="kw">mutate</span>(df, <span class="dt">y =</span> .data<span class="op">$</span>a <span class="op">+</span><span class="st"> </span>.data<span class="op">$</span>x)
+}</code></pre></div>
+<p><code>.data</code> specifies that you want to use the columns of the dataframe.</p>
+<p>If you want one of the arguments to be a variable name or an expression (e.g. x+y) - you need to handle this specially.</p>
+<p>For example, if you want to write a function that does this:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_summarise &lt;-<span class="st"> </span><span class="cf">function</span>(df, group_var) {
+  df <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">group_by</span>(group_var) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">summarise</span>(<span class="dt">a =</span> <span class="kw">mean</span>(Petal.Length))
+}</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">my_summarise</span>(iris, Species)</code></pre></div>
+<pre><code>## Error in grouped_df_impl(data, unname(vars), drop): Column `group_var` is unknown</code></pre>
+<p>An error is given. This is because dplyr ‘quotes’ the input to <code>group_by()</code>. It does not evaluate what you give it (here <code>group_var</code>).</p>
+<p>To fix this we need to do 2 things: We need to quote the input ourselves. We use <code>quo()</code> which returns a quosure, which is a special type of formula. This has 2 uses:</p>
+<p>If we just give an unquoted argument, R will use it as a variable. It will then tell you it can’t find this variable.</p>
+<p><code>quo()</code> function quotes its input. We cannot just use ’’ as it would give us a string. <code>quo()</code> captures the expression and its environment.</p>
+<p>We then need to tell the dplyr function to not quote its input as we have already done it. We can do this with <code>!!</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_summarise &lt;-<span class="st"> </span><span class="cf">function</span>(df, group_var) {
+  df <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">group_by</span>(<span class="op">!!</span><span class="st"> </span>group_var) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">summarise</span>(<span class="dt">a =</span> <span class="kw">mean</span>(Petal.Length))
+}</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">my_summarise</span>(iris, <span class="kw">quo</span>(Species))</code></pre></div>
+<pre><code>## # A tibble: 3 x 2
+##   Species        a
+##   &lt;fct&gt;      &lt;dbl&gt;
+## 1 setosa      1.46
+## 2 versicolor  4.26
+## 3 virginica   5.55</code></pre>
+<p>But what if we did not want to give <code>quo(group_var)</code>? We can try this:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_summarise &lt;-<span class="st"> </span><span class="cf">function</span>(df, group_var) {
+  
+  quo_group_var &lt;-<span class="st"> </span><span class="kw">quo</span>(group_var)
+  <span class="kw">print</span>(quo_group_var)
+
+  df <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">group_by</span>(<span class="op">!!</span><span class="st"> </span>quo_group_var) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">summarise</span>(<span class="dt">a =</span> <span class="kw">mean</span>(Petal.Length))
+}</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">my_summarise</span>(iris, Species)</code></pre></div>
+<pre><code>## &lt;quosure&gt;
+## expr: ^group_var
+## env:  0x7fc8ef4c7bc8</code></pre>
+<pre><code>## Error in grouped_df_impl(data, unname(vars), drop): Column `group_var` is unknown</code></pre>
+<p>This error occurs because <code>quo(group_var)</code> actually quotes ‘group_var’. What we want is for it to substitute the value that the user supplied.</p>
+<p>Instead we can use <code>enquo()</code>. This function looks at the argument, see what the actual input was and quotes that (instead of the parameter name).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_summarise &lt;-<span class="st"> </span><span class="cf">function</span>(df, group_var) {
+  group_var &lt;-<span class="st"> </span><span class="kw">enquo</span>(group_var)
+  <span class="kw">print</span>(group_var)
+
+  df <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">group_by</span>(<span class="op">!!</span><span class="st"> </span>group_var) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">summarise</span>(<span class="dt">a =</span> <span class="kw">mean</span>(Petal.Length))
+}</code></pre></div>
+<p>Other options are:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">col1 &lt;-<span class="st"> &quot;Sepal.Length&quot;</span>
+iris <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(<span class="kw">UQ</span>(<span class="kw">as.name</span>(col1)) <span class="op">&gt;</span><span class="st"> </span><span class="fl">5.5</span>)
+
+
+col1 &lt;-<span class="st"> &quot;Sepal.Length&quot;</span>
+iris <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(<span class="op">!!</span>(<span class="kw">as.name</span>(col1)) <span class="op">&gt;</span><span class="st"> </span><span class="fl">5.5</span>)</code></pre></div>
+<p>The <code>!!</code> function works (in a dplyr pipe) even if you do not have rlang (the package the function comes from) loaded.</p>
+</div>
+</div>
+<div id="ggplot" class="section level2">
+<h2><span class="header-section-number">7.5</span> ggplot</h2>
+<p>ggplot also uses non-standard evaluation - you can refer to columns in your data without specifying the dataframe first. Again, this means that you have to do something special if you want to use ggplot in a function and refer to columns provided as arguments to your function.</p>
+<p>Use <code>aes_string</code> instead of <code>aes()</code>:</p>
+<ul>
+<li><code>aes()</code> does complicated munging to get the names of the variables.</li>
+<li><code>aes_string()</code> works directly with strings.</li>
+</ul>
+<p><code>aes_string(x = &quot;mpg&quot;, y = &quot;wt&quot;)</code> is equal to <code>aes(x = mpg, y = wt)</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f &lt;-<span class="st"> </span><span class="cf">function</span>(column) {
+    ...
+    <span class="kw">ggplot</span>(df, <span class="kw">aes_string</span>(<span class="dt">x =</span> <span class="st">&quot;col1&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;col2&quot;</span>, <span class="dt">colour =</span> column, 
+                          <span class="dt">group =</span> column) )
+}</code></pre></div>
+<p>Column name arguments passed to your function must be quoted.</p>
+<p>You can also use <code>get()</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(d, <span class="kw">aes</span>(<span class="dt">x =</span> name, <span class="dt">y =</span> rate, <span class="dt">colour =</span> <span class="kw">get</span>(column),
+              <span class="dt">group =</span> <span class="kw">get</span>(column)))</code></pre></div>
+<p>See <a href="https://stackoverflow.com/questions/22309285/how-to-use-a-variable-to-specify-column-name-in-ggplot">this</a> question on SO for more.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="control-flow.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="base-r.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/06-functions.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["R notes.pdf", "R notes.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
