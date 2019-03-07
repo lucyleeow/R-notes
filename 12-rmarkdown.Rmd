@@ -119,7 +119,7 @@ Either on the side or bottom of the page. Mostly occuring when outputting plots 
 
 The problem is apparently that the generated .tex file has no spaces between the `\includegraphics{}` calls. LaTeX gives warnings about overfull hboxes, because the graphics aren't big enough to sit alone on a line, and are too big when it puts two on each line. See [this](https://stackoverflow.com/questions/29508059/how-to-add-multiple-figures-across-multiple-pages-in-a-chunk-using-knitr-and-rma) SO question for an example of the .tex file.
 
-A solution is to force each figure to be in its own paragraph. You can do this by essentiall putting a blank line between each figure:
+A solution is to force each figure to be in its own paragraph. You can do this by essentially putting a blank line between each figure:
 
 ```
 \includegraphics{test_files/figure-latex/plot_phenotype-1.pdf}
