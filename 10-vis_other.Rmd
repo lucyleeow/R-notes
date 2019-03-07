@@ -1,7 +1,10 @@
 # Other visualisation packages
 
-
 ## pheatmap
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(pheatmap)
+```
 
 Arguments
 
@@ -61,6 +64,10 @@ pheatmap::pheatmap(new_iris, annotation_row = annot_row,
 More appearance alterations can be found in [this](https://stackoverflow.com/questions/41628450/r-pheatmap-change-annotation-colors-and-prevent-graphics-window-from-popping-up) SO question.
 
 ## VennDiagram
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(VennDiagram)
+```
 
 ```{r, eval=FALSE}
 venn.diagram(data, filename = "Venn.png", imagetype = "png", 
