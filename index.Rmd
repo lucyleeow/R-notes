@@ -15,3 +15,5 @@ description: "Guide to R."
 # Preface
 
 These are my notes on R.
+
+I used the bookdown package by [YiHui Xie](https://yihui.name/en/). In particular the bookdown [book](https://bookdown.org/yihui/bookdown/) was very thorough and extrememly useful.
