@@ -1,0 +1,2395 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Chapter 4 Data wrangling - tidyverse | R notes</title>
+  <meta name="description" content="Guide to R.">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="Chapter 4 Data wrangling - tidyverse | R notes" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Guide to R." />
+  <meta name="github-repo" content="lucyleeow/R_notes" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 4 Data wrangling - tidyverse | R notes" />
+  
+  <meta name="twitter:description" content="Guide to R." />
+  
+
+<meta name="author" content="Lucy Liu">
+
+
+<meta name="date" content="2019-03-08">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="data-wrangling-base-r.html">
+<link rel="next" href="string-manipulation.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">R notes</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a></li>
+<li class="chapter" data-level="2" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>2</b> Introduction</a><ul>
+<li class="chapter" data-level="2.1" data-path="introduction.html"><a href="introduction.html#r-files"><i class="fa fa-check"></i><b>2.1</b> R files</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="introduction.html"><a href="introduction.html#memory"><i class="fa fa-check"></i><b>2.1.1</b> Memory</a></li>
+<li class="chapter" data-level="2.1.2" data-path="introduction.html"><a href="introduction.html#r-project"><i class="fa fa-check"></i><b>2.1.2</b> R project</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="introduction.html"><a href="introduction.html#packages"><i class="fa fa-check"></i><b>2.2</b> Packages</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="introduction.html"><a href="introduction.html#library"><i class="fa fa-check"></i><b>2.2.1</b> Library</a></li>
+<li class="chapter" data-level="2.2.2" data-path="introduction.html"><a href="introduction.html#bioconductor"><i class="fa fa-check"></i><b>2.2.2</b> Bioconductor</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="introduction.html"><a href="introduction.html#basics"><i class="fa fa-check"></i><b>2.3</b> Basics</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="introduction.html"><a href="introduction.html#arithmetic"><i class="fa fa-check"></i><b>2.3.1</b> Arithmetic</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="introduction.html"><a href="introduction.html#help"><i class="fa fa-check"></i><b>2.4</b> Help</a></li>
+<li class="chapter" data-level="2.5" data-path="introduction.html"><a href="introduction.html#data-types"><i class="fa fa-check"></i><b>2.5</b> Data types</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="introduction.html"><a href="introduction.html#numeric"><i class="fa fa-check"></i><b>2.5.1</b> Numeric</a></li>
+<li class="chapter" data-level="2.5.2" data-path="introduction.html"><a href="introduction.html#coercion"><i class="fa fa-check"></i><b>2.5.2</b> Coercion</a></li>
+<li class="chapter" data-level="2.5.3" data-path="introduction.html"><a href="introduction.html#factors"><i class="fa fa-check"></i><b>2.5.3</b> Factors</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="introduction.html"><a href="introduction.html#data-structures"><i class="fa fa-check"></i><b>2.6</b> Data structures</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="introduction.html"><a href="introduction.html#atomic-vector"><i class="fa fa-check"></i><b>2.6.1</b> Atomic vector</a></li>
+<li class="chapter" data-level="2.6.2" data-path="introduction.html"><a href="introduction.html#lists"><i class="fa fa-check"></i><b>2.6.2</b> Lists</a></li>
+<li class="chapter" data-level="2.6.3" data-path="introduction.html"><a href="introduction.html#matrix"><i class="fa fa-check"></i><b>2.6.3</b> Matrix</a></li>
+<li class="chapter" data-level="2.6.4" data-path="introduction.html"><a href="introduction.html#array"><i class="fa fa-check"></i><b>2.6.4</b> Array</a></li>
+<li class="chapter" data-level="2.6.5" data-path="introduction.html"><a href="introduction.html#dataframes"><i class="fa fa-check"></i><b>2.6.5</b> Dataframes</a></li>
+<li class="chapter" data-level="2.6.6" data-path="introduction.html"><a href="introduction.html#high-dimension-structures"><i class="fa fa-check"></i><b>2.6.6</b> High dimension structures</a></li>
+<li class="chapter" data-level="2.6.7" data-path="introduction.html"><a href="introduction.html#attributes"><i class="fa fa-check"></i><b>2.6.7</b> Attributes</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="introduction.html"><a href="introduction.html#nas"><i class="fa fa-check"></i><b>2.7</b> NAs</a></li>
+<li class="chapter" data-level="2.8" data-path="introduction.html"><a href="introduction.html#importing-exporting"><i class="fa fa-check"></i><b>2.8</b> Importing &amp; exporting</a></li>
+<li class="chapter" data-level="2.9" data-path="introduction.html"><a href="introduction.html#saving-objects"><i class="fa fa-check"></i><b>2.9</b> Saving objects</a><ul>
+<li class="chapter" data-level="2.9.1" data-path="introduction.html"><a href="introduction.html#feather"><i class="fa fa-check"></i><b>2.9.1</b> feather</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html"><i class="fa fa-check"></i><b>3</b> Data wrangling - base R</a><ul>
+<li class="chapter" data-level="3.1" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html#useful-functions"><i class="fa fa-check"></i><b>3.1</b> Useful functions</a></li>
+<li class="chapter" data-level="3.2" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html#subsetting"><i class="fa fa-check"></i><b>3.2</b> Subsetting</a></li>
+<li class="chapter" data-level="3.3" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html#apply-family"><i class="fa fa-check"></i><b>3.3</b> Apply family</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html#uses"><i class="fa fa-check"></i><b>3.3.1</b> Uses</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html#docall"><i class="fa fa-check"></i><b>3.4</b> do.call()</a></li>
+<li class="chapter" data-level="3.5" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html#do.call-vs-lapply-vs-map"><i class="fa fa-check"></i><b>3.5</b> do.call vs lapply vs map</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html"><i class="fa fa-check"></i><b>4</b> Data wrangling - tidyverse</a><ul>
+<li class="chapter" data-level="4.1" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#tibbles"><i class="fa fa-check"></i><b>4.1</b> Tibbles</a></li>
+<li class="chapter" data-level="4.2" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#readr"><i class="fa fa-check"></i><b>4.2</b> readr</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#parsing"><i class="fa fa-check"></i><b>4.2.1</b> Parsing</a></li>
+<li class="chapter" data-level="4.2.2" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#exporting"><i class="fa fa-check"></i><b>4.2.2</b> Exporting</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#dplyr"><i class="fa fa-check"></i><b>4.3</b> dplyr</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#subsetting-1"><i class="fa fa-check"></i><b>4.3.1</b> Subsetting</a></li>
+<li class="chapter" data-level="4.3.2" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#the-pipe"><i class="fa fa-check"></i><b>4.3.2</b> The pipe %&gt;%</a></li>
+<li class="chapter" data-level="4.3.3" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#filter"><i class="fa fa-check"></i><b>4.3.3</b> filter</a></li>
+<li class="chapter" data-level="4.3.4" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#select"><i class="fa fa-check"></i><b>4.3.4</b> select</a></li>
+<li class="chapter" data-level="4.3.5" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#mutate"><i class="fa fa-check"></i><b>4.3.5</b> mutate</a></li>
+<li class="chapter" data-level="4.3.6" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#case_when"><i class="fa fa-check"></i><b>4.3.6</b> case_when</a></li>
+<li class="chapter" data-level="4.3.7" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#summarise"><i class="fa fa-check"></i><b>4.3.7</b> summarise</a></li>
+<li class="chapter" data-level="4.3.8" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#group_by"><i class="fa fa-check"></i><b>4.3.8</b> group_by</a></li>
+<li class="chapter" data-level="4.3.9" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#n_distinct"><i class="fa fa-check"></i><b>4.3.9</b> n_distinct</a></li>
+<li class="chapter" data-level="4.3.10" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#at-_all-_if-at-all-if"><i class="fa fa-check"></i><b>4.3.10</b> _at(), _all(), _if() {###at-all-if}</a></li>
+<li class="chapter" data-level="4.3.11" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#own-functions"><i class="fa fa-check"></i><b>4.3.11</b> Own functions</a></li>
+<li class="chapter" data-level="4.3.12" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#join"><i class="fa fa-check"></i><b>4.3.12</b> Join</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#tidyr"><i class="fa fa-check"></i><b>4.4</b> tidyr</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#gather"><i class="fa fa-check"></i><b>4.4.1</b> gather</a></li>
+<li class="chapter" data-level="4.4.2" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#spread"><i class="fa fa-check"></i><b>4.4.2</b> spread</a></li>
+<li class="chapter" data-level="4.4.3" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#separate"><i class="fa fa-check"></i><b>4.4.3</b> separate</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="string-manipulation.html"><a href="string-manipulation.html"><i class="fa fa-check"></i><b>5</b> String manipulation</a><ul>
+<li class="chapter" data-level="5.1" data-path="string-manipulation.html"><a href="string-manipulation.html#grep-family"><i class="fa fa-check"></i><b>5.1</b> Grep family</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="string-manipulation.html"><a href="string-manipulation.html#locating-pattern-within-string"><i class="fa fa-check"></i><b>5.1.1</b> Locating pattern within string</a></li>
+<li class="chapter" data-level="5.1.2" data-path="string-manipulation.html"><a href="string-manipulation.html#replacments"><i class="fa fa-check"></i><b>5.1.2</b> Replacments</a></li>
+<li class="chapter" data-level="5.1.3" data-path="string-manipulation.html"><a href="string-manipulation.html#backreferences"><i class="fa fa-check"></i><b>5.1.3</b> Backreferences</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="string-manipulation.html"><a href="string-manipulation.html#regular-expressions"><i class="fa fa-check"></i><b>5.2</b> Regular expressions</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="string-manipulation.html"><a href="string-manipulation.html#quantifiers"><i class="fa fa-check"></i><b>5.2.1</b> Quantifiers</a></li>
+<li class="chapter" data-level="5.2.2" data-path="string-manipulation.html"><a href="string-manipulation.html#position"><i class="fa fa-check"></i><b>5.2.2</b> Position</a></li>
+<li class="chapter" data-level="5.2.3" data-path="string-manipulation.html"><a href="string-manipulation.html#operators"><i class="fa fa-check"></i><b>5.2.3</b> Operators</a></li>
+<li class="chapter" data-level="5.2.4" data-path="string-manipulation.html"><a href="string-manipulation.html#character-classes"><i class="fa fa-check"></i><b>5.2.4</b> Character classes</a></li>
+<li class="chapter" data-level="5.2.5" data-path="string-manipulation.html"><a href="string-manipulation.html#examples"><i class="fa fa-check"></i><b>5.2.5</b> Examples</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="control-flow.html"><a href="control-flow.html"><i class="fa fa-check"></i><b>6</b> Control flow</a><ul>
+<li class="chapter" data-level="6.1" data-path="control-flow.html"><a href="control-flow.html#for-loops"><i class="fa fa-check"></i><b>6.1</b> For loops</a><ul>
+<li class="chapter" data-level="6.1.1" data-path="control-flow.html"><a href="control-flow.html#creating-empty-data-structures"><i class="fa fa-check"></i><b>6.1.1</b> Creating empty data structures</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i><b>7</b> Functions</a><ul>
+<li class="chapter" data-level="7.1" data-path="functions.html"><a href="functions.html#source-code"><i class="fa fa-check"></i><b>7.1</b> Source code</a></li>
+<li class="chapter" data-level="7.2" data-path="functions.html"><a href="functions.html#writing-functions"><i class="fa fa-check"></i><b>7.2</b> Writing functions</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="functions.html"><a href="functions.html#evaluation"><i class="fa fa-check"></i><b>7.2.1</b> Evaluation</a></li>
+<li class="chapter" data-level="7.2.2" data-path="functions.html"><a href="functions.html#checking-inputs"><i class="fa fa-check"></i><b>7.2.2</b> Checking inputs</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="functions.html"><a href="functions.html#messages"><i class="fa fa-check"></i><b>7.3</b> Messages</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="functions.html"><a href="functions.html#optional-arguments"><i class="fa fa-check"></i><b>7.3.1</b> Optional arguments</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="functions.html"><a href="functions.html#functions-with-dplyr"><i class="fa fa-check"></i><b>7.4</b> Functions with dplyr</a><ul>
+<li class="chapter" data-level="7.4.1" data-path="functions.html"><a href="functions.html#non-standard-evaluation"><i class="fa fa-check"></i><b>7.4.1</b> Non standard evaluation</a></li>
+<li class="chapter" data-level="7.4.2" data-path="functions.html"><a href="functions.html#writing-dplyr-functions"><i class="fa fa-check"></i><b>7.4.2</b> Writing dplyr functions</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="functions.html"><a href="functions.html#ggplot"><i class="fa fa-check"></i><b>7.5</b> ggplot</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="data-table.html"><a href="data-table.html"><i class="fa fa-check"></i><b>8</b> data.table</a><ul>
+<li class="chapter" data-level="8.1" data-path="data-table.html"><a href="data-table.html#fread"><i class="fa fa-check"></i><b>8.1</b> fread</a></li>
+<li class="chapter" data-level="8.2" data-path="data-table.html"><a href="data-table.html#subsetting-2"><i class="fa fa-check"></i><b>8.2</b> Subsetting</a><ul>
+<li class="chapter" data-level="8.2.1" data-path="data-table.html"><a href="data-table.html#rows"><i class="fa fa-check"></i><b>8.2.1</b> Rows</a></li>
+<li class="chapter" data-level="8.2.2" data-path="data-table.html"><a href="data-table.html#columns"><i class="fa fa-check"></i><b>8.2.2</b> Columns</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="data-table.html"><a href="data-table.html#functions-1"><i class="fa fa-check"></i><b>8.3</b> Functions</a></li>
+<li class="chapter" data-level="8.4" data-path="data-table.html"><a href="data-table.html#grouping"><i class="fa fa-check"></i><b>8.4</b> Grouping</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="data-table.html"><a href="data-table.html#expressions"><i class="fa fa-check"></i><b>8.4.1</b> Expressions</a></li>
+<li class="chapter" data-level="8.4.2" data-path="data-table.html"><a href="data-table.html#order"><i class="fa fa-check"></i><b>8.4.2</b> Order</a></li>
+<li class="chapter" data-level="8.4.3" data-path="data-table.html"><a href="data-table.html#functions-on-groups"><i class="fa fa-check"></i><b>8.4.3</b> Functions on groups</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="data-table.html"><a href="data-table.html#keys"><i class="fa fa-check"></i><b>8.5</b> Keys</a></li>
+<li class="chapter" data-level="8.6" data-path="data-table.html"><a href="data-table.html#set"><i class="fa fa-check"></i><b>8.6</b> set</a></li>
+<li class="chapter" data-level="8.7" data-path="data-table.html"><a href="data-table.html#reshaping"><i class="fa fa-check"></i><b>8.7</b> Reshaping</a></li>
+<li class="chapter" data-level="8.8" data-path="data-table.html"><a href="data-table.html#merge"><i class="fa fa-check"></i><b>8.8</b> Merge</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="plotting-in-r.html"><a href="plotting-in-r.html"><i class="fa fa-check"></i><b>9</b> Plotting in R</a><ul>
+<li class="chapter" data-level="9.1" data-path="plotting-in-r.html"><a href="plotting-in-r.html#base-r-plotting"><i class="fa fa-check"></i><b>9.1</b> Base R plotting</a></li>
+<li class="chapter" data-level="9.2" data-path="plotting-in-r.html"><a href="plotting-in-r.html#par"><i class="fa fa-check"></i><b>9.2</b> par</a></li>
+<li class="chapter" data-level="9.3" data-path="plotting-in-r.html"><a href="plotting-in-r.html#combining-plots"><i class="fa fa-check"></i><b>9.3</b> Combining plots</a></li>
+<li class="chapter" data-level="9.4" data-path="plotting-in-r.html"><a href="plotting-in-r.html#text"><i class="fa fa-check"></i><b>9.4</b> Text</a></li>
+<li class="chapter" data-level="9.5" data-path="plotting-in-r.html"><a href="plotting-in-r.html#lines"><i class="fa fa-check"></i><b>9.5</b> Lines</a></li>
+<li class="chapter" data-level="9.6" data-path="plotting-in-r.html"><a href="plotting-in-r.html#legend"><i class="fa fa-check"></i><b>9.6</b> Legend</a></li>
+<li class="chapter" data-level="9.7" data-path="plotting-in-r.html"><a href="plotting-in-r.html#two-axis"><i class="fa fa-check"></i><b>9.7</b> Two axis</a></li>
+<li class="chapter" data-level="9.8" data-path="plotting-in-r.html"><a href="plotting-in-r.html#palette"><i class="fa fa-check"></i><b>9.8</b> Palette</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i><b>10</b> ggplot2</a><ul>
+<li class="chapter" data-level="10.1" data-path="ggplot2.html"><a href="ggplot2.html#introduction-1"><i class="fa fa-check"></i><b>10.1</b> Introduction</a><ul>
+<li class="chapter" data-level="10.1.1" data-path="ggplot2.html"><a href="ggplot2.html#geoms"><i class="fa fa-check"></i><b>10.1.1</b> geoms</a></li>
+<li class="chapter" data-level="10.1.2" data-path="ggplot2.html"><a href="ggplot2.html#layering"><i class="fa fa-check"></i><b>10.1.2</b> Layering</a></li>
+<li class="chapter" data-level="10.1.3" data-path="ggplot2.html"><a href="ggplot2.html#aesthetics"><i class="fa fa-check"></i><b>10.1.3</b> Aesthetics</a></li>
+<li class="chapter" data-level="10.1.4" data-path="ggplot2.html"><a href="ggplot2.html#syntax"><i class="fa fa-check"></i><b>10.1.4</b> Syntax</a></li>
+<li class="chapter" data-level="10.1.5" data-path="ggplot2.html"><a href="ggplot2.html#stat"><i class="fa fa-check"></i><b>10.1.5</b> Stat</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="ggplot2.html"><a href="ggplot2.html#geom_point"><i class="fa fa-check"></i><b>10.2</b> geom_point</a><ul>
+<li class="chapter" data-level="10.2.1" data-path="ggplot2.html"><a href="ggplot2.html#jitter"><i class="fa fa-check"></i><b>10.2.1</b> Jitter</a></li>
+<li class="chapter" data-level="10.2.2" data-path="ggplot2.html"><a href="ggplot2.html#labels"><i class="fa fa-check"></i><b>10.2.2</b> Labels</a></li>
+<li class="chapter" data-level="10.2.3" data-path="ggplot2.html"><a href="ggplot2.html#colour-points"><i class="fa fa-check"></i><b>10.2.3</b> Colour points</a></li>
+<li class="chapter" data-level="10.2.4" data-path="ggplot2.html"><a href="ggplot2.html#matrix-of-plots"><i class="fa fa-check"></i><b>10.2.4</b> Matrix of plots</a></li>
+<li class="chapter" data-level="10.2.5" data-path="ggplot2.html"><a href="ggplot2.html#adding-lines"><i class="fa fa-check"></i><b>10.2.5</b> Adding lines</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="ggplot2.html"><a href="ggplot2.html#bar-graphs-histograms"><i class="fa fa-check"></i><b>10.3</b> Bar graphs &amp; histograms</a></li>
+<li class="chapter" data-level="10.4" data-path="ggplot2.html"><a href="ggplot2.html#geom_boxplot"><i class="fa fa-check"></i><b>10.4</b> geom_boxplot</a></li>
+<li class="chapter" data-level="10.5" data-path="ggplot2.html"><a href="ggplot2.html#facets"><i class="fa fa-check"></i><b>10.5</b> Facets</a></li>
+<li class="chapter" data-level="10.6" data-path="ggplot2.html"><a href="ggplot2.html#reordering-factors"><i class="fa fa-check"></i><b>10.6</b> Reordering factors</a></li>
+<li class="chapter" data-level="10.7" data-path="ggplot2.html"><a href="ggplot2.html#coordinate-systems"><i class="fa fa-check"></i><b>10.7</b> Coordinate systems</a></li>
+<li class="chapter" data-level="10.8" data-path="ggplot2.html"><a href="ggplot2.html#reference-lines"><i class="fa fa-check"></i><b>10.8</b> Reference lines</a></li>
+<li class="chapter" data-level="10.9" data-path="ggplot2.html"><a href="ggplot2.html#error-bars"><i class="fa fa-check"></i><b>10.9</b> Error bars</a></li>
+<li class="chapter" data-level="10.10" data-path="ggplot2.html"><a href="ggplot2.html#appearance"><i class="fa fa-check"></i><b>10.10</b> Appearance</a><ul>
+<li class="chapter" data-level="10.10.1" data-path="ggplot2.html"><a href="ggplot2.html#scales"><i class="fa fa-check"></i><b>10.10.1</b> Scales</a></li>
+</ul></li>
+<li class="chapter" data-level="10.11" data-path="ggplot2.html"><a href="ggplot2.html#dplyr-ggplot2"><i class="fa fa-check"></i><b>10.11</b> dplyr &amp; ggplot2</a></li>
+<li class="chapter" data-level="10.12" data-path="ggplot2.html"><a href="ggplot2.html#saving-graphs"><i class="fa fa-check"></i><b>10.12</b> Saving graphs</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="other-visualisation-packages.html"><a href="other-visualisation-packages.html"><i class="fa fa-check"></i><b>11</b> Other visualisation packages</a><ul>
+<li class="chapter" data-level="11.1" data-path="other-visualisation-packages.html"><a href="other-visualisation-packages.html#pheatmap"><i class="fa fa-check"></i><b>11.1</b> pheatmap</a></li>
+<li class="chapter" data-level="11.2" data-path="other-visualisation-packages.html"><a href="other-visualisation-packages.html#venndiagram"><i class="fa fa-check"></i><b>11.2</b> VennDiagram</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="statistics.html"><a href="statistics.html"><i class="fa fa-check"></i><b>12</b> Statistics</a></li>
+<li class="chapter" data-level="13" data-path="rmarkdown.html"><a href="rmarkdown.html"><i class="fa fa-check"></i><b>13</b> Rmarkdown</a><ul>
+<li class="chapter" data-level="13.1" data-path="rmarkdown.html"><a href="rmarkdown.html#basics-1"><i class="fa fa-check"></i><b>13.1</b> Basics</a></li>
+<li class="chapter" data-level="13.2" data-path="rmarkdown.html"><a href="rmarkdown.html#knitr"><i class="fa fa-check"></i><b>13.2</b> Knitr</a><ul>
+<li class="chapter" data-level="13.2.1" data-path="rmarkdown.html"><a href="rmarkdown.html#yamal-header"><i class="fa fa-check"></i><b>13.2.1</b> YAMAL header</a></li>
+<li class="chapter" data-level="13.2.2" data-path="rmarkdown.html"><a href="rmarkdown.html#chunk-options"><i class="fa fa-check"></i><b>13.2.2</b> Chunk options</a></li>
+<li class="chapter" data-level="13.2.3" data-path="rmarkdown.html"><a href="rmarkdown.html#global-options"><i class="fa fa-check"></i><b>13.2.3</b> Global options</a></li>
+<li class="chapter" data-level="13.2.4" data-path="rmarkdown.html"><a href="rmarkdown.html#common-problems"><i class="fa fa-check"></i><b>13.2.4</b> Common problems</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="rmarkdown.html"><a href="rmarkdown.html#bookdown"><i class="fa fa-check"></i><b>13.3</b> Bookdown</a><ul>
+<li class="chapter" data-level="13.3.1" data-path="rmarkdown.html"><a href="rmarkdown.html#rendering"><i class="fa fa-check"></i><b>13.3.1</b> Rendering</a></li>
+<li class="chapter" data-level="13.3.2" data-path="rmarkdown.html"><a href="rmarkdown.html#structure"><i class="fa fa-check"></i><b>13.3.2</b> Structure</a></li>
+<li class="chapter" data-level="13.3.3" data-path="rmarkdown.html"><a href="rmarkdown.html#yamal-header-1"><i class="fa fa-check"></i><b>13.3.3</b> YAMAL header</a></li>
+</ul></li>
+<li class="chapter" data-level="13.4" data-path="rmarkdown.html"><a href="rmarkdown.html#html-on-github"><i class="fa fa-check"></i><b>13.4</b> HTML on Github</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="package-development.html"><a href="package-development.html"><i class="fa fa-check"></i><b>14</b> Package development</a><ul>
+<li class="chapter" data-level="14.1" data-path="package-development.html"><a href="package-development.html#naming"><i class="fa fa-check"></i><b>14.1</b> Naming</a></li>
+<li class="chapter" data-level="14.2" data-path="package-development.html"><a href="package-development.html#states"><i class="fa fa-check"></i><b>14.2</b> States</a><ul>
+<li class="chapter" data-level="14.2.1" data-path="package-development.html"><a href="package-development.html#source"><i class="fa fa-check"></i><b>14.2.1</b> Source</a></li>
+<li class="chapter" data-level="14.2.2" data-path="package-development.html"><a href="package-development.html#bundled"><i class="fa fa-check"></i><b>14.2.2</b> Bundled</a></li>
+<li class="chapter" data-level="14.2.3" data-path="package-development.html"><a href="package-development.html#binary-package"><i class="fa fa-check"></i><b>14.2.3</b> Binary package</a></li>
+<li class="chapter" data-level="14.2.4" data-path="package-development.html"><a href="package-development.html#installed"><i class="fa fa-check"></i><b>14.2.4</b> Installed</a></li>
+<li class="chapter" data-level="14.2.5" data-path="package-development.html"><a href="package-development.html#in-memory"><i class="fa fa-check"></i><b>14.2.5</b> In memory</a></li>
+<li class="chapter" data-level="14.2.6" data-path="package-development.html"><a href="package-development.html#summary"><i class="fa fa-check"></i><b>14.2.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="14.3" data-path="package-development.html"><a href="package-development.html#r-cmd-install"><i class="fa fa-check"></i><b>14.3</b> R CMD install</a></li>
+<li class="chapter" data-level="14.4" data-path="package-development.html"><a href="package-development.html#workflow"><i class="fa fa-check"></i><b>14.4</b> Workflow</a></li>
+<li class="chapter" data-level="14.5" data-path="package-development.html"><a href="package-development.html#file-structure"><i class="fa fa-check"></i><b>14.5</b> File structure</a></li>
+<li class="chapter" data-level="14.6" data-path="package-development.html"><a href="package-development.html#description"><i class="fa fa-check"></i><b>14.6</b> DESCRIPTION</a><ul>
+<li class="chapter" data-level="14.6.1" data-path="package-development.html"><a href="package-development.html#imports"><i class="fa fa-check"></i><b>14.6.1</b> Imports</a></li>
+<li class="chapter" data-level="14.6.2" data-path="package-development.html"><a href="package-development.html#suggests"><i class="fa fa-check"></i><b>14.6.2</b> Suggests</a></li>
+</ul></li>
+<li class="chapter" data-level="14.7" data-path="package-development.html"><a href="package-development.html#namespace"><i class="fa fa-check"></i><b>14.7</b> NAMESPACE</a><ul>
+<li class="chapter" data-level="14.7.1" data-path="package-development.html"><a href="package-development.html#search-paths"><i class="fa fa-check"></i><b>14.7.1</b> Search paths</a></li>
+<li class="chapter" data-level="14.7.2" data-path="package-development.html"><a href="package-development.html#file-syntax"><i class="fa fa-check"></i><b>14.7.2</b> File syntax</a></li>
+<li class="chapter" data-level="14.7.3" data-path="package-development.html"><a href="package-development.html#exporting-1"><i class="fa fa-check"></i><b>14.7.3</b> Exporting</a></li>
+<li class="chapter" data-level="14.7.4" data-path="package-development.html"><a href="package-development.html#importing"><i class="fa fa-check"></i><b>14.7.4</b> Importing</a></li>
+<li class="chapter" data-level="14.7.5" data-path="package-development.html"><a href="package-development.html#exporting-2"><i class="fa fa-check"></i><b>14.7.5</b> Exporting</a></li>
+</ul></li>
+<li class="chapter" data-level="14.8" data-path="package-development.html"><a href="package-development.html#documentation"><i class="fa fa-check"></i><b>14.8</b> Documentation</a><ul>
+<li class="chapter" data-level="14.8.1" data-path="package-development.html"><a href="package-development.html#roxygen2"><i class="fa fa-check"></i><b>14.8.1</b> Roxygen2</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R notes</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="data-wrangling---tidyverse" class="section level1">
+<h1><span class="header-section-number">Chapter 4</span> Data wrangling - tidyverse</h1>
+<div id="tibbles" class="section level2">
+<h2><span class="header-section-number">4.1</span> Tibbles</h2>
+<p>Tibbles are a ‘modern take on dataframes’ and are used extensively in tidyverse. Tibbles are dataframes with some behaviours tweaked:</p>
+<ul>
+<li>Does not change the type of input (e.g. never changes strings to factors)</li>
+<li>Never changes names of variables</li>
+<li>Never creates row names</li>
+<li>Possible to have column names that are not valid R variable names e.g. can have spaces. To refer to these variables you need backticks.</li>
+<li>When you print a tibble - only the first 10 rows and all the columns that fit on the screen are shown. The type (e.g. int, dbl) of each column also shown. To view more you can use <code>View()</code> or specify what you want to display with <code>print(n = 10, width = Inf)</code> - which means print 10 rows and all the columns.
+<ul>
+<li>You can also set up default print options using <code>options(tibble.print_max = n, tibble.print_min = m)</code></li>
+</ul></li>
+<li>Subsetting. You can subset in a pipe: Must use “.”
+<ul>
+<li>Tibbles will never do partial matching when subsetting.</li>
+</ul></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">tibble</span>(        <span class="co">#making the tibble</span>
+  <span class="dt">x =</span> <span class="kw">runif</span>(<span class="dv">5</span>),
+  <span class="dt">y =</span> <span class="kw">rnorm</span>(<span class="dv">5</span>)
+)
+
+df <span class="op">%&gt;%</span><span class="st"> </span>.<span class="op">$</span>x                    </code></pre></div>
+<pre><code>## [1] 0.55511169 0.91431366 0.58313373 0.09013628 0.98014050</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df <span class="op">%&gt;%</span><span class="st"> </span>.[[<span class="st">&quot;x&quot;</span>]]</code></pre></div>
+<pre><code>## [1] 0.55511169 0.91431366 0.58313373 0.09013628 0.98014050</code></pre>
+<ul>
+<li>If you have set a variable (e.g. <code>var</code>)to be equal to a column name, and want to refer to the variable during subsetting use <code>eval()</code> (e.g. <code>as_tibble(mtcars) %&gt;% .[[eval(var)]]</code>)</li>
+</ul>
+<p>You can create a tibble using <code>tibble()</code>. Vectors of length 1 will be recycled. You can also refer to a variable you just created. E.g.:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tibble</span>(
+  <span class="dt">x =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, 
+  <span class="dt">y =</span> <span class="dv">1</span>, 
+  <span class="dt">z =</span> x <span class="op">^</span><span class="st"> </span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>y
+)</code></pre></div>
+<pre><code>## # A tibble: 5 x 3
+##       x     y     z
+##   &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1     1     1     2
+## 2     2     1     5
+## 3     3     1    10
+## 4     4     1    17
+## 5     5     1    26</code></pre>
+<p>You can convet a dataframe into a tibble with <code>as_tibble()</code>.</p>
+<p><code>tribble()</code> (‘transposed tibble’) is another way of creating tibbles. It is good for small amounts of data. Column headings start with ~ and entries separated by commas:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tribble</span>(
+  <span class="op">~</span>x, <span class="op">~</span>y, <span class="op">~</span>z,
+  <span class="co">#--|--|----        # add this to make clear where heading is</span>
+  <span class="st">&quot;a&quot;</span>, <span class="dv">2</span>, <span class="fl">3.6</span>,
+  <span class="st">&quot;b&quot;</span>, <span class="dv">1</span>, <span class="fl">8.5</span>
+)</code></pre></div>
+<pre><code>## # A tibble: 2 x 3
+##   x         y     z
+##   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 a         2   3.6
+## 2 b         1   8.5</code></pre>
+</div>
+<div id="readr" class="section level2">
+<h2><span class="header-section-number">4.2</span> readr</h2>
+<p>readr determines data type when reading in a file by reading the first 1000 rows and using some heuristics to figure out the type of each column. It tries each of the following and if none of the rules apply it will stay as a vector of strings:</p>
+<ul>
+<li>logical: contains only “F”, “T”, “FALSE”, or “TRUE”.</li>
+<li>integer: contains only numeric characters (and -).</li>
+<li>double: contains only valid doubles (including numbers like 4.5e-5).</li>
+<li>number: contains valid doubles with the grouping mark inside.</li>
+<li>time: matches the default time_format.</li>
+<li>date: matches the default date_format.</li>
+<li>date-time: any ISO8601 date.</li>
+</ul>
+<p>To emulate this process you can use <code>guess_parser()</code> which returns readr’s best guess as to type of vector. <code>parse_guess()</code> guesses and uses the guess to parse the vector.</p>
+<p>There can be problems with larger files:</p>
+<ul>
+<li>The first 1000 rows may be special cases.</li>
+<li>A column may contain a lot of missing values.</li>
+</ul>
+<p>If there are problems, the output will state the column specification for each column generated by looking at the first 1000 rows and the first 5 parsing failures. You can use <code>problems()</code> for more detail.</p>
+<p>To fix these problems simply manually specify what type of column.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">challenge &lt;-<span class="st"> </span><span class="kw">read_csv</span>(
+  <span class="kw">readr_example</span>(<span class="st">&quot;challenge.csv&quot;</span>), 
+  <span class="dt">col_types =</span> <span class="kw">cols</span>(<span class="dt">.default =</span> <span class="kw">col_character</span>(), <span class="co">#everything is character unless specified below</span>
+    <span class="dt">x =</span> <span class="kw">col_double</span>(),
+    <span class="dt">y =</span> <span class="kw">col_character</span>()
+  )
+)</code></pre></div>
+<p>Other data types available: * col_integer * col_logical * col_factor (must give levels) * col_guess * col_number (drops any non-numeric number before or after the first number)</p>
+<p>See <a href="https://cran.r-project.org/web/packages/readr/readr.pdf">CRAN</a> and <a href="http://readr.tidyverse.org/articles/readr.html">readr</a> for more.</p>
+<p>Other tips:</p>
+<ul>
+<li>Use <code>guess_max</code> argument to set the number of rows to look at to decide on col type.</li>
+<li>It may be easier to diagnose problems if you read everything in as a character (<code>default = col_character()</code>) and then use <code>type_convert()</code> to apply the parsing heuristics to the character columns.</li>
+<li>Set the maximum number of rows to read in with <code>n_max()</code> when reading in a largish file and you are trying to fix problems. This will speed up your iterations.</li>
+<li>Read data into R as a character vector of lines with <code>read_lines()</code> or even character vector of length one with <code>read_file()</code>.</li>
+</ul>
+<p>It can be idea to specify col types as provides for more reproducible data (e.g. if your data changes). To be strict you can also use <code>stop_for_problems()</code> which will throw up an error and stop your script if there are parsing problems.</p>
+<div id="parsing" class="section level3">
+<h3><span class="header-section-number">4.2.1</span> Parsing</h3>
+<p>Parsing functions are the building blocks for readr and are used when reading in files. They take a character vector and returns more specialised vector output.</p>
+<p>Each <code>parse_xx()</code> function complement the corresponding <code>col_xx()</code> function (e.g. <code>parse_double()</code> and <code>col_double()</code>). The difference is that <code>parse_xxx()</code>, parses the data when it is in a character vector in R already whereas <code>col_xx()</code> tells R how to load the data.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(<span class="kw">parse_logical</span>(<span class="kw">c</span>(<span class="st">&quot;TRUE&quot;</span>, <span class="st">&quot;FALSE&quot;</span>, <span class="st">&quot;NA&quot;</span>)))</code></pre></div>
+<pre><code>##  logi [1:3] TRUE FALSE NA</code></pre>
+<p>You can add a <code>na</code> argument to specify what should be returned as NA.</p>
+<p>If something goes wrong, a warning will explain why. It will still be parsed but with the problems excluded. These warnings are similar to read_*() function warnings.</p>
+<p>If there are many problems, use <code>problems(variable_name)</code> to get complete set. This actually returns a tibble of the problem values in parsing.</p>
+<ul>
+<li><code>parse_logical()</code> - Not much can go wrong.</li>
+<li><code>parse_integer()</code> - Not much can go wrong.</li>
+<li><code>parse_double()</code> - Strict numerical.
+<ul>
+<li>Dealing with decimals indicated with point or comma: Default is decimal. To over-ride use <code>parse_double(&quot;1,23&quot;, locale = locale(decimal_mark = &quot;,&quot;))</code>. Locale is an object that specifies parsing options. Called locale as these options differ place to place.</li>
+</ul></li>
+<li><code>parse_number()</code> - Flexible numeric. Ignores non-numeric characters before and after the number.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">parse_number</span>(<span class="st">&quot;It cost $123.45&quot;</span>)</code></pre></div>
+<pre><code>## [1] 123.45</code></pre>
+<p>It also deals with grouping marks (e.g. 100,000 or 100.000 or 100’000).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">parse_number</span>(<span class="st">&quot;123.456.789&quot;</span>, <span class="dt">locale =</span> <span class="kw">locale</span>(<span class="dt">grouping_mark =</span> <span class="st">&quot;.&quot;</span>))</code></pre></div>
+<pre><code>## [1] 123456789</code></pre>
+<ul>
+<li><code>parse_character()</code> - Problems arise from how characters are encoded. A hexadecimal number represents a byte of information and in turn a character. The mapping between a hexadecimal number to a character is called encoding. ASCII encoding is not good for non-English characters. Previously, there have been competing encodings for non-english characters but now UTF-8 is supported almost everywhere and encodes nearly every character and emojis. Readr uses UTF-8 when writing and assumes your data is UTF-8 encoded when reading it it. This fails for data produced by older systems. To fix this problem you can specify the encoding using locale e.g. <code>parse_character(x1, locale = locale(encoding = &quot;Latin1&quot;))</code>
+<ul>
+<li>There may be difficulties in determining the encoding. You can try to find somewhere in data documentation or use <code>guess_encoding()</code> (first argument is either path to file or raw vector).</li>
+</ul></li>
+<li><code>parse_factor()</code> - parses as factor.
+<ul>
+<li>The <code>levels</code> argument is all the possible ‘levels’ of a factor. It will generate a warning when an unexpected value is present.</li>
+</ul></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fruit &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;apple&quot;</span>, <span class="st">&quot;banana&quot;</span>)
+<span class="kw">parse_factor</span>(<span class="kw">c</span>(<span class="st">&quot;apple&quot;</span>, <span class="st">&quot;banana&quot;</span>, <span class="st">&quot;bananana&quot;</span>), <span class="dt">levels =</span> fruit)</code></pre></div>
+<pre><code>## Warning: 1 parsing failure.
+## row col           expected   actual
+##   3  -- value in level set bananana</code></pre>
+<pre><code>## [1] apple  banana &lt;NA&gt;  
+## attr(,&quot;problems&quot;)
+## # A tibble: 1 x 4
+##     row   col expected           actual  
+##   &lt;int&gt; &lt;int&gt; &lt;chr&gt;              &lt;chr&gt;   
+## 1     3    NA value in level set bananana
+## Levels: apple banana</code></pre>
+<ul>
+<li><code>parse_datetime()</code> - Expects an ISO8601 date-time. Components of a date are organised from biggest to smallest: year, month, day, hour, minute, second. If time is omitted it will set it to midnight.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">parse_datetime</span>(<span class="st">&quot;2010-10-01T2010&quot;</span>)</code></pre></div>
+<pre><code>## [1] &quot;2010-10-01 20:10:00 UTC&quot;</code></pre>
+<ul>
+<li><code>parse_date()</code> - Expects a four digit year, a ‘-’ or ‘/’, the month, a ‘-’ or ‘/’, then the day.</li>
+<li><code>parse_time()</code> - Expects the hour, ‘:’, minutes, optionally ‘:’ and seconds, and an optional am/pm specifier.</li>
+</ul>
+<p>Note R does not have a good built in class for time data. Thus the hms package is useful.</p>
+</div>
+<div id="exporting" class="section level3">
+<h3><span class="header-section-number">4.2.2</span> Exporting</h3>
+<p><code>write_csv()</code> and <code>write_tsv()</code> always encode strings in UTF-8 and save date-times in ISO8601 format.</p>
+<p><code>write_excel_csv()</code> - use this if you want to import the csv to excel as there is a ‘byte order mark’ which telss excel that you are using UTF-8 encoding.</p>
+</div>
+</div>
+<div id="dplyr" class="section level2">
+<h2><span class="header-section-number">4.3</span> dplyr</h2>
+<p>Offers several useful functions. Parameters that go in these functions:</p>
+<ol style="list-style-type: decimal">
+<li>The first argument is a dataframe.</li>
+<li>The subsequent arguments describe what to do with the data frame, using the variable names (without quotes).</li>
+<li>The result is a new data frame.</li>
+</ol>
+<p>dplyr functions do not alter original tibble but either prints a new tibble or saves it to a new variable.</p>
+<div id="subsetting-1" class="section level3">
+<h3><span class="header-section-number">4.3.1</span> Subsetting</h3>
+<p>Subsetting with <code>[ ]</code> will generally return you with a tibble</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg_tib &lt;-<span class="st"> </span><span class="kw">as.tibble</span>(mpg)</code></pre></div>
+<pre><code>## Warning: `as.tibble()` is deprecated, use `as_tibble()` (but mind the new semantics).
+## This warning is displayed once per session.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(mpg_tib[<span class="dv">1</span>,<span class="dv">1</span>])</code></pre></div>
+<pre><code>## Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:    1 obs. of  1 variable:
+##  $ manufacturer: chr &quot;audi&quot;</code></pre>
+<p>To convert the above into a character:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(<span class="kw">as.character</span>(mpg_tib[<span class="dv">1</span>,<span class="dv">1</span>]))</code></pre></div>
+<pre><code>##  chr &quot;audi&quot;</code></pre>
+</div>
+<div id="the-pipe" class="section level3">
+<h3><span class="header-section-number">4.3.2</span> The pipe %&gt;%</h3>
+<p>The pipe puts the output from the LHS as the first argument of the function on the RHS. It is useful in avoiding ‘intermediate’ variables.</p>
+<p>To avoid this, you can use curly brackets <code>{ }</code> which will not automatically put the piped data as the first argument.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg <span class="op">%&gt;%</span>
+<span class="st">  </span>{<span class="kw">head</span>()}</code></pre></div>
+<pre><code>## Error in head.default(): argument &quot;x&quot; is missing, with no default</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg <span class="op">%&gt;%</span>
+<span class="st">  </span>{<span class="kw">head</span>(.)}</code></pre></div>
+<pre><code>## # A tibble: 6 x 11
+##   manufacturer model displ  year   cyl trans  drv     cty   hwy fl    class
+##   &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
+## 1 audi         a4      1.8  1999     4 auto(… f        18    29 p     comp…
+## 2 audi         a4      1.8  1999     4 manua… f        21    29 p     comp…
+## 3 audi         a4      2    2008     4 manua… f        20    31 p     comp…
+## 4 audi         a4      2    2008     4 auto(… f        21    30 p     comp…
+## 5 audi         a4      2.8  1999     6 auto(… f        16    26 p     comp…
+## 6 audi         a4      2.8  1999     6 manua… f        18    26 p     comp…</code></pre>
+<p>See <a href="https://stackoverflow.com/questions/42385010/using-the-pipe-and-dot-notation">this</a> SO question for more details.</p>
+</div>
+<div id="filter" class="section level3">
+<h3><span class="header-section-number">4.3.3</span> filter</h3>
+<p>Filters rows. Several conditions can be used but be careful of notation and precedence: ‘not’, ‘and’ then ‘or’ (see <a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/Syntax.html">link</a> for more).</p>
+<p>For example:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(year <span class="op">==</span><span class="st"> </span><span class="dv">1999</span> <span class="op">|</span><span class="st"> </span><span class="dv">2000</span> )</code></pre></div>
+<pre><code>## # A tibble: 234 x 11
+##    manufacturer model displ  year   cyl trans drv     cty   hwy fl    class
+##    &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
+##  1 audi         a4      1.8  1999     4 auto… f        18    29 p     comp…
+##  2 audi         a4      1.8  1999     4 manu… f        21    29 p     comp…
+##  3 audi         a4      2    2008     4 manu… f        20    31 p     comp…
+##  4 audi         a4      2    2008     4 auto… f        21    30 p     comp…
+##  5 audi         a4      2.8  1999     6 auto… f        16    26 p     comp…
+##  6 audi         a4      2.8  1999     6 manu… f        18    26 p     comp…
+##  7 audi         a4      3.1  2008     6 auto… f        18    27 p     comp…
+##  8 audi         a4 q…   1.8  1999     4 manu… 4        18    26 p     comp…
+##  9 audi         a4 q…   1.8  1999     4 auto… 4        16    25 p     comp…
+## 10 audi         a4 q…   2    2008     4 manu… 4        20    28 p     comp…
+## # … with 224 more rows</code></pre>
+<p>The result is a dataframe with NO rows filtered. This is because R first evaluates:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1999</span> <span class="op">|</span><span class="st"> </span><span class="dv">2000</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>which is TRUE (see ref(888)). Then it evaulates <code>year == TRUE</code> which results in all rows being kept.</p>
+<p>Instead use the notation:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(year <span class="op">==</span><span class="st"> </span><span class="dv">1999</span> <span class="op">|</span><span class="st"> </span>year <span class="op">==</span><span class="st"> </span><span class="dv">2000</span> )</code></pre></div>
+<p>or:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(year <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">1999</span>,<span class="dv">2000</span>))</code></pre></div>
+</div>
+<div id="select" class="section level3">
+<h3><span class="header-section-number">4.3.4</span> select</h3>
+<p>Selects for columns.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">select</span>(mpg, model, displ)   <span class="co"># Selects only the columns model and displ</span>
+<span class="kw">select</span>(mpg, model<span class="op">:</span>year)     <span class="co"># Selects all columns from model to year inclusive</span>
+<span class="kw">select</span>(mpg, <span class="op">-</span>(model<span class="op">:</span>year))  <span class="co"># Selects all columns EXCEPT model to year inclusive</span></code></pre></div>
+<p>There are a number of helper functions you can use within <code>select()</code>:</p>
+<ul>
+<li><code>starts_with(&quot;abc&quot;)</code> - matches names that begin with “abc”.</li>
+<li><code>ends_with(&quot;xyz&quot;)</code> - matches names that end with “xyz”.</li>
+<li><code>contains(&quot;ijk&quot;)</code> - matches names that contain “ijk”. For the above functions, you can only input one string (NOT a vector of strings)</li>
+<li><code>matches(&quot;(.)\\1&quot;)</code> - selects variables that match a regular expression. This one matches any variables that contain repeated characters.</li>
+<li><code>num_range(&quot;x&quot;, 1:3)</code> - matches columns x1, x2 and x3.</li>
+<li><code>one_of()</code> - selects column names that are from a vector consisting of characters.</li>
+<li><code>everything()</code> - all remaining columns. This is useful for reordering your columns.</li>
+</ul>
+<p>See <a href="https://dplyr.tidyverse.org/reference/select_helpers.html">dplyr documentation</a> for more details.</p>
+</div>
+<div id="mutate" class="section level3">
+<h3><span class="header-section-number">4.3.5</span> mutate</h3>
+<p>This allows you to add variables to your dataset. New variables often functions of existing variables.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg[,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">newcol =</span> <span class="kw">paste</span>(manufacturer, model),
+         <span class="dt">newcol2 =</span> <span class="kw">paste</span>(newcol, displ))</code></pre></div>
+<pre><code>## # A tibble: 234 x 5
+##    manufacturer model      displ newcol          newcol2            
+##    &lt;chr&gt;        &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;           &lt;chr&gt;              
+##  1 audi         a4           1.8 audi a4         audi a4 1.8        
+##  2 audi         a4           1.8 audi a4         audi a4 1.8        
+##  3 audi         a4           2   audi a4         audi a4 2          
+##  4 audi         a4           2   audi a4         audi a4 2          
+##  5 audi         a4           2.8 audi a4         audi a4 2.8        
+##  6 audi         a4           2.8 audi a4         audi a4 2.8        
+##  7 audi         a4           3.1 audi a4         audi a4 3.1        
+##  8 audi         a4 quattro   1.8 audi a4 quattro audi a4 quattro 1.8
+##  9 audi         a4 quattro   1.8 audi a4 quattro audi a4 quattro 1.8
+## 10 audi         a4 quattro   2   audi a4 quattro audi a4 quattro 2  
+## # … with 224 more rows</code></pre>
+<p>Note that the input is a vector and the output is a vector of the same length. Also note how we are allowed to refer to variables that we have just added.</p>
+<div id="rename" class="section level4">
+<h4><span class="header-section-number">4.3.5.1</span> rename</h4>
+<p>Let’s you rename a column.</p>
+</div>
+<div id="lead-lag-cum" class="section level4">
+<h4><span class="header-section-number">4.3.5.2</span> lead, lag &amp; cum*</h4>
+<p><code>lead()</code> and <code>lag()</code> allow you to create another vector which is offset up or down by a certain amount. Using this you can calculate running differences, or find when values change.</p>
+<p>Syntax:</p>
+<p><code>lead(data, lead_amount)</code> &amp; <code>lag(data, lag_amount)</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg[,<span class="dv">3</span>] <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">lag =</span> <span class="kw">lag</span>(displ,<span class="dv">1</span>))</code></pre></div>
+<pre><code>## # A tibble: 234 x 2
+##    displ   lag
+##    &lt;dbl&gt; &lt;dbl&gt;
+##  1   1.8  NA  
+##  2   1.8   1.8
+##  3   2     1.8
+##  4   2     2  
+##  5   2.8   2  
+##  6   2.8   2.8
+##  7   3.1   2.8
+##  8   1.8   3.1
+##  9   1.8   1.8
+## 10   2     1.8
+## # … with 224 more rows</code></pre>
+<p>When using these two functions with <code>group_by()</code> (see below), lag or lead will give you the lag or lead within that group.</p>
+<p><code>cumsum()</code>, <code>cumprod()</code>, <code>cummin()</code>, <code>cummax()</code> give you running sums, products, mins and maxes respectively. dplyr provides <code>cummean()</code> for cumulative means.</p>
+</div>
+<div id="transmutate" class="section level4">
+<h4><span class="header-section-number">4.3.5.3</span> transmutate</h4>
+<p>If you only want to keep the new column created, use <code>transmutate()</code>.</p>
+</div>
+</div>
+<div id="case_when" class="section level3">
+<h3><span class="header-section-number">4.3.6</span> case_when</h3>
+<p>This is used to change a column, in place and an alternative to <code>ifelse()</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">20</span>
+<span class="kw">case_when</span>(
+  x <span class="op">%%</span><span class="st"> </span><span class="dv">35</span> <span class="op">==</span><span class="st"> </span><span class="dv">0</span> <span class="op">~</span><span class="st"> &quot;fizz buzz&quot;</span>,
+  x <span class="op">%%</span><span class="st"> </span><span class="dv">5</span> <span class="op">==</span><span class="st"> </span><span class="dv">0</span> <span class="op">~</span><span class="st"> &quot;fizz&quot;</span>,
+  x <span class="op">%%</span><span class="st"> </span><span class="dv">7</span> <span class="op">==</span><span class="st"> </span><span class="dv">0</span> <span class="op">~</span><span class="st"> &quot;buzz&quot;</span>,
+  <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> </span><span class="kw">as.character</span>(x)
+)</code></pre></div>
+<pre><code>##  [1] &quot;1&quot;    &quot;2&quot;    &quot;3&quot;    &quot;4&quot;    &quot;fizz&quot; &quot;6&quot;    &quot;buzz&quot; &quot;8&quot;    &quot;9&quot;    &quot;fizz&quot;
+## [11] &quot;11&quot;   &quot;12&quot;   &quot;13&quot;   &quot;buzz&quot; &quot;fizz&quot; &quot;16&quot;   &quot;17&quot;   &quot;18&quot;   &quot;19&quot;   &quot;fizz&quot;</code></pre>
+<p>The tilde (<code>~</code>), separates RHS and LHS. RHS is the condition (TRUE/FALSE result) and the LHS is what you want the row to be changed to if TRUE.</p>
+<p>The last option, TRUE, takes all remaining rows and you can set to what you want. Here, we have set it to be the same value as before (though as.character).</p>
+<p>You can also create a new column, using case_when within mutate:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg[,<span class="dv">1</span>] <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">newcol =</span> <span class="kw">case_when</span>(
+    manufacturer <span class="op">==</span><span class="st"> &quot;audi&quot;</span> <span class="op">~</span><span class="st"> &quot;Audi!&quot;</span>,
+    <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> </span>.<span class="op">$</span>manufacturer
+  ))</code></pre></div>
+<pre><code>## # A tibble: 234 x 2
+##    manufacturer newcol
+##    &lt;chr&gt;        &lt;chr&gt; 
+##  1 audi         Audi! 
+##  2 audi         Audi! 
+##  3 audi         Audi! 
+##  4 audi         Audi! 
+##  5 audi         Audi! 
+##  6 audi         Audi! 
+##  7 audi         Audi! 
+##  8 audi         Audi! 
+##  9 audi         Audi! 
+## 10 audi         Audi! 
+## # … with 224 more rows</code></pre>
+</div>
+<div id="summarise" class="section level3">
+<h3><span class="header-section-number">4.3.7</span> summarise</h3>
+<p>Summarises column(s) using a function that returns one value. E.g.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">meanDispl =</span> <span class="kw">mean</span>(displ),
+            <span class="dt">meanYear =</span> <span class="kw">mean</span>(year))</code></pre></div>
+<pre><code>## # A tibble: 1 x 2
+##   meanDispl meanYear
+##       &lt;dbl&gt;    &lt;dbl&gt;
+## 1      3.47    2004.</code></pre>
+<p>It is often used with <code>group_by()</code> - see below.</p>
+<p>There are also a useful functions that are wrappers around <code>summarise()</code>:</p>
+<ul>
+<li><code>count()</code> - this will give you the number of rows in each group, depending on the column name provided. E.g.</li>
+</ul>
+<p>Here it gives you the number of cars (rows) in each manufacturer group.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">count</span>(manufacturer)</code></pre></div>
+<pre><code>## # A tibble: 15 x 2
+##    manufacturer     n
+##    &lt;chr&gt;        &lt;int&gt;
+##  1 audi            18
+##  2 chevrolet       19
+##  3 dodge           37
+##  4 ford            25
+##  5 honda            9
+##  6 hyundai         14
+##  7 jeep             8
+##  8 land rover       4
+##  9 lincoln          3
+## 10 mercury          4
+## 11 nissan          13
+## 12 pontiac          5
+## 13 subaru          14
+## 14 toyota          34
+## 15 volkswagen      27</code></pre>
+<p>It does this by calling <code>group_by()</code>, <code>n()</code> and then <code>ungroup()</code>.</p>
+<p>You can also perform a ‘weighted’ count. This means summing the actual values of the variable. The first argument is how it will group and the <code>wt</code> is what values will be summed to give you <code>n</code>. You cannot assign <code>wt</code> to character and factor columns.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">count</span>(manufacturer, <span class="dt">wt =</span> displ)</code></pre></div>
+<pre><code>## # A tibble: 15 x 2
+##    manufacturer     n
+##    &lt;chr&gt;        &lt;dbl&gt;
+##  1 audi          45.8
+##  2 chevrolet     96.2
+##  3 dodge        162  
+##  4 ford         113. 
+##  5 honda         15.4
+##  6 hyundai       34  
+##  7 jeep          36.6
+##  8 land rover    17.2
+##  9 lincoln       16.2
+## 10 mercury       17.6
+## 11 nissan        42.5
+## 12 pontiac       19.8
+## 13 subaru        34.4
+## 14 toyota       100. 
+## 15 volkswagen    60.9</code></pre>
+<ul>
+<li><code>tally()</code> is similar to count but does not perform <code>group_by()</code> first.</li>
+</ul>
+<p>This will give you the total number of rows in the dataframe:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">tally</span>() </code></pre></div>
+<pre><code>## # A tibble: 1 x 1
+##       n
+##   &lt;int&gt;
+## 1   234</code></pre>
+<p>If you wanted the row count per group, you need to <code>group_by()</code> first.</p>
+<p>This will give an error:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">tally</span>(manufacturer)</code></pre></div>
+<pre><code>## Error in sum(~manufacturer, na.rm = TRUE): invalid &#39;type&#39; (character) of argument</code></pre>
+<p>What tally() does when you give it a column name is perform a ‘weighted tally’ which just means that it will sum up all the values in that column. It could not do that for <code>manufacturer</code> as this is a charater column.</p>
+<p>If you gave it a numeric column instead, it will give you the sum of all the rows of that column.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">tally</span>(displ)</code></pre></div>
+<pre><code>## # A tibble: 1 x 1
+##       n
+##   &lt;dbl&gt;
+## 1  812.</code></pre>
+<p>If you wanted the sum per group, you need to <code>group_by()</code> first.</p>
+</div>
+<div id="group_by" class="section level3">
+<h3><span class="header-section-number">4.3.8</span> group_by</h3>
+<p>This function groups rows according to one or more variable(s). There are no ‘visible’ effects of this. The output is a ‘grouped tibble’. Use <code>ungroup()</code> to ungroup.</p>
+<p>Useful when used with <code>summarise()</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(manufacturer) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">meanDispl =</span> <span class="kw">mean</span>(displ))</code></pre></div>
+<pre><code>## # A tibble: 15 x 2
+##    manufacturer meanDispl
+##    &lt;chr&gt;            &lt;dbl&gt;
+##  1 audi              2.54
+##  2 chevrolet         5.06
+##  3 dodge             4.38
+##  4 ford              4.54
+##  5 honda             1.71
+##  6 hyundai           2.43
+##  7 jeep              4.58
+##  8 land rover        4.3 
+##  9 lincoln           5.4 
+## 10 mercury           4.4 
+## 11 nissan            3.27
+## 12 pontiac           3.96
+## 13 subaru            2.46
+## 14 toyota            2.95
+## 15 volkswagen        2.26</code></pre>
+<p>There are a few things too note:</p>
+<ul>
+<li>The resulting tibble has the same number of rows as there are groups</li>
+<li>The only columns that remain are the column(s) that were used to group and the summarise columns.</li>
+</ul>
+<p>You can group by several columns:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(manufacturer, year) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">meanDispl =</span> <span class="kw">mean</span>(displ))</code></pre></div>
+<pre><code>## # A tibble: 30 x 3
+## # Groups:   manufacturer [15]
+##    manufacturer  year meanDispl
+##    &lt;chr&gt;        &lt;int&gt;     &lt;dbl&gt;
+##  1 audi          1999      2.36
+##  2 audi          2008      2.73
+##  3 chevrolet     1999      4.97
+##  4 chevrolet     2008      5.12
+##  5 dodge         1999      4.32
+##  6 dodge         2008      4.42
+##  7 ford          1999      4.45
+##  8 ford          2008      4.66
+##  9 honda         1999      1.6 
+## 10 honda         2008      1.85
+## # … with 20 more rows</code></pre>
+<p>It is important to note that <code>summarise()</code> will peel away one layer of ‘grouping’. E.g. if you have <code>group_by(var1, var2) %&gt;% summarise()</code> The resulting tibble will be grouping by ‘var1’ because <code>summarise()</code> peeled away the ‘var2’ grouping.</p>
+<div id="do" class="section level4">
+<h4><span class="header-section-number">4.3.8.1</span> do</h4>
+<p><code>do()</code> is used to perform ‘arbitrary computation’. The output will be a dataframe with the first columns being the labels and the results stored as a dataframe or a list (e.g. if you are making plots).</p>
+<p>It: * always returns a dataframe * requires the specification of <code>.</code> to refer to the data * was conceived to be used with <code>group_by()</code> to compute operations within groups</p>
+<p>This gives you the <code>head()</code> of the whole dataframe:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(manufacturer) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">head</span>()</code></pre></div>
+<pre><code>## # A tibble: 6 x 11
+## # Groups:   manufacturer [1]
+##   manufacturer model displ  year   cyl trans  drv     cty   hwy fl    class
+##   &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
+## 1 audi         a4      1.8  1999     4 auto(… f        18    29 p     comp…
+## 2 audi         a4      1.8  1999     4 manua… f        21    29 p     comp…
+## 3 audi         a4      2    2008     4 manua… f        20    31 p     comp…
+## 4 audi         a4      2    2008     4 auto(… f        21    30 p     comp…
+## 5 audi         a4      2.8  1999     6 auto(… f        16    26 p     comp…
+## 6 audi         a4      2.8  1999     6 manua… f        18    26 p     comp…</code></pre>
+<p>Adding the <code>.</code> gives you the <code>head()</code> of each group:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(manufacturer) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">do</span>(<span class="kw">head</span>(.))</code></pre></div>
+<pre><code>## # A tibble: 82 x 11
+## # Groups:   manufacturer [15]
+##    manufacturer model displ  year   cyl trans drv     cty   hwy fl    class
+##    &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
+##  1 audi         a4      1.8  1999     4 auto… f        18    29 p     comp…
+##  2 audi         a4      1.8  1999     4 manu… f        21    29 p     comp…
+##  3 audi         a4      2    2008     4 manu… f        20    31 p     comp…
+##  4 audi         a4      2    2008     4 auto… f        21    30 p     comp…
+##  5 audi         a4      2.8  1999     6 auto… f        16    26 p     comp…
+##  6 audi         a4      2.8  1999     6 manu… f        18    26 p     comp…
+##  7 chevrolet    c150…   5.3  2008     8 auto… r        14    20 r     suv  
+##  8 chevrolet    c150…   5.3  2008     8 auto… r        11    15 e     suv  
+##  9 chevrolet    c150…   5.3  2008     8 auto… r        14    20 r     suv  
+## 10 chevrolet    c150…   5.7  1999     8 auto… r        13    17 r     suv  
+## # … with 72 more rows</code></pre>
+</div>
+<div id="dots" class="section level4">
+<h4><span class="header-section-number">4.3.8.2</span> Dots</h4>
+<p>The dot <code>.</code> refers to the data being piped in. When used with <code>group_by()</code> it will sometimes refer to all the data and sometimes refer to the grouped data.</p>
+<p>For example, this works well:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(manufacturer) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">col =</span> <span class="kw">mean</span>(year))</code></pre></div>
+<pre><code>## # A tibble: 15 x 2
+##    manufacturer   col
+##    &lt;chr&gt;        &lt;dbl&gt;
+##  1 audi         2004.
+##  2 chevrolet    2005.
+##  3 dodge        2004.
+##  4 ford         2003.
+##  5 honda        2003 
+##  6 hyundai      2004.
+##  7 jeep         2006.
+##  8 land rover   2004.
+##  9 lincoln      2002 
+## 10 mercury      2004.
+## 11 nissan       2004.
+## 12 pontiac      2003.
+## 13 subaru       2004.
+## 14 toyota       2003.
+## 15 volkswagen   2003.</code></pre>
+<p>However,</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(manufacturer) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">col =</span> <span class="kw">mean</span>(.<span class="op">$</span>year))</code></pre></div>
+<pre><code>## # A tibble: 15 x 2
+##    manufacturer   col
+##    &lt;chr&gt;        &lt;dbl&gt;
+##  1 audi         2004.
+##  2 chevrolet    2004.
+##  3 dodge        2004.
+##  4 ford         2004.
+##  5 honda        2004.
+##  6 hyundai      2004.
+##  7 jeep         2004.
+##  8 land rover   2004.
+##  9 lincoln      2004.
+## 10 mercury      2004.
+## 11 nissan       2004.
+## 12 pontiac      2004.
+## 13 subaru       2004.
+## 14 toyota       2004.
+## 15 volkswagen   2004.</code></pre>
+<p>It has not respected the <code>group_by()</code> and gives you the mean of all rows for every group.</p>
+<p>Adding <code>do()</code> makes it respect the <code>group_by()</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(manufacturer) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">do</span>(<span class="kw">summarise</span>(. , <span class="dt">col =</span> <span class="kw">mean</span>(.<span class="op">$</span>year)))</code></pre></div>
+<pre><code>## # A tibble: 15 x 2
+## # Groups:   manufacturer [15]
+##    manufacturer   col
+##    &lt;chr&gt;        &lt;dbl&gt;
+##  1 audi         2004.
+##  2 chevrolet    2005.
+##  3 dodge        2004.
+##  4 ford         2003.
+##  5 honda        2003 
+##  6 hyundai      2004.
+##  7 jeep         2006.
+##  8 land rover   2004.
+##  9 lincoln      2002 
+## 10 mercury      2004.
+## 11 nissan       2004.
+## 12 pontiac      2003.
+## 13 subaru       2004.
+## 14 toyota       2003.
+## 15 volkswagen   2003.</code></pre>
+<p>Note that you must add <code>.</code> as the first argument of summarise!</p>
+<p>When using the <code>.</code> with <code>group_by()</code> and <code>mutate_at()</code>/<code>mutate()</code> or <code>summarise_at()</code>/<code>summarise()</code>, the grouping is respected! See <a href="https://stackoverflow.com/questions/48182815/when-to-use-do-function-in-dplyr">this</a> SO question for more details.</p>
+<p>If you write your own function and add it to the chain after <code>group_by()</code>, use <code>do()</code>, otherwise the whole dataframe will be sent through. This might be because only functions specifically written to respect <code>group_by()</code> will do so (e.g. <code>mutate()</code> and <code>summarise()</code>).</p>
+<p>Explanation from the <code>%&gt;%</code> help file:</p>
+<p>(The lhs and rhs notation refers to: <code>lhs %&gt;% rhs</code>)</p>
+<p><strong>Placing lhs elsewhere in rhs call</strong> - Often you will want lhs to the rhs call at another position than the first. For this purpose you can use the dot (<code>.</code>) as placeholder. For example, <code>y %&gt;% f(x, .)</code> is equivalent to <code>f(x, y)</code> and <code>z %&gt;% f(x, y, arg = .)</code> is equivalent to <code>f(x, y, arg = z)</code>.</p>
+<p><strong>Using the dot for secondary purposes</strong> - Often, some attribute or property of lhs is desired in the rhs call in addition to the value of lhs itself, e.g. the number of rows or columns. It is perfectly valid to use the dot placeholder several times in the rhs call, but by design the behavior is slightly different when using it inside nested function calls. In particular, if the placeholder is only used in a nested function call, lhs will also be placed as the first argument! The reason for this is that in most use-cases this produces the most readable code. For example, <code>iris %&gt;% subset(1:nrow(.) %% 2 == 0)</code> is equivalent to <code>iris %&gt;% subset(., 1:nrow(.) %% 2 == 0)</code> but slightly more compact. It is possible to overrule this behavior by enclosing the rhs in braces. For example, <code>1:10 %&gt;% {c(min(.), max(.))}</code> is equivalent to <code>c(min(1:10), max(1:10))</code>.</p>
+<p>(See <a href="https://stackoverflow.com/questions/35272457/what-does-the-dplyr-period-character-reference">this</a> SO question for more details)</p>
+</div>
+</div>
+<div id="n_distinct" class="section level3">
+<h3><span class="header-section-number">4.3.9</span> n_distinct</h3>
+<p>Gives you the number of distinct rows. It is a ‘faster and more concise equivalent of <code>length(unique(x)</code>’.</p>
+</div>
+<div id="at-_all-_if-at-all-if" class="section level3">
+<h3><span class="header-section-number">4.3.10</span> _at(), _all(), _if() {###at-all-if}</h3>
+<p>The functions <code>mutate()</code>, <code>summarise()</code>, <code>filter()</code>, <code>group_by()</code>, <code>select()</code> and some others, all have <code>_at()</code> and <code>_all()</code> versions.</p>
+<p>Useful references:</p>
+<ul>
+<li><a href="https://dplyr.tidyverse.org/reference/index.html">Tidyverse documentation</a></li>
+<li>Sizan Baert’s <a href="https://suzan.rbind.io/categories/tutorial/">blog</a></li>
+</ul>
+<p>The dataset <code>iris</code> will be used as it is good for demonstrating these functions.</p>
+<div id="mutate-mutate_ext" class="section level4">
+<h4><span class="header-section-number">4.3.10.1</span> mutate {####mutate_ext}</h4>
+<p><code>mutate_at()</code> is used to perform a function on several columns at once. The syntax goes like this:</p>
+<ul>
+<li>Tell it which columns you want to ‘transform’. You can use <code>c(&quot;col&quot;, &quot;col2&quot;)</code> and refer to column names as strings OR use <code>vars()</code> to select columns.
+<ul>
+<li><code>vars()</code> understands the same specifications as <code>select()</code> e.g. <code>-c(col)</code>, <code>starts_with()</code>, <code>contains()</code>. There is NO need to quote column names within <code>vars()</code> as ‘these arguments are automatically quoted and later evaluated in the context of the data frame’ - see <a href="https://dplyr.tidyverse.org/articles/programming.html">non-standard evaluation</a> and <a href="https://dplyr.tidyverse.org/reference/vars.html">vars</a> for more information.</li>
+</ul></li>
+<li>Tell it the function you want to perform.</li>
+</ul>
+<p>When you only want to perform one function, it will perform the function ‘in place’:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate_at</span>(<span class="kw">vars</span>(<span class="kw">starts_with</span>(<span class="st">&quot;Petal&quot;</span>)), log) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">head</span>()</code></pre></div>
+<pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1          5.1         3.5    0.3364722  -1.6094379  setosa
+## 2          4.9         3.0    0.3364722  -1.6094379  setosa
+## 3          4.7         3.2    0.2623643  -1.6094379  setosa
+## 4          4.6         3.1    0.4054651  -1.6094379  setosa
+## 5          5.0         3.6    0.3364722  -1.6094379  setosa
+## 6          5.4         3.9    0.5306283  -0.9162907  setosa</code></pre>
+<p>Here the columns Petal.Length and Petal.Width are now logs of the old columns.</p>
+<p>If instead you wanted to add new columns to the end, use <code>funs()</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate_at</span>(<span class="kw">vars</span>(<span class="kw">starts_with</span>(<span class="st">&quot;Petal&quot;</span>)), 
+            <span class="kw">funs</span>(<span class="dt">log =</span> <span class="kw">log</span>(.))) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">head</span>()</code></pre></div>
+<pre><code>## Warning: funs() is soft deprecated as of dplyr 0.8.0
+## please use list() instead
+## 
+## # Before:
+## funs(name = f(.)
+## 
+## # After: 
+## list(name = ~f(.))
+## This warning is displayed once per session.</code></pre>
+<pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1          5.1         3.5          1.4         0.2  setosa
+## 2          4.9         3.0          1.4         0.2  setosa
+## 3          4.7         3.2          1.3         0.2  setosa
+## 4          4.6         3.1          1.5         0.2  setosa
+## 5          5.0         3.6          1.4         0.2  setosa
+## 6          5.4         3.9          1.7         0.4  setosa
+##   Petal.Length_log Petal.Width_log
+## 1        0.3364722      -1.6094379
+## 2        0.3364722      -1.6094379
+## 3        0.2623643      -1.6094379
+## 4        0.4054651      -1.6094379
+## 5        0.3364722      -1.6094379
+## 6        0.5306283      -0.9162907</code></pre>
+<p>Note that we now need to use the <code>.</code> notation within <code>funs()</code>. The dot is a placeholder and refers to the columns selected using <code>vars()</code>.</p>
+<p>Using <code>funs()</code> you can also perform several functions:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate_at</span>(<span class="kw">vars</span>(<span class="st">&quot;Petal.Width&quot;</span>), <span class="kw">funs</span>(
+    <span class="dt">norm =</span> .<span class="op">/</span><span class="kw">mean</span>(.),
+    <span class="dt">log =</span> <span class="kw">log</span>(.)
+  )) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">head</span>()</code></pre></div>
+<pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species      norm
+## 1          5.1         3.5          1.4         0.2  setosa 0.1667593
+## 2          4.9         3.0          1.4         0.2  setosa 0.1667593
+## 3          4.7         3.2          1.3         0.2  setosa 0.1667593
+## 4          4.6         3.1          1.5         0.2  setosa 0.1667593
+## 5          5.0         3.6          1.4         0.2  setosa 0.1667593
+## 6          5.4         3.9          1.7         0.4  setosa 0.3335186
+##          log
+## 1 -1.6094379
+## 2 -1.6094379
+## 3 -1.6094379
+## 4 -1.6094379
+## 5 -1.6094379
+## 6 -0.9162907</code></pre>
+<p>A complex example involves dividing the selected columns by the median of just the rows (of the selected column) of the <code>Species</code> ’setosa`.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate_at</span>(<span class="kw">vars</span>(<span class="kw">starts_with</span>(<span class="st">&quot;Sepal&quot;</span>)),
+            <span class="kw">funs</span>(.<span class="op">/</span><span class="kw">median</span>(.[Species <span class="op">==</span><span class="st"> &quot;setosa&quot;</span>]))) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">head</span>()</code></pre></div>
+<pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1         1.02   1.0294118          1.4         0.2  setosa
+## 2         0.98   0.8823529          1.4         0.2  setosa
+## 3         0.94   0.9411765          1.3         0.2  setosa
+## 4         0.92   0.9117647          1.5         0.2  setosa
+## 5         1.00   1.0588235          1.4         0.2  setosa
+## 6         1.08   1.1470588          1.7         0.4  setosa</code></pre>
+<p>The above function demonstrates the meaning of the <code>.</code> well. Notice the error that we get if we were to use <code>$</code> instead:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate_at</span>(<span class="kw">vars</span>(<span class="kw">starts_with</span>(<span class="st">&quot;Sepal&quot;</span>)),
+            <span class="kw">funs</span>(.<span class="op">/</span><span class="kw">median</span>(.<span class="op">$</span>Species <span class="op">==</span><span class="st"> &quot;setosa&quot;</span>))) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">head</span>()</code></pre></div>
+<pre><code>## Error in Sepal.Length$Species: $ operator is invalid for atomic vectors</code></pre>
+<p>This error says that the <code>.</code> is an atomic vector. This means the <code>.</code> is referring to one ‘selected’ columm at a time and that selected column is in the form of an atomic vector and NOT a data frame/tibble.</p>
+<p><code>mutate_if()</code> - lets you select columns using a condition. Syntax is: <code>mutate_if(.tbl, .predicate, .funs, ...)</code></p>
+<p>It is useful for converting all column of one data type to another data type:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate_if</span>(is.character, as.factor) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">str</span>()</code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    150 obs. of  5 variables:
+##  $ Sepal.Length: num  5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...
+##  $ Sepal.Width : num  3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...
+##  $ Petal.Length: num  1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...
+##  $ Petal.Width : num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...
+##  $ Species     : Factor w/ 3 levels &quot;setosa&quot;,&quot;versicolor&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
+<p>This has converted the <code>Species</code> column from character to factor.</p>
+<p>If you have a more complicated function to determine which column(s) to mutate, you can:</p>
+<ol style="list-style-type: decimal">
+<li>Wrap the function in an anonymous function. An anonymous function is just one that you have not given a name to (see <a href="http://adv-r.had.co.nz/Functional-programming.html#anonymous-functions">Advanced R</a>.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>Species) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate_if</span>(<span class="cf">function</span>(x) <span class="kw">max</span>(x) <span class="op">&gt;</span><span class="st"> </span><span class="dv">3</span>, log)</code></pre></div>
+<pre><code>##     Sepal.Length Sepal.Width Petal.Length Petal.Width
+## 1       1.629241   1.2527630   0.33647224         0.2
+## 2       1.589235   1.0986123   0.33647224         0.2
+## 3       1.547563   1.1631508   0.26236426         0.2
+## 4       1.526056   1.1314021   0.40546511         0.2
+## 5       1.609438   1.2809338   0.33647224         0.2
+## 6       1.686399   1.3609766   0.53062825         0.4
+## 7       1.526056   1.2237754   0.33647224         0.3
+## 8       1.609438   1.2237754   0.40546511         0.2
+## 9       1.481605   1.0647107   0.33647224         0.2
+## 10      1.589235   1.1314021   0.40546511         0.1
+## 11      1.686399   1.3083328   0.40546511         0.2
+## 12      1.568616   1.2237754   0.47000363         0.2
+## 13      1.568616   1.0986123   0.33647224         0.1
+## 14      1.458615   1.0986123   0.09531018         0.1
+## 15      1.757858   1.3862944   0.18232156         0.2
+## 16      1.740466   1.4816045   0.40546511         0.4
+## 17      1.686399   1.3609766   0.26236426         0.4
+## 18      1.629241   1.2527630   0.33647224         0.3
+## 19      1.740466   1.3350011   0.53062825         0.3
+## 20      1.629241   1.3350011   0.40546511         0.3
+## 21      1.686399   1.2237754   0.53062825         0.2
+## 22      1.629241   1.3083328   0.40546511         0.4
+## 23      1.526056   1.2809338   0.00000000         0.2
+## 24      1.629241   1.1939225   0.53062825         0.5
+## 25      1.568616   1.2237754   0.64185389         0.2
+## 26      1.609438   1.0986123   0.47000363         0.2
+## 27      1.609438   1.2237754   0.47000363         0.4
+## 28      1.648659   1.2527630   0.40546511         0.2
+## 29      1.648659   1.2237754   0.33647224         0.2
+## 30      1.547563   1.1631508   0.47000363         0.2
+## 31      1.568616   1.1314021   0.47000363         0.2
+## 32      1.686399   1.2237754   0.40546511         0.4
+## 33      1.648659   1.4109870   0.40546511         0.1
+## 34      1.704748   1.4350845   0.33647224         0.2
+## 35      1.589235   1.1314021   0.40546511         0.2
+## 36      1.609438   1.1631508   0.18232156         0.2
+## 37      1.704748   1.2527630   0.26236426         0.2
+## 38      1.589235   1.2809338   0.33647224         0.1
+## 39      1.481605   1.0986123   0.26236426         0.2
+## 40      1.629241   1.2237754   0.40546511         0.2
+## 41      1.609438   1.2527630   0.26236426         0.3
+## 42      1.504077   0.8329091   0.26236426         0.3
+## 43      1.481605   1.1631508   0.26236426         0.2
+## 44      1.609438   1.2527630   0.47000363         0.6
+## 45      1.629241   1.3350011   0.64185389         0.4
+## 46      1.568616   1.0986123   0.33647224         0.3
+## 47      1.629241   1.3350011   0.47000363         0.2
+## 48      1.526056   1.1631508   0.33647224         0.2
+## 49      1.667707   1.3083328   0.40546511         0.2
+## 50      1.609438   1.1939225   0.33647224         0.2
+## 51      1.945910   1.1631508   1.54756251         1.4
+## 52      1.856298   1.1631508   1.50407740         1.5
+## 53      1.931521   1.1314021   1.58923521         1.5
+## 54      1.704748   0.8329091   1.38629436         1.3
+## 55      1.871802   1.0296194   1.52605630         1.5
+## 56      1.740466   1.0296194   1.50407740         1.3
+## 57      1.840550   1.1939225   1.54756251         1.6
+## 58      1.589235   0.8754687   1.19392247         1.0
+## 59      1.887070   1.0647107   1.52605630         1.3
+## 60      1.648659   0.9932518   1.36097655         1.4
+## 61      1.609438   0.6931472   1.25276297         1.0
+## 62      1.774952   1.0986123   1.43508453         1.5
+## 63      1.791759   0.7884574   1.38629436         1.0
+## 64      1.808289   1.0647107   1.54756251         1.4
+## 65      1.722767   1.0647107   1.28093385         1.3
+## 66      1.902108   1.1314021   1.48160454         1.4
+## 67      1.722767   1.0986123   1.50407740         1.5
+## 68      1.757858   0.9932518   1.41098697         1.0
+## 69      1.824549   0.7884574   1.50407740         1.5
+## 70      1.722767   0.9162907   1.36097655         1.1
+## 71      1.774952   1.1631508   1.56861592         1.8
+## 72      1.808289   1.0296194   1.38629436         1.3
+## 73      1.840550   0.9162907   1.58923521         1.5
+## 74      1.808289   1.0296194   1.54756251         1.2
+## 75      1.856298   1.0647107   1.45861502         1.3
+## 76      1.887070   1.0986123   1.48160454         1.4
+## 77      1.916923   1.0296194   1.56861592         1.4
+## 78      1.902108   1.0986123   1.60943791         1.7
+## 79      1.791759   1.0647107   1.50407740         1.5
+## 80      1.740466   0.9555114   1.25276297         1.0
+## 81      1.704748   0.8754687   1.33500107         1.1
+## 82      1.704748   0.8754687   1.30833282         1.0
+## 83      1.757858   0.9932518   1.36097655         1.2
+## 84      1.791759   0.9932518   1.62924054         1.6
+## 85      1.686399   1.0986123   1.50407740         1.5
+## 86      1.791759   1.2237754   1.50407740         1.6
+## 87      1.902108   1.1314021   1.54756251         1.5
+## 88      1.840550   0.8329091   1.48160454         1.3
+## 89      1.722767   1.0986123   1.41098697         1.3
+## 90      1.704748   0.9162907   1.38629436         1.3
+## 91      1.704748   0.9555114   1.48160454         1.2
+## 92      1.808289   1.0986123   1.52605630         1.4
+## 93      1.757858   0.9555114   1.38629436         1.2
+## 94      1.609438   0.8329091   1.19392247         1.0
+## 95      1.722767   0.9932518   1.43508453         1.3
+## 96      1.740466   1.0986123   1.43508453         1.2
+## 97      1.740466   1.0647107   1.43508453         1.3
+## 98      1.824549   1.0647107   1.45861502         1.3
+## 99      1.629241   0.9162907   1.09861229         1.1
+## 100     1.740466   1.0296194   1.41098697         1.3
+## 101     1.840550   1.1939225   1.79175947         2.5
+## 102     1.757858   0.9932518   1.62924054         1.9
+## 103     1.960095   1.0986123   1.77495235         2.1
+## 104     1.840550   1.0647107   1.72276660         1.8
+## 105     1.871802   1.0986123   1.75785792         2.2
+## 106     2.028148   1.0986123   1.88706965         2.1
+## 107     1.589235   0.9162907   1.50407740         1.7
+## 108     1.987874   1.0647107   1.84054963         1.8
+## 109     1.902108   0.9162907   1.75785792         1.8
+## 110     1.974081   1.2809338   1.80828877         2.5
+## 111     1.871802   1.1631508   1.62924054         2.0
+## 112     1.856298   0.9932518   1.66770682         1.9
+## 113     1.916923   1.0986123   1.70474809         2.1
+## 114     1.740466   0.9162907   1.60943791         2.0
+## 115     1.757858   1.0296194   1.62924054         2.4
+## 116     1.856298   1.1631508   1.66770682         2.3
+## 117     1.871802   1.0986123   1.70474809         1.8
+## 118     2.041220   1.3350011   1.90210753         2.2
+## 119     2.041220   0.9555114   1.93152141         2.3
+## 120     1.791759   0.7884574   1.60943791         1.5
+## 121     1.931521   1.1631508   1.74046617         2.3
+## 122     1.722767   1.0296194   1.58923521         2.0
+## 123     2.041220   1.0296194   1.90210753         2.0
+## 124     1.840550   0.9932518   1.58923521         1.8
+## 125     1.902108   1.1939225   1.74046617         2.1
+## 126     1.974081   1.1631508   1.79175947         1.8
+## 127     1.824549   1.0296194   1.56861592         1.8
+## 128     1.808289   1.0986123   1.58923521         1.8
+## 129     1.856298   1.0296194   1.72276660         2.1
+## 130     1.974081   1.0986123   1.75785792         1.6
+## 131     2.001480   1.0296194   1.80828877         1.9
+## 132     2.066863   1.3350011   1.85629799         2.0
+## 133     1.856298   1.0296194   1.72276660         2.2
+## 134     1.840550   1.0296194   1.62924054         1.5
+## 135     1.808289   0.9555114   1.72276660         1.4
+## 136     2.041220   1.0986123   1.80828877         2.3
+## 137     1.840550   1.2237754   1.72276660         2.4
+## 138     1.856298   1.1314021   1.70474809         1.8
+## 139     1.791759   1.0986123   1.56861592         1.8
+## 140     1.931521   1.1314021   1.68639895         2.1
+## 141     1.902108   1.1314021   1.72276660         2.4
+## 142     1.931521   1.1314021   1.62924054         2.3
+## 143     1.757858   0.9932518   1.62924054         1.9
+## 144     1.916923   1.1631508   1.77495235         2.3
+## 145     1.902108   1.1939225   1.74046617         2.5
+## 146     1.902108   1.0986123   1.64865863         2.3
+## 147     1.840550   0.9162907   1.60943791         1.9
+## 148     1.871802   1.0986123   1.64865863         2.0
+## 149     1.824549   1.2237754   1.68639895         2.3
+## 150     1.774952   1.0986123   1.62924054         1.8</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Use the tilde <code>~</code> which does the same thing ( ref: <a href="https://stackoverflow.com/questions/49764273/mutate-if-syntax-help-how-to-add-in-parameter-for-function-on-predicate-condit">SO</a>).</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>Species) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate_if</span>( <span class="op">~</span><span class="st"> </span><span class="kw">max</span>(.) <span class="op">&gt;</span><span class="st"> </span><span class="dv">3</span>, log)</code></pre></div>
+<pre><code>##     Sepal.Length Sepal.Width Petal.Length Petal.Width
+## 1       1.629241   1.2527630   0.33647224         0.2
+## 2       1.589235   1.0986123   0.33647224         0.2
+## 3       1.547563   1.1631508   0.26236426         0.2
+## 4       1.526056   1.1314021   0.40546511         0.2
+## 5       1.609438   1.2809338   0.33647224         0.2
+## 6       1.686399   1.3609766   0.53062825         0.4
+## 7       1.526056   1.2237754   0.33647224         0.3
+## 8       1.609438   1.2237754   0.40546511         0.2
+## 9       1.481605   1.0647107   0.33647224         0.2
+## 10      1.589235   1.1314021   0.40546511         0.1
+## 11      1.686399   1.3083328   0.40546511         0.2
+## 12      1.568616   1.2237754   0.47000363         0.2
+## 13      1.568616   1.0986123   0.33647224         0.1
+## 14      1.458615   1.0986123   0.09531018         0.1
+## 15      1.757858   1.3862944   0.18232156         0.2
+## 16      1.740466   1.4816045   0.40546511         0.4
+## 17      1.686399   1.3609766   0.26236426         0.4
+## 18      1.629241   1.2527630   0.33647224         0.3
+## 19      1.740466   1.3350011   0.53062825         0.3
+## 20      1.629241   1.3350011   0.40546511         0.3
+## 21      1.686399   1.2237754   0.53062825         0.2
+## 22      1.629241   1.3083328   0.40546511         0.4
+## 23      1.526056   1.2809338   0.00000000         0.2
+## 24      1.629241   1.1939225   0.53062825         0.5
+## 25      1.568616   1.2237754   0.64185389         0.2
+## 26      1.609438   1.0986123   0.47000363         0.2
+## 27      1.609438   1.2237754   0.47000363         0.4
+## 28      1.648659   1.2527630   0.40546511         0.2
+## 29      1.648659   1.2237754   0.33647224         0.2
+## 30      1.547563   1.1631508   0.47000363         0.2
+## 31      1.568616   1.1314021   0.47000363         0.2
+## 32      1.686399   1.2237754   0.40546511         0.4
+## 33      1.648659   1.4109870   0.40546511         0.1
+## 34      1.704748   1.4350845   0.33647224         0.2
+## 35      1.589235   1.1314021   0.40546511         0.2
+## 36      1.609438   1.1631508   0.18232156         0.2
+## 37      1.704748   1.2527630   0.26236426         0.2
+## 38      1.589235   1.2809338   0.33647224         0.1
+## 39      1.481605   1.0986123   0.26236426         0.2
+## 40      1.629241   1.2237754   0.40546511         0.2
+## 41      1.609438   1.2527630   0.26236426         0.3
+## 42      1.504077   0.8329091   0.26236426         0.3
+## 43      1.481605   1.1631508   0.26236426         0.2
+## 44      1.609438   1.2527630   0.47000363         0.6
+## 45      1.629241   1.3350011   0.64185389         0.4
+## 46      1.568616   1.0986123   0.33647224         0.3
+## 47      1.629241   1.3350011   0.47000363         0.2
+## 48      1.526056   1.1631508   0.33647224         0.2
+## 49      1.667707   1.3083328   0.40546511         0.2
+## 50      1.609438   1.1939225   0.33647224         0.2
+## 51      1.945910   1.1631508   1.54756251         1.4
+## 52      1.856298   1.1631508   1.50407740         1.5
+## 53      1.931521   1.1314021   1.58923521         1.5
+## 54      1.704748   0.8329091   1.38629436         1.3
+## 55      1.871802   1.0296194   1.52605630         1.5
+## 56      1.740466   1.0296194   1.50407740         1.3
+## 57      1.840550   1.1939225   1.54756251         1.6
+## 58      1.589235   0.8754687   1.19392247         1.0
+## 59      1.887070   1.0647107   1.52605630         1.3
+## 60      1.648659   0.9932518   1.36097655         1.4
+## 61      1.609438   0.6931472   1.25276297         1.0
+## 62      1.774952   1.0986123   1.43508453         1.5
+## 63      1.791759   0.7884574   1.38629436         1.0
+## 64      1.808289   1.0647107   1.54756251         1.4
+## 65      1.722767   1.0647107   1.28093385         1.3
+## 66      1.902108   1.1314021   1.48160454         1.4
+## 67      1.722767   1.0986123   1.50407740         1.5
+## 68      1.757858   0.9932518   1.41098697         1.0
+## 69      1.824549   0.7884574   1.50407740         1.5
+## 70      1.722767   0.9162907   1.36097655         1.1
+## 71      1.774952   1.1631508   1.56861592         1.8
+## 72      1.808289   1.0296194   1.38629436         1.3
+## 73      1.840550   0.9162907   1.58923521         1.5
+## 74      1.808289   1.0296194   1.54756251         1.2
+## 75      1.856298   1.0647107   1.45861502         1.3
+## 76      1.887070   1.0986123   1.48160454         1.4
+## 77      1.916923   1.0296194   1.56861592         1.4
+## 78      1.902108   1.0986123   1.60943791         1.7
+## 79      1.791759   1.0647107   1.50407740         1.5
+## 80      1.740466   0.9555114   1.25276297         1.0
+## 81      1.704748   0.8754687   1.33500107         1.1
+## 82      1.704748   0.8754687   1.30833282         1.0
+## 83      1.757858   0.9932518   1.36097655         1.2
+## 84      1.791759   0.9932518   1.62924054         1.6
+## 85      1.686399   1.0986123   1.50407740         1.5
+## 86      1.791759   1.2237754   1.50407740         1.6
+## 87      1.902108   1.1314021   1.54756251         1.5
+## 88      1.840550   0.8329091   1.48160454         1.3
+## 89      1.722767   1.0986123   1.41098697         1.3
+## 90      1.704748   0.9162907   1.38629436         1.3
+## 91      1.704748   0.9555114   1.48160454         1.2
+## 92      1.808289   1.0986123   1.52605630         1.4
+## 93      1.757858   0.9555114   1.38629436         1.2
+## 94      1.609438   0.8329091   1.19392247         1.0
+## 95      1.722767   0.9932518   1.43508453         1.3
+## 96      1.740466   1.0986123   1.43508453         1.2
+## 97      1.740466   1.0647107   1.43508453         1.3
+## 98      1.824549   1.0647107   1.45861502         1.3
+## 99      1.629241   0.9162907   1.09861229         1.1
+## 100     1.740466   1.0296194   1.41098697         1.3
+## 101     1.840550   1.1939225   1.79175947         2.5
+## 102     1.757858   0.9932518   1.62924054         1.9
+## 103     1.960095   1.0986123   1.77495235         2.1
+## 104     1.840550   1.0647107   1.72276660         1.8
+## 105     1.871802   1.0986123   1.75785792         2.2
+## 106     2.028148   1.0986123   1.88706965         2.1
+## 107     1.589235   0.9162907   1.50407740         1.7
+## 108     1.987874   1.0647107   1.84054963         1.8
+## 109     1.902108   0.9162907   1.75785792         1.8
+## 110     1.974081   1.2809338   1.80828877         2.5
+## 111     1.871802   1.1631508   1.62924054         2.0
+## 112     1.856298   0.9932518   1.66770682         1.9
+## 113     1.916923   1.0986123   1.70474809         2.1
+## 114     1.740466   0.9162907   1.60943791         2.0
+## 115     1.757858   1.0296194   1.62924054         2.4
+## 116     1.856298   1.1631508   1.66770682         2.3
+## 117     1.871802   1.0986123   1.70474809         1.8
+## 118     2.041220   1.3350011   1.90210753         2.2
+## 119     2.041220   0.9555114   1.93152141         2.3
+## 120     1.791759   0.7884574   1.60943791         1.5
+## 121     1.931521   1.1631508   1.74046617         2.3
+## 122     1.722767   1.0296194   1.58923521         2.0
+## 123     2.041220   1.0296194   1.90210753         2.0
+## 124     1.840550   0.9932518   1.58923521         1.8
+## 125     1.902108   1.1939225   1.74046617         2.1
+## 126     1.974081   1.1631508   1.79175947         1.8
+## 127     1.824549   1.0296194   1.56861592         1.8
+## 128     1.808289   1.0986123   1.58923521         1.8
+## 129     1.856298   1.0296194   1.72276660         2.1
+## 130     1.974081   1.0986123   1.75785792         1.6
+## 131     2.001480   1.0296194   1.80828877         1.9
+## 132     2.066863   1.3350011   1.85629799         2.0
+## 133     1.856298   1.0296194   1.72276660         2.2
+## 134     1.840550   1.0296194   1.62924054         1.5
+## 135     1.808289   0.9555114   1.72276660         1.4
+## 136     2.041220   1.0986123   1.80828877         2.3
+## 137     1.840550   1.2237754   1.72276660         2.4
+## 138     1.856298   1.1314021   1.70474809         1.8
+## 139     1.791759   1.0986123   1.56861592         1.8
+## 140     1.931521   1.1314021   1.68639895         2.1
+## 141     1.902108   1.1314021   1.72276660         2.4
+## 142     1.931521   1.1314021   1.62924054         2.3
+## 143     1.757858   0.9932518   1.62924054         1.9
+## 144     1.916923   1.1631508   1.77495235         2.3
+## 145     1.902108   1.1939225   1.74046617         2.5
+## 146     1.902108   1.0986123   1.64865863         2.3
+## 147     1.840550   0.9162907   1.60943791         1.9
+## 148     1.871802   1.0986123   1.64865863         2.0
+## 149     1.824549   1.2237754   1.68639895         2.3
+## 150     1.774952   1.0986123   1.62924054         1.8</code></pre>
+<p>Note that the <code>.predicate</code> argument is passed to <code>rlang::as_function()</code>, which is why you can use the function name only without brackets at the end and apparently ‘strings representing function names’.</p>
+<p>In the above example, the columns we are selecting are ones where the max value is greater than 3. The function we are performing is <code>log()</code>.</p>
+<p>If you want to test multiple conditions, I suggest you write your own function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">testfun &lt;-<span class="st"> </span><span class="cf">function</span>(x){
+  
+  <span class="kw">max</span>(x)<span class="op">&gt;</span><span class="dv">3</span> <span class="op">&amp;</span><span class="st"> </span><span class="kw">min</span>(x) <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>
+  
+}
+
+iris <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>Species) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate_if</span>(testfun, log) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">head</span>()</code></pre></div>
+<pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width
+## 1     1.629241    1.252763          1.4         0.2
+## 2     1.589235    1.098612          1.4         0.2
+## 3     1.547563    1.163151          1.3         0.2
+## 4     1.526056    1.131402          1.5         0.2
+## 5     1.609438    1.280934          1.4         0.2
+## 6     1.686399    1.360977          1.7         0.4</code></pre>
+<p>You can also test several functions within the <code>mutate_if()</code> using the two syntax described above:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>Species) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate_if</span>(<span class="cf">function</span>(x) <span class="kw">is.double</span>(x) <span class="op">&amp;</span><span class="st"> </span><span class="kw">is.numeric</span>(x), log)</code></pre></div>
+<pre><code>##     Sepal.Length Sepal.Width Petal.Length Petal.Width
+## 1       1.629241   1.2527630   0.33647224 -1.60943791
+## 2       1.589235   1.0986123   0.33647224 -1.60943791
+## 3       1.547563   1.1631508   0.26236426 -1.60943791
+## 4       1.526056   1.1314021   0.40546511 -1.60943791
+## 5       1.609438   1.2809338   0.33647224 -1.60943791
+## 6       1.686399   1.3609766   0.53062825 -0.91629073
+## 7       1.526056   1.2237754   0.33647224 -1.20397280
+## 8       1.609438   1.2237754   0.40546511 -1.60943791
+## 9       1.481605   1.0647107   0.33647224 -1.60943791
+## 10      1.589235   1.1314021   0.40546511 -2.30258509
+## 11      1.686399   1.3083328   0.40546511 -1.60943791
+## 12      1.568616   1.2237754   0.47000363 -1.60943791
+## 13      1.568616   1.0986123   0.33647224 -2.30258509
+## 14      1.458615   1.0986123   0.09531018 -2.30258509
+## 15      1.757858   1.3862944   0.18232156 -1.60943791
+## 16      1.740466   1.4816045   0.40546511 -0.91629073
+## 17      1.686399   1.3609766   0.26236426 -0.91629073
+## 18      1.629241   1.2527630   0.33647224 -1.20397280
+## 19      1.740466   1.3350011   0.53062825 -1.20397280
+## 20      1.629241   1.3350011   0.40546511 -1.20397280
+## 21      1.686399   1.2237754   0.53062825 -1.60943791
+## 22      1.629241   1.3083328   0.40546511 -0.91629073
+## 23      1.526056   1.2809338   0.00000000 -1.60943791
+## 24      1.629241   1.1939225   0.53062825 -0.69314718
+## 25      1.568616   1.2237754   0.64185389 -1.60943791
+## 26      1.609438   1.0986123   0.47000363 -1.60943791
+## 27      1.609438   1.2237754   0.47000363 -0.91629073
+## 28      1.648659   1.2527630   0.40546511 -1.60943791
+## 29      1.648659   1.2237754   0.33647224 -1.60943791
+## 30      1.547563   1.1631508   0.47000363 -1.60943791
+## 31      1.568616   1.1314021   0.47000363 -1.60943791
+## 32      1.686399   1.2237754   0.40546511 -0.91629073
+## 33      1.648659   1.4109870   0.40546511 -2.30258509
+## 34      1.704748   1.4350845   0.33647224 -1.60943791
+## 35      1.589235   1.1314021   0.40546511 -1.60943791
+## 36      1.609438   1.1631508   0.18232156 -1.60943791
+## 37      1.704748   1.2527630   0.26236426 -1.60943791
+## 38      1.589235   1.2809338   0.33647224 -2.30258509
+## 39      1.481605   1.0986123   0.26236426 -1.60943791
+## 40      1.629241   1.2237754   0.40546511 -1.60943791
+## 41      1.609438   1.2527630   0.26236426 -1.20397280
+## 42      1.504077   0.8329091   0.26236426 -1.20397280
+## 43      1.481605   1.1631508   0.26236426 -1.60943791
+## 44      1.609438   1.2527630   0.47000363 -0.51082562
+## 45      1.629241   1.3350011   0.64185389 -0.91629073
+## 46      1.568616   1.0986123   0.33647224 -1.20397280
+## 47      1.629241   1.3350011   0.47000363 -1.60943791
+## 48      1.526056   1.1631508   0.33647224 -1.60943791
+## 49      1.667707   1.3083328   0.40546511 -1.60943791
+## 50      1.609438   1.1939225   0.33647224 -1.60943791
+## 51      1.945910   1.1631508   1.54756251  0.33647224
+## 52      1.856298   1.1631508   1.50407740  0.40546511
+## 53      1.931521   1.1314021   1.58923521  0.40546511
+## 54      1.704748   0.8329091   1.38629436  0.26236426
+## 55      1.871802   1.0296194   1.52605630  0.40546511
+## 56      1.740466   1.0296194   1.50407740  0.26236426
+## 57      1.840550   1.1939225   1.54756251  0.47000363
+## 58      1.589235   0.8754687   1.19392247  0.00000000
+## 59      1.887070   1.0647107   1.52605630  0.26236426
+## 60      1.648659   0.9932518   1.36097655  0.33647224
+## 61      1.609438   0.6931472   1.25276297  0.00000000
+## 62      1.774952   1.0986123   1.43508453  0.40546511
+## 63      1.791759   0.7884574   1.38629436  0.00000000
+## 64      1.808289   1.0647107   1.54756251  0.33647224
+## 65      1.722767   1.0647107   1.28093385  0.26236426
+## 66      1.902108   1.1314021   1.48160454  0.33647224
+## 67      1.722767   1.0986123   1.50407740  0.40546511
+## 68      1.757858   0.9932518   1.41098697  0.00000000
+## 69      1.824549   0.7884574   1.50407740  0.40546511
+## 70      1.722767   0.9162907   1.36097655  0.09531018
+## 71      1.774952   1.1631508   1.56861592  0.58778666
+## 72      1.808289   1.0296194   1.38629436  0.26236426
+## 73      1.840550   0.9162907   1.58923521  0.40546511
+## 74      1.808289   1.0296194   1.54756251  0.18232156
+## 75      1.856298   1.0647107   1.45861502  0.26236426
+## 76      1.887070   1.0986123   1.48160454  0.33647224
+## 77      1.916923   1.0296194   1.56861592  0.33647224
+## 78      1.902108   1.0986123   1.60943791  0.53062825
+## 79      1.791759   1.0647107   1.50407740  0.40546511
+## 80      1.740466   0.9555114   1.25276297  0.00000000
+## 81      1.704748   0.8754687   1.33500107  0.09531018
+## 82      1.704748   0.8754687   1.30833282  0.00000000
+## 83      1.757858   0.9932518   1.36097655  0.18232156
+## 84      1.791759   0.9932518   1.62924054  0.47000363
+## 85      1.686399   1.0986123   1.50407740  0.40546511
+## 86      1.791759   1.2237754   1.50407740  0.47000363
+## 87      1.902108   1.1314021   1.54756251  0.40546511
+## 88      1.840550   0.8329091   1.48160454  0.26236426
+## 89      1.722767   1.0986123   1.41098697  0.26236426
+## 90      1.704748   0.9162907   1.38629436  0.26236426
+## 91      1.704748   0.9555114   1.48160454  0.18232156
+## 92      1.808289   1.0986123   1.52605630  0.33647224
+## 93      1.757858   0.9555114   1.38629436  0.18232156
+## 94      1.609438   0.8329091   1.19392247  0.00000000
+## 95      1.722767   0.9932518   1.43508453  0.26236426
+## 96      1.740466   1.0986123   1.43508453  0.18232156
+## 97      1.740466   1.0647107   1.43508453  0.26236426
+## 98      1.824549   1.0647107   1.45861502  0.26236426
+## 99      1.629241   0.9162907   1.09861229  0.09531018
+## 100     1.740466   1.0296194   1.41098697  0.26236426
+## 101     1.840550   1.1939225   1.79175947  0.91629073
+## 102     1.757858   0.9932518   1.62924054  0.64185389
+## 103     1.960095   1.0986123   1.77495235  0.74193734
+## 104     1.840550   1.0647107   1.72276660  0.58778666
+## 105     1.871802   1.0986123   1.75785792  0.78845736
+## 106     2.028148   1.0986123   1.88706965  0.74193734
+## 107     1.589235   0.9162907   1.50407740  0.53062825
+## 108     1.987874   1.0647107   1.84054963  0.58778666
+## 109     1.902108   0.9162907   1.75785792  0.58778666
+## 110     1.974081   1.2809338   1.80828877  0.91629073
+## 111     1.871802   1.1631508   1.62924054  0.69314718
+## 112     1.856298   0.9932518   1.66770682  0.64185389
+## 113     1.916923   1.0986123   1.70474809  0.74193734
+## 114     1.740466   0.9162907   1.60943791  0.69314718
+## 115     1.757858   1.0296194   1.62924054  0.87546874
+## 116     1.856298   1.1631508   1.66770682  0.83290912
+## 117     1.871802   1.0986123   1.70474809  0.58778666
+## 118     2.041220   1.3350011   1.90210753  0.78845736
+## 119     2.041220   0.9555114   1.93152141  0.83290912
+## 120     1.791759   0.7884574   1.60943791  0.40546511
+## 121     1.931521   1.1631508   1.74046617  0.83290912
+## 122     1.722767   1.0296194   1.58923521  0.69314718
+## 123     2.041220   1.0296194   1.90210753  0.69314718
+## 124     1.840550   0.9932518   1.58923521  0.58778666
+## 125     1.902108   1.1939225   1.74046617  0.74193734
+## 126     1.974081   1.1631508   1.79175947  0.58778666
+## 127     1.824549   1.0296194   1.56861592  0.58778666
+## 128     1.808289   1.0986123   1.58923521  0.58778666
+## 129     1.856298   1.0296194   1.72276660  0.74193734
+## 130     1.974081   1.0986123   1.75785792  0.47000363
+## 131     2.001480   1.0296194   1.80828877  0.64185389
+## 132     2.066863   1.3350011   1.85629799  0.69314718
+## 133     1.856298   1.0296194   1.72276660  0.78845736
+## 134     1.840550   1.0296194   1.62924054  0.40546511
+## 135     1.808289   0.9555114   1.72276660  0.33647224
+## 136     2.041220   1.0986123   1.80828877  0.83290912
+## 137     1.840550   1.2237754   1.72276660  0.87546874
+## 138     1.856298   1.1314021   1.70474809  0.58778666
+## 139     1.791759   1.0986123   1.56861592  0.58778666
+## 140     1.931521   1.1314021   1.68639895  0.74193734
+## 141     1.902108   1.1314021   1.72276660  0.87546874
+## 142     1.931521   1.1314021   1.62924054  0.83290912
+## 143     1.757858   0.9932518   1.62924054  0.64185389
+## 144     1.916923   1.1631508   1.77495235  0.83290912
+## 145     1.902108   1.1939225   1.74046617  0.91629073
+## 146     1.902108   1.0986123   1.64865863  0.83290912
+## 147     1.840550   0.9162907   1.60943791  0.64185389
+## 148     1.871802   1.0986123   1.64865863  0.69314718
+## 149     1.824549   1.2237754   1.68639895  0.83290912
+## 150     1.774952   1.0986123   1.62924054  0.58778666</code></pre>
+<p><code>mutate_all()</code> - here no selection of columns required. Your function will be performed on all columns.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>Species) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate_all</span>(log) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">head</span>()</code></pre></div>
+<pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width
+## 1     1.629241    1.252763    0.3364722  -1.6094379
+## 2     1.589235    1.098612    0.3364722  -1.6094379
+## 3     1.547563    1.163151    0.2623643  -1.6094379
+## 4     1.526056    1.131402    0.4054651  -1.6094379
+## 5     1.609438    1.280934    0.3364722  -1.6094379
+## 6     1.686399    1.360977    0.5306283  -0.9162907</code></pre>
+</div>
+<div id="summarise-summarise_ext" class="section level4">
+<h4><span class="header-section-number">4.3.10.2</span> summarise {####summarise_ext</h4>
+<p><code>summarise_at()</code> works similarly to <code>mutate_at()</code>:</p>
+<ul>
+<li>again, select the columns you wish to summarise using <code>c('colname')</code> or <code>vars()</code></li>
+<li>specify the function you want performed, using <code>funs()</code> when you want several functions or</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarise_at</span>(<span class="kw">vars</span>(<span class="kw">starts_with</span>(<span class="st">&quot;Petal&quot;</span>)), mean)</code></pre></div>
+<pre><code>##   Petal.Length Petal.Width
+## 1        3.758    1.199333</code></pre>
+<p>Note that you can ONLY use functions which return a single length vector, as the aim of the <code>summarise-</code> functions is to summarise into 1 value. For example, you could not use <code>log()</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarise_at</span>(<span class="kw">vars</span>(<span class="kw">starts_with</span>(<span class="st">&quot;Petal&quot;</span>)), log)</code></pre></div>
+<pre><code>## Error: Column `Petal.Length` must be length 1 (a summary value), not 150</code></pre>
+<p>When you put the function in <code>funs()</code>, the names of the output columns are changed to add your column name (specified on the LHS of your function) to the end of your column name.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarise_at</span>(<span class="kw">vars</span>(<span class="kw">starts_with</span>(<span class="st">&quot;Petal&quot;</span>)), 
+               <span class="kw">funs</span>(<span class="dt">mean =</span> <span class="kw">mean</span>(.)))</code></pre></div>
+<pre><code>##   Petal.Length_mean Petal.Width_mean
+## 1             3.758         1.199333</code></pre>
+<p>You can also add <code>group_by()</code> to the chain:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(Species) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarise_at</span>(<span class="kw">vars</span>(<span class="kw">starts_with</span>(<span class="st">&quot;Petal&quot;</span>)), <span class="kw">funs</span>(mean, median))</code></pre></div>
+<pre><code>## # A tibble: 3 x 5
+##   Species Petal.Length_me… Petal.Width_mean Petal.Length_me…
+##   &lt;fct&gt;              &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+## 1 setosa              1.46            0.246             1.5 
+## 2 versic…             4.26            1.33              4.35
+## 3 virgin…             5.55            2.03              5.55
+## # … with 1 more variable: Petal.Width_median &lt;dbl&gt;</code></pre>
+<p>Note how the function name is added to the end of each column to specify which function has been formed on each of your columns.</p>
+<p><code>summarise_if()</code> - like above, select your column(s) by specifying a condition and then tell it what function you want to perform.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(Species) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarise_if</span>(is.numeric, mean, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>## # A tibble: 3 x 5
+##   Species    Sepal.Length Sepal.Width Petal.Length Petal.Width
+##   &lt;fct&gt;             &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;
+## 1 setosa             5.01        3.43         1.46       0.246
+## 2 versicolor         5.94        2.77         4.26       1.33 
+## 3 virginica          6.59        2.97         5.55       2.03</code></pre>
+<p>Note that you can pass arguments to your function using the final <code>...</code> argument of <code>summarise_if()</code>. Also notice how your column names have not changed.</p>
+<p>If we use <code>funs()</code> AND add a LHS to the function, they will change:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(Species) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarise_if</span>(is.numeric, <span class="kw">funs</span>(<span class="dt">mean =</span> <span class="kw">mean</span>(.)))</code></pre></div>
+<pre><code>## # A tibble: 3 x 5
+##   Species Sepal.Length_me… Sepal.Width_mean Petal.Length_me…
+##   &lt;fct&gt;              &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+## 1 setosa              5.01             3.43             1.46
+## 2 versic…             5.94             2.77             4.26
+## 3 virgin…             6.59             2.97             5.55
+## # … with 1 more variable: Petal.Width_mean &lt;dbl&gt;</code></pre>
+<p><code>summarise_all()</code> - again, your function(s) are performed on all your columns.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(Species) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarise_all</span>(mean)</code></pre></div>
+<pre><code>## # A tibble: 3 x 5
+##   Species    Sepal.Length Sepal.Width Petal.Length Petal.Width
+##   &lt;fct&gt;             &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;
+## 1 setosa             5.01        3.43         1.46       0.246
+## 2 versicolor         5.94        2.77         4.26       1.33 
+## 3 virginica          6.59        2.97         5.55       2.03</code></pre>
+</div>
+<div id="filter-filter_ext" class="section level4">
+<h4><span class="header-section-number">4.3.10.3</span> filter {####filter_ext}</h4>
+<p><code>filter_at()</code> - similar to above, select the columns to filter on using <code>c('colname')</code> or <code>vars()</code>, then specify your condition.</p>
+<p>You condition must be wrapped in <code>all_vars()</code> or <code>any_vars()</code>. This is because, while <code>filter()</code> checks only one column to see if it meets your condition, <code>filter_at()</code> checks several columns. It then returns the results for every selected column.</p>
+<p>As suggested by the name <code>all_vars()</code> returns <code>TRUE</code> for a row only if the condition is met in all selected columns and <code>any_vars()</code> returns <code>TRUE</code> if the condition is met in any of the selected columns.</p>
+<p>Let’s have a look at the function in action:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter_at</span>(<span class="kw">vars</span>(<span class="kw">starts_with</span>(<span class="st">&quot;Petal&quot;</span>)), 
+            <span class="kw">any_vars</span>(. <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">head</span>()</code></pre></div>
+<pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
+## 1          7.0         3.2          4.7         1.4 versicolor
+## 2          6.4         3.2          4.5         1.5 versicolor
+## 3          6.9         3.1          4.9         1.5 versicolor
+## 4          5.5         2.3          4.0         1.3 versicolor
+## 5          6.5         2.8          4.6         1.5 versicolor
+## 6          5.7         2.8          4.5         1.3 versicolor</code></pre>
+<p>What the above code does is check each row to see if the value in ANY of the columns starting with ‘Petal’ is creater than 2.</p>
+<p>Note how we have to use the <code>.</code> again. This placeholder refers to the values in each selected column, one at a time.</p>
+<p><code>filter_if()</code> - like before, select the columns on which you wish to apply your filtering condition, using your column selecting condition. Then your row filtering condition will be applied to all columns that meet your column selecting condition.</p>
+<p>The functions <code>all_vars()</code> or <code>any_vars()</code> must be used to specify if the row filtering condition needs to be met in at least one column or all columns before the row is returned.</p>
+<p>An example:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter_if</span>(is.numeric, <span class="kw">all_vars</span>(. <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">head</span>()</code></pre></div>
+<pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
+## 1          7.0         3.2          4.7         1.4 versicolor
+## 2          6.4         3.2          4.5         1.5 versicolor
+## 3          6.9         3.1          4.9         1.5 versicolor
+## 4          5.5         2.3          4.0         1.3 versicolor
+## 5          6.5         2.8          4.6         1.5 versicolor
+## 6          5.7         2.8          4.5         1.3 versicolor</code></pre>
+<p>Here we are filtering on all columns that are of the numeric data type. Then we want the row value to be greater than 1 in all of the chosen columns.</p>
+<p><code>filter_all()</code> - as above, this uses all the columns. Thus the condition must be met in ALL columns for the row to be returned.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>Species) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter_all</span>(<span class="kw">any_vars</span>(. <span class="op">&gt;</span><span class="st"> </span><span class="dv">5</span>))</code></pre></div>
+<pre><code>##     Sepal.Length Sepal.Width Petal.Length Petal.Width
+## 1            5.1         3.5          1.4         0.2
+## 2            5.4         3.9          1.7         0.4
+## 3            5.4         3.7          1.5         0.2
+## 4            5.8         4.0          1.2         0.2
+## 5            5.7         4.4          1.5         0.4
+## 6            5.4         3.9          1.3         0.4
+## 7            5.1         3.5          1.4         0.3
+## 8            5.7         3.8          1.7         0.3
+## 9            5.1         3.8          1.5         0.3
+## 10           5.4         3.4          1.7         0.2
+## 11           5.1         3.7          1.5         0.4
+## 12           5.1         3.3          1.7         0.5
+## 13           5.2         3.5          1.5         0.2
+## 14           5.2         3.4          1.4         0.2
+## 15           5.4         3.4          1.5         0.4
+## 16           5.2         4.1          1.5         0.1
+## 17           5.5         4.2          1.4         0.2
+## 18           5.5         3.5          1.3         0.2
+## 19           5.1         3.4          1.5         0.2
+## 20           5.1         3.8          1.9         0.4
+## 21           5.1         3.8          1.6         0.2
+## 22           5.3         3.7          1.5         0.2
+## 23           7.0         3.2          4.7         1.4
+## 24           6.4         3.2          4.5         1.5
+## 25           6.9         3.1          4.9         1.5
+## 26           5.5         2.3          4.0         1.3
+## 27           6.5         2.8          4.6         1.5
+## 28           5.7         2.8          4.5         1.3
+## 29           6.3         3.3          4.7         1.6
+## 30           6.6         2.9          4.6         1.3
+## 31           5.2         2.7          3.9         1.4
+## 32           5.9         3.0          4.2         1.5
+## 33           6.0         2.2          4.0         1.0
+## 34           6.1         2.9          4.7         1.4
+## 35           5.6         2.9          3.6         1.3
+## 36           6.7         3.1          4.4         1.4
+## 37           5.6         3.0          4.5         1.5
+## 38           5.8         2.7          4.1         1.0
+## 39           6.2         2.2          4.5         1.5
+## 40           5.6         2.5          3.9         1.1
+## 41           5.9         3.2          4.8         1.8
+## 42           6.1         2.8          4.0         1.3
+## 43           6.3         2.5          4.9         1.5
+## 44           6.1         2.8          4.7         1.2
+## 45           6.4         2.9          4.3         1.3
+## 46           6.6         3.0          4.4         1.4
+## 47           6.8         2.8          4.8         1.4
+## 48           6.7         3.0          5.0         1.7
+## 49           6.0         2.9          4.5         1.5
+## 50           5.7         2.6          3.5         1.0
+## 51           5.5         2.4          3.8         1.1
+## 52           5.5         2.4          3.7         1.0
+## 53           5.8         2.7          3.9         1.2
+## 54           6.0         2.7          5.1         1.6
+## 55           5.4         3.0          4.5         1.5
+## 56           6.0         3.4          4.5         1.6
+## 57           6.7         3.1          4.7         1.5
+## 58           6.3         2.3          4.4         1.3
+## 59           5.6         3.0          4.1         1.3
+## 60           5.5         2.5          4.0         1.3
+## 61           5.5         2.6          4.4         1.2
+## 62           6.1         3.0          4.6         1.4
+## 63           5.8         2.6          4.0         1.2
+## 64           5.6         2.7          4.2         1.3
+## 65           5.7         3.0          4.2         1.2
+## 66           5.7         2.9          4.2         1.3
+## 67           6.2         2.9          4.3         1.3
+## 68           5.1         2.5          3.0         1.1
+## 69           5.7         2.8          4.1         1.3
+## 70           6.3         3.3          6.0         2.5
+## 71           5.8         2.7          5.1         1.9
+## 72           7.1         3.0          5.9         2.1
+## 73           6.3         2.9          5.6         1.8
+## 74           6.5         3.0          5.8         2.2
+## 75           7.6         3.0          6.6         2.1
+## 76           7.3         2.9          6.3         1.8
+## 77           6.7         2.5          5.8         1.8
+## 78           7.2         3.6          6.1         2.5
+## 79           6.5         3.2          5.1         2.0
+## 80           6.4         2.7          5.3         1.9
+## 81           6.8         3.0          5.5         2.1
+## 82           5.7         2.5          5.0         2.0
+## 83           5.8         2.8          5.1         2.4
+## 84           6.4         3.2          5.3         2.3
+## 85           6.5         3.0          5.5         1.8
+## 86           7.7         3.8          6.7         2.2
+## 87           7.7         2.6          6.9         2.3
+## 88           6.0         2.2          5.0         1.5
+## 89           6.9         3.2          5.7         2.3
+## 90           5.6         2.8          4.9         2.0
+## 91           7.7         2.8          6.7         2.0
+## 92           6.3         2.7          4.9         1.8
+## 93           6.7         3.3          5.7         2.1
+## 94           7.2         3.2          6.0         1.8
+## 95           6.2         2.8          4.8         1.8
+## 96           6.1         3.0          4.9         1.8
+## 97           6.4         2.8          5.6         2.1
+## 98           7.2         3.0          5.8         1.6
+## 99           7.4         2.8          6.1         1.9
+## 100          7.9         3.8          6.4         2.0
+## 101          6.4         2.8          5.6         2.2
+## 102          6.3         2.8          5.1         1.5
+## 103          6.1         2.6          5.6         1.4
+## 104          7.7         3.0          6.1         2.3
+## 105          6.3         3.4          5.6         2.4
+## 106          6.4         3.1          5.5         1.8
+## 107          6.0         3.0          4.8         1.8
+## 108          6.9         3.1          5.4         2.1
+## 109          6.7         3.1          5.6         2.4
+## 110          6.9         3.1          5.1         2.3
+## 111          5.8         2.7          5.1         1.9
+## 112          6.8         3.2          5.9         2.3
+## 113          6.7         3.3          5.7         2.5
+## 114          6.7         3.0          5.2         2.3
+## 115          6.3         2.5          5.0         1.9
+## 116          6.5         3.0          5.2         2.0
+## 117          6.2         3.4          5.4         2.3
+## 118          5.9         3.0          5.1         1.8</code></pre>
+<p>Here we are filtering on every column. In one row, if any value is greater tnan 5, the row will be returned.</p>
+</div>
+</div>
+<div id="own-functions" class="section level3">
+<h3><span class="header-section-number">4.3.11</span> Own functions</h3>
+<p>You can write your own functions to add to the end of a dplyr chain.</p>
+<p>Certain functions (e.g. <code>mean()</code>, <code>sd()</code>) expect a vector input (and not data frame). When you have a <code>group_by()</code> above your function (e.g. <code>group_by(a) %&gt;% yourfunction()</code>), subsetting within your own function with <code>[ ]</code> to obtain one column will give you a data frame and NOT a vector.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># print the structure of the first column</span>
+test_fun &lt;-<span class="st"> </span><span class="cf">function</span>(x){
+  <span class="kw">print</span>(<span class="kw">str</span>(x[,<span class="dv">1</span>]))
+}
+
+iris <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(Species) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">test_fun</span>()</code></pre></div>
+<pre><code>## Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:    150 obs. of  1 variable:
+##  $ Sepal.Length: num  5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...
+## NULL</code></pre>
+<p>Using the same subsetting method on a dataframe gives you an atomic vector. This is most likely due to the behaviour of the grouped dataframe.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(iris[,<span class="dv">1</span>])</code></pre></div>
+<pre><code>##  num [1:150] 5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...</code></pre>
+<p>To obtain an atomic vector, use <code>[[ ]]</code> (as a dataframe is a list):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">test_fun &lt;-<span class="st"> </span><span class="cf">function</span>(x){
+  <span class="kw">print</span>(<span class="kw">str</span>(x[,<span class="dv">1</span>][[<span class="dv">1</span>]]))
+}
+
+iris <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(Species) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">test_fun</span>()</code></pre></div>
+<pre><code>##  num [1:150] 5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...
+## NULL</code></pre>
+</div>
+<div id="join" class="section level3">
+<h3><span class="header-section-number">4.3.12</span> Join</h3>
+<p>Performs the same function as <code>merge()</code>. Is faster?</p>
+<p>A useful reference can be found in this <a href="http://stat545.com/bit001_dplyr-cheatsheet.html">guide</a></p>
+<ul>
+<li><code>inner_join(x,y)</code>
+<ul>
+<li>Columns - all columns from x and y</li>
+<li>Rows - only the rows where there were matching values, in the merging columns</li>
+</ul></li>
+<li><code>semi_join(x,y)</code>
+<ul>
+<li>Columns - only columns from x</li>
+<li>Rows - only rows from X where there were matching values in y</li>
+</ul></li>
+<li><code>left_join(x,y)</code>
+<ul>
+<li>Columns - all columns from x and y</li>
+<li>Rows - only rows from x</li>
+</ul></li>
+<li><code>anti_join(x,y)</code>
+<ul>
+<li>Columns - only columns from x</li>
+<li>Rows - only rows from x where there are NOT matching values in y</li>
+</ul></li>
+<li><code>full_join(x,y)</code> You will get NA values when there are things that do not match
+<ul>
+<li>Columns - all columns</li>
+<li>Rows - all rows from both x and y. Where there is a row that is not in both x and y, it is kept and NAs fill missing values</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="tidyr" class="section level2">
+<h2><span class="header-section-number">4.4</span> tidyr</h2>
+<p>The two most common problems when cleaning data are that one variable may be spread across multiple columns or one observation may be spread out across multiple rows. The following two functions solve this.</p>
+<div id="gather" class="section level3">
+<h3><span class="header-section-number">4.4.1</span> gather</h3>
+<p><code>gather()</code> is for when variables are spread across many columns. Goes from wide to long.</p>
+<p>Take this dataset from <code>tidyr</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">table4a</code></pre></div>
+<pre><code>## # A tibble: 3 x 3
+##   country     `1999` `2000`
+## * &lt;chr&gt;        &lt;int&gt;  &lt;int&gt;
+## 1 Afghanistan    745   2666
+## 2 Brazil       37737  80488
+## 3 China       212258 213766</code></pre>
+<p>To convert this into ‘tidy’ data where each row is one observation we must make it longer!</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">table4a <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">gather</span>(<span class="st">`</span><span class="dt">1999</span><span class="st">`</span>, <span class="st">`</span><span class="dt">2000</span><span class="st">`</span>, <span class="dt">key =</span> <span class="st">&quot;year&quot;</span>, <span class="dt">value =</span> <span class="st">&quot;cases&quot;</span>)</code></pre></div>
+<pre><code>## # A tibble: 6 x 3
+##   country     year   cases
+##   &lt;chr&gt;       &lt;chr&gt;  &lt;int&gt;
+## 1 Afghanistan 1999     745
+## 2 Brazil      1999   37737
+## 3 China       1999  212258
+## 4 Afghanistan 2000    2666
+## 5 Brazil      2000   80488
+## 6 China       2000  213766</code></pre>
+<p>The first arguments are the columns you wish to ‘gather’. (Note that the columns 1999 and 2000 when a column name starts with numbers, you need to surround them with backticks).</p>
+<p>The argument <code>key</code> tells the function what the column name of ‘type’ or gathered columns should be called. The argument <code>value</code> specifies what the values previously under the <code>1999</code> and <code>2000</code> columns should be named.</p>
+<p>Since there are only two columns here we can just list them, if there are more columns, you can use notation of <code>dplyr::select</code> to select the columns. One useful way is just to give the column numbers (e.g. <code>gather(1:10, ...)</code>)</p>
+</div>
+<div id="spread" class="section level3">
+<h3><span class="header-section-number">4.4.2</span> spread</h3>
+<p><code>spread()</code> is for when observations are spread across many rows. Goes from long to wide.</p>
+<p>Take this dataset from <code>tidyr</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">table2</code></pre></div>
+<pre><code>## # A tibble: 12 x 4
+##    country      year type            count
+##    &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;           &lt;int&gt;
+##  1 Afghanistan  1999 cases             745
+##  2 Afghanistan  1999 population   19987071
+##  3 Afghanistan  2000 cases            2666
+##  4 Afghanistan  2000 population   20595360
+##  5 Brazil       1999 cases           37737
+##  6 Brazil       1999 population  172006362
+##  7 Brazil       2000 cases           80488
+##  8 Brazil       2000 population  174504898
+##  9 China        1999 cases          212258
+## 10 China        1999 population 1272915272
+## 11 China        2000 cases          213766
+## 12 China        2000 population 1280428583</code></pre>
+<p>On observation should have both the cases and population. Thus</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">table2 <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">spread</span>(<span class="dt">key =</span> type, <span class="dt">value =</span> count)</code></pre></div>
+<pre><code>## # A tibble: 6 x 4
+##   country      year  cases population
+##   &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;      &lt;int&gt;
+## 1 Afghanistan  1999    745   19987071
+## 2 Afghanistan  2000   2666   20595360
+## 3 Brazil       1999  37737  172006362
+## 4 Brazil       2000  80488  174504898
+## 5 China        1999 212258 1272915272
+## 6 China        2000 213766 1280428583</code></pre>
+<p><code>key</code> is the column that contains names of the variables that should be spread across several columns and <code>values</code> are the values that should go under the new column(s).</p>
+<p>These functions are useful if you need to transform data as <code>t()</code> will NOT work on a tibble.</p>
+<p>Spread and gather are NOT symmetrical! For spread to work, each row must be UNIQUELY identified (see <a href="https://github.com/tidyverse/tidyr/issues/426">issue</a>).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gather</span>(<span class="kw">starts_with</span>(<span class="st">&quot;Petal&quot;</span>), <span class="dt">key =</span> colname, <span class="dt">value =</span> value)</code></pre></div>
+<pre><code>##     Sepal.Length Sepal.Width    Species      colname value
+## 1            5.1         3.5     setosa Petal.Length   1.4
+## 2            4.9         3.0     setosa Petal.Length   1.4
+## 3            4.7         3.2     setosa Petal.Length   1.3
+## 4            4.6         3.1     setosa Petal.Length   1.5
+## 5            5.0         3.6     setosa Petal.Length   1.4
+## 6            5.4         3.9     setosa Petal.Length   1.7
+## 7            4.6         3.4     setosa Petal.Length   1.4
+## 8            5.0         3.4     setosa Petal.Length   1.5
+## 9            4.4         2.9     setosa Petal.Length   1.4
+## 10           4.9         3.1     setosa Petal.Length   1.5
+## 11           5.4         3.7     setosa Petal.Length   1.5
+## 12           4.8         3.4     setosa Petal.Length   1.6
+## 13           4.8         3.0     setosa Petal.Length   1.4
+## 14           4.3         3.0     setosa Petal.Length   1.1
+## 15           5.8         4.0     setosa Petal.Length   1.2
+## 16           5.7         4.4     setosa Petal.Length   1.5
+## 17           5.4         3.9     setosa Petal.Length   1.3
+## 18           5.1         3.5     setosa Petal.Length   1.4
+## 19           5.7         3.8     setosa Petal.Length   1.7
+## 20           5.1         3.8     setosa Petal.Length   1.5
+## 21           5.4         3.4     setosa Petal.Length   1.7
+## 22           5.1         3.7     setosa Petal.Length   1.5
+## 23           4.6         3.6     setosa Petal.Length   1.0
+## 24           5.1         3.3     setosa Petal.Length   1.7
+## 25           4.8         3.4     setosa Petal.Length   1.9
+## 26           5.0         3.0     setosa Petal.Length   1.6
+## 27           5.0         3.4     setosa Petal.Length   1.6
+## 28           5.2         3.5     setosa Petal.Length   1.5
+## 29           5.2         3.4     setosa Petal.Length   1.4
+## 30           4.7         3.2     setosa Petal.Length   1.6
+## 31           4.8         3.1     setosa Petal.Length   1.6
+## 32           5.4         3.4     setosa Petal.Length   1.5
+## 33           5.2         4.1     setosa Petal.Length   1.5
+## 34           5.5         4.2     setosa Petal.Length   1.4
+## 35           4.9         3.1     setosa Petal.Length   1.5
+## 36           5.0         3.2     setosa Petal.Length   1.2
+## 37           5.5         3.5     setosa Petal.Length   1.3
+## 38           4.9         3.6     setosa Petal.Length   1.4
+## 39           4.4         3.0     setosa Petal.Length   1.3
+## 40           5.1         3.4     setosa Petal.Length   1.5
+## 41           5.0         3.5     setosa Petal.Length   1.3
+## 42           4.5         2.3     setosa Petal.Length   1.3
+## 43           4.4         3.2     setosa Petal.Length   1.3
+## 44           5.0         3.5     setosa Petal.Length   1.6
+## 45           5.1         3.8     setosa Petal.Length   1.9
+## 46           4.8         3.0     setosa Petal.Length   1.4
+## 47           5.1         3.8     setosa Petal.Length   1.6
+## 48           4.6         3.2     setosa Petal.Length   1.4
+## 49           5.3         3.7     setosa Petal.Length   1.5
+## 50           5.0         3.3     setosa Petal.Length   1.4
+## 51           7.0         3.2 versicolor Petal.Length   4.7
+## 52           6.4         3.2 versicolor Petal.Length   4.5
+## 53           6.9         3.1 versicolor Petal.Length   4.9
+## 54           5.5         2.3 versicolor Petal.Length   4.0
+## 55           6.5         2.8 versicolor Petal.Length   4.6
+## 56           5.7         2.8 versicolor Petal.Length   4.5
+## 57           6.3         3.3 versicolor Petal.Length   4.7
+## 58           4.9         2.4 versicolor Petal.Length   3.3
+## 59           6.6         2.9 versicolor Petal.Length   4.6
+## 60           5.2         2.7 versicolor Petal.Length   3.9
+## 61           5.0         2.0 versicolor Petal.Length   3.5
+## 62           5.9         3.0 versicolor Petal.Length   4.2
+## 63           6.0         2.2 versicolor Petal.Length   4.0
+## 64           6.1         2.9 versicolor Petal.Length   4.7
+## 65           5.6         2.9 versicolor Petal.Length   3.6
+## 66           6.7         3.1 versicolor Petal.Length   4.4
+## 67           5.6         3.0 versicolor Petal.Length   4.5
+## 68           5.8         2.7 versicolor Petal.Length   4.1
+## 69           6.2         2.2 versicolor Petal.Length   4.5
+## 70           5.6         2.5 versicolor Petal.Length   3.9
+## 71           5.9         3.2 versicolor Petal.Length   4.8
+## 72           6.1         2.8 versicolor Petal.Length   4.0
+## 73           6.3         2.5 versicolor Petal.Length   4.9
+## 74           6.1         2.8 versicolor Petal.Length   4.7
+## 75           6.4         2.9 versicolor Petal.Length   4.3
+## 76           6.6         3.0 versicolor Petal.Length   4.4
+## 77           6.8         2.8 versicolor Petal.Length   4.8
+## 78           6.7         3.0 versicolor Petal.Length   5.0
+## 79           6.0         2.9 versicolor Petal.Length   4.5
+## 80           5.7         2.6 versicolor Petal.Length   3.5
+## 81           5.5         2.4 versicolor Petal.Length   3.8
+## 82           5.5         2.4 versicolor Petal.Length   3.7
+## 83           5.8         2.7 versicolor Petal.Length   3.9
+## 84           6.0         2.7 versicolor Petal.Length   5.1
+## 85           5.4         3.0 versicolor Petal.Length   4.5
+## 86           6.0         3.4 versicolor Petal.Length   4.5
+## 87           6.7         3.1 versicolor Petal.Length   4.7
+## 88           6.3         2.3 versicolor Petal.Length   4.4
+## 89           5.6         3.0 versicolor Petal.Length   4.1
+## 90           5.5         2.5 versicolor Petal.Length   4.0
+## 91           5.5         2.6 versicolor Petal.Length   4.4
+## 92           6.1         3.0 versicolor Petal.Length   4.6
+## 93           5.8         2.6 versicolor Petal.Length   4.0
+## 94           5.0         2.3 versicolor Petal.Length   3.3
+## 95           5.6         2.7 versicolor Petal.Length   4.2
+## 96           5.7         3.0 versicolor Petal.Length   4.2
+## 97           5.7         2.9 versicolor Petal.Length   4.2
+## 98           6.2         2.9 versicolor Petal.Length   4.3
+## 99           5.1         2.5 versicolor Petal.Length   3.0
+## 100          5.7         2.8 versicolor Petal.Length   4.1
+## 101          6.3         3.3  virginica Petal.Length   6.0
+## 102          5.8         2.7  virginica Petal.Length   5.1
+## 103          7.1         3.0  virginica Petal.Length   5.9
+## 104          6.3         2.9  virginica Petal.Length   5.6
+## 105          6.5         3.0  virginica Petal.Length   5.8
+## 106          7.6         3.0  virginica Petal.Length   6.6
+## 107          4.9         2.5  virginica Petal.Length   4.5
+## 108          7.3         2.9  virginica Petal.Length   6.3
+## 109          6.7         2.5  virginica Petal.Length   5.8
+## 110          7.2         3.6  virginica Petal.Length   6.1
+## 111          6.5         3.2  virginica Petal.Length   5.1
+## 112          6.4         2.7  virginica Petal.Length   5.3
+## 113          6.8         3.0  virginica Petal.Length   5.5
+## 114          5.7         2.5  virginica Petal.Length   5.0
+## 115          5.8         2.8  virginica Petal.Length   5.1
+## 116          6.4         3.2  virginica Petal.Length   5.3
+## 117          6.5         3.0  virginica Petal.Length   5.5
+## 118          7.7         3.8  virginica Petal.Length   6.7
+## 119          7.7         2.6  virginica Petal.Length   6.9
+## 120          6.0         2.2  virginica Petal.Length   5.0
+## 121          6.9         3.2  virginica Petal.Length   5.7
+## 122          5.6         2.8  virginica Petal.Length   4.9
+## 123          7.7         2.8  virginica Petal.Length   6.7
+## 124          6.3         2.7  virginica Petal.Length   4.9
+## 125          6.7         3.3  virginica Petal.Length   5.7
+## 126          7.2         3.2  virginica Petal.Length   6.0
+## 127          6.2         2.8  virginica Petal.Length   4.8
+## 128          6.1         3.0  virginica Petal.Length   4.9
+## 129          6.4         2.8  virginica Petal.Length   5.6
+## 130          7.2         3.0  virginica Petal.Length   5.8
+## 131          7.4         2.8  virginica Petal.Length   6.1
+## 132          7.9         3.8  virginica Petal.Length   6.4
+## 133          6.4         2.8  virginica Petal.Length   5.6
+## 134          6.3         2.8  virginica Petal.Length   5.1
+## 135          6.1         2.6  virginica Petal.Length   5.6
+## 136          7.7         3.0  virginica Petal.Length   6.1
+## 137          6.3         3.4  virginica Petal.Length   5.6
+## 138          6.4         3.1  virginica Petal.Length   5.5
+## 139          6.0         3.0  virginica Petal.Length   4.8
+## 140          6.9         3.1  virginica Petal.Length   5.4
+## 141          6.7         3.1  virginica Petal.Length   5.6
+## 142          6.9         3.1  virginica Petal.Length   5.1
+## 143          5.8         2.7  virginica Petal.Length   5.1
+## 144          6.8         3.2  virginica Petal.Length   5.9
+## 145          6.7         3.3  virginica Petal.Length   5.7
+## 146          6.7         3.0  virginica Petal.Length   5.2
+## 147          6.3         2.5  virginica Petal.Length   5.0
+## 148          6.5         3.0  virginica Petal.Length   5.2
+## 149          6.2         3.4  virginica Petal.Length   5.4
+## 150          5.9         3.0  virginica Petal.Length   5.1
+## 151          5.1         3.5     setosa  Petal.Width   0.2
+## 152          4.9         3.0     setosa  Petal.Width   0.2
+## 153          4.7         3.2     setosa  Petal.Width   0.2
+## 154          4.6         3.1     setosa  Petal.Width   0.2
+## 155          5.0         3.6     setosa  Petal.Width   0.2
+## 156          5.4         3.9     setosa  Petal.Width   0.4
+## 157          4.6         3.4     setosa  Petal.Width   0.3
+## 158          5.0         3.4     setosa  Petal.Width   0.2
+## 159          4.4         2.9     setosa  Petal.Width   0.2
+## 160          4.9         3.1     setosa  Petal.Width   0.1
+## 161          5.4         3.7     setosa  Petal.Width   0.2
+## 162          4.8         3.4     setosa  Petal.Width   0.2
+## 163          4.8         3.0     setosa  Petal.Width   0.1
+## 164          4.3         3.0     setosa  Petal.Width   0.1
+## 165          5.8         4.0     setosa  Petal.Width   0.2
+## 166          5.7         4.4     setosa  Petal.Width   0.4
+## 167          5.4         3.9     setosa  Petal.Width   0.4
+## 168          5.1         3.5     setosa  Petal.Width   0.3
+## 169          5.7         3.8     setosa  Petal.Width   0.3
+## 170          5.1         3.8     setosa  Petal.Width   0.3
+## 171          5.4         3.4     setosa  Petal.Width   0.2
+## 172          5.1         3.7     setosa  Petal.Width   0.4
+## 173          4.6         3.6     setosa  Petal.Width   0.2
+## 174          5.1         3.3     setosa  Petal.Width   0.5
+## 175          4.8         3.4     setosa  Petal.Width   0.2
+## 176          5.0         3.0     setosa  Petal.Width   0.2
+## 177          5.0         3.4     setosa  Petal.Width   0.4
+## 178          5.2         3.5     setosa  Petal.Width   0.2
+## 179          5.2         3.4     setosa  Petal.Width   0.2
+## 180          4.7         3.2     setosa  Petal.Width   0.2
+## 181          4.8         3.1     setosa  Petal.Width   0.2
+## 182          5.4         3.4     setosa  Petal.Width   0.4
+## 183          5.2         4.1     setosa  Petal.Width   0.1
+## 184          5.5         4.2     setosa  Petal.Width   0.2
+## 185          4.9         3.1     setosa  Petal.Width   0.2
+## 186          5.0         3.2     setosa  Petal.Width   0.2
+## 187          5.5         3.5     setosa  Petal.Width   0.2
+## 188          4.9         3.6     setosa  Petal.Width   0.1
+## 189          4.4         3.0     setosa  Petal.Width   0.2
+## 190          5.1         3.4     setosa  Petal.Width   0.2
+## 191          5.0         3.5     setosa  Petal.Width   0.3
+## 192          4.5         2.3     setosa  Petal.Width   0.3
+## 193          4.4         3.2     setosa  Petal.Width   0.2
+## 194          5.0         3.5     setosa  Petal.Width   0.6
+## 195          5.1         3.8     setosa  Petal.Width   0.4
+## 196          4.8         3.0     setosa  Petal.Width   0.3
+## 197          5.1         3.8     setosa  Petal.Width   0.2
+## 198          4.6         3.2     setosa  Petal.Width   0.2
+## 199          5.3         3.7     setosa  Petal.Width   0.2
+## 200          5.0         3.3     setosa  Petal.Width   0.2
+##  [ reached getOption(&quot;max.print&quot;) -- omitted 100 rows ]</code></pre>
+<p>If we try <code>spread()</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gather</span>(<span class="kw">starts_with</span>(<span class="st">&quot;Petal&quot;</span>), <span class="dt">key =</span> colname, <span class="dt">value =</span> value) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">spread</span>(colname, value)</code></pre></div>
+<pre><code>## Error: Each row of output must be identified by a unique combination of keys.
+## Keys are shared for 88 rows:
+## * 3, 30
+## * 13, 46
+## * 12, 25
+## * 10, 35
+## * 8, 27
+## * 41, 44
+## * 1, 18
+## * 20, 45, 47
+## * 21, 32
+## * 6, 17
+## * 81, 82
+## * 67, 89
+## * 56, 100
+## * 68, 83
+## * 102, 143
+## * 72, 74
+## * 129, 133
+## * 105, 117, 148
+## * 66, 87
+## * 125, 145
+## * 140, 142
+## * 153, 180
+## * 163, 196
+## * 162, 175
+## * 160, 185
+## * 158, 177
+## * 191, 194
+## * 151, 168
+## * 170, 195, 197
+## * 171, 182
+## * 156, 167
+## * 231, 232
+## * 217, 239
+## * 206, 250
+## * 218, 233
+## * 252, 293
+## * 222, 224
+## * 279, 283
+## * 255, 267, 298
+## * 216, 237
+## * 275, 295
+## * 290, 292
+## Do you need to create unique ID with tibble::rowid_to_column()?</code></pre>
+<p>This is because there are rows (see error) where the values are exactly the same!</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tib &lt;-<span class="st"> </span>iris <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gather</span>(<span class="kw">starts_with</span>(<span class="st">&quot;Petal&quot;</span>), <span class="dt">key =</span> colname, <span class="dt">value =</span> value)
+
+tib[<span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">30</span>),]</code></pre></div>
+<pre><code>##    Sepal.Length Sepal.Width Species      colname value
+## 3           4.7         3.2  setosa Petal.Length   1.3
+## 30          4.7         3.2  setosa Petal.Length   1.6</code></pre>
+<p>Fix by adding a unique row id:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">rowid_to_column</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gather</span>(colname, value, <span class="kw">starts_with</span>(<span class="st">&quot;Petal&quot;</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">spread</span>(colname, value)</code></pre></div>
+<pre><code>##     rowid Sepal.Length Sepal.Width    Species Petal.Length Petal.Width
+## 1       1          5.1         3.5     setosa          1.4         0.2
+## 2       2          4.9         3.0     setosa          1.4         0.2
+## 3       3          4.7         3.2     setosa          1.3         0.2
+## 4       4          4.6         3.1     setosa          1.5         0.2
+## 5       5          5.0         3.6     setosa          1.4         0.2
+## 6       6          5.4         3.9     setosa          1.7         0.4
+## 7       7          4.6         3.4     setosa          1.4         0.3
+## 8       8          5.0         3.4     setosa          1.5         0.2
+## 9       9          4.4         2.9     setosa          1.4         0.2
+## 10     10          4.9         3.1     setosa          1.5         0.1
+## 11     11          5.4         3.7     setosa          1.5         0.2
+## 12     12          4.8         3.4     setosa          1.6         0.2
+## 13     13          4.8         3.0     setosa          1.4         0.1
+## 14     14          4.3         3.0     setosa          1.1         0.1
+## 15     15          5.8         4.0     setosa          1.2         0.2
+## 16     16          5.7         4.4     setosa          1.5         0.4
+## 17     17          5.4         3.9     setosa          1.3         0.4
+## 18     18          5.1         3.5     setosa          1.4         0.3
+## 19     19          5.7         3.8     setosa          1.7         0.3
+## 20     20          5.1         3.8     setosa          1.5         0.3
+## 21     21          5.4         3.4     setosa          1.7         0.2
+## 22     22          5.1         3.7     setosa          1.5         0.4
+## 23     23          4.6         3.6     setosa          1.0         0.2
+## 24     24          5.1         3.3     setosa          1.7         0.5
+## 25     25          4.8         3.4     setosa          1.9         0.2
+## 26     26          5.0         3.0     setosa          1.6         0.2
+## 27     27          5.0         3.4     setosa          1.6         0.4
+## 28     28          5.2         3.5     setosa          1.5         0.2
+## 29     29          5.2         3.4     setosa          1.4         0.2
+## 30     30          4.7         3.2     setosa          1.6         0.2
+## 31     31          4.8         3.1     setosa          1.6         0.2
+## 32     32          5.4         3.4     setosa          1.5         0.4
+## 33     33          5.2         4.1     setosa          1.5         0.1
+## 34     34          5.5         4.2     setosa          1.4         0.2
+## 35     35          4.9         3.1     setosa          1.5         0.2
+## 36     36          5.0         3.2     setosa          1.2         0.2
+## 37     37          5.5         3.5     setosa          1.3         0.2
+## 38     38          4.9         3.6     setosa          1.4         0.1
+## 39     39          4.4         3.0     setosa          1.3         0.2
+## 40     40          5.1         3.4     setosa          1.5         0.2
+## 41     41          5.0         3.5     setosa          1.3         0.3
+## 42     42          4.5         2.3     setosa          1.3         0.3
+## 43     43          4.4         3.2     setosa          1.3         0.2
+## 44     44          5.0         3.5     setosa          1.6         0.6
+## 45     45          5.1         3.8     setosa          1.9         0.4
+## 46     46          4.8         3.0     setosa          1.4         0.3
+## 47     47          5.1         3.8     setosa          1.6         0.2
+## 48     48          4.6         3.2     setosa          1.4         0.2
+## 49     49          5.3         3.7     setosa          1.5         0.2
+## 50     50          5.0         3.3     setosa          1.4         0.2
+## 51     51          7.0         3.2 versicolor          4.7         1.4
+## 52     52          6.4         3.2 versicolor          4.5         1.5
+## 53     53          6.9         3.1 versicolor          4.9         1.5
+## 54     54          5.5         2.3 versicolor          4.0         1.3
+## 55     55          6.5         2.8 versicolor          4.6         1.5
+## 56     56          5.7         2.8 versicolor          4.5         1.3
+## 57     57          6.3         3.3 versicolor          4.7         1.6
+## 58     58          4.9         2.4 versicolor          3.3         1.0
+## 59     59          6.6         2.9 versicolor          4.6         1.3
+## 60     60          5.2         2.7 versicolor          3.9         1.4
+## 61     61          5.0         2.0 versicolor          3.5         1.0
+## 62     62          5.9         3.0 versicolor          4.2         1.5
+## 63     63          6.0         2.2 versicolor          4.0         1.0
+## 64     64          6.1         2.9 versicolor          4.7         1.4
+## 65     65          5.6         2.9 versicolor          3.6         1.3
+## 66     66          6.7         3.1 versicolor          4.4         1.4
+## 67     67          5.6         3.0 versicolor          4.5         1.5
+## 68     68          5.8         2.7 versicolor          4.1         1.0
+## 69     69          6.2         2.2 versicolor          4.5         1.5
+## 70     70          5.6         2.5 versicolor          3.9         1.1
+## 71     71          5.9         3.2 versicolor          4.8         1.8
+## 72     72          6.1         2.8 versicolor          4.0         1.3
+## 73     73          6.3         2.5 versicolor          4.9         1.5
+## 74     74          6.1         2.8 versicolor          4.7         1.2
+## 75     75          6.4         2.9 versicolor          4.3         1.3
+## 76     76          6.6         3.0 versicolor          4.4         1.4
+## 77     77          6.8         2.8 versicolor          4.8         1.4
+## 78     78          6.7         3.0 versicolor          5.0         1.7
+## 79     79          6.0         2.9 versicolor          4.5         1.5
+## 80     80          5.7         2.6 versicolor          3.5         1.0
+## 81     81          5.5         2.4 versicolor          3.8         1.1
+## 82     82          5.5         2.4 versicolor          3.7         1.0
+## 83     83          5.8         2.7 versicolor          3.9         1.2
+## 84     84          6.0         2.7 versicolor          5.1         1.6
+## 85     85          5.4         3.0 versicolor          4.5         1.5
+## 86     86          6.0         3.4 versicolor          4.5         1.6
+## 87     87          6.7         3.1 versicolor          4.7         1.5
+## 88     88          6.3         2.3 versicolor          4.4         1.3
+## 89     89          5.6         3.0 versicolor          4.1         1.3
+## 90     90          5.5         2.5 versicolor          4.0         1.3
+## 91     91          5.5         2.6 versicolor          4.4         1.2
+## 92     92          6.1         3.0 versicolor          4.6         1.4
+## 93     93          5.8         2.6 versicolor          4.0         1.2
+## 94     94          5.0         2.3 versicolor          3.3         1.0
+## 95     95          5.6         2.7 versicolor          4.2         1.3
+## 96     96          5.7         3.0 versicolor          4.2         1.2
+## 97     97          5.7         2.9 versicolor          4.2         1.3
+## 98     98          6.2         2.9 versicolor          4.3         1.3
+## 99     99          5.1         2.5 versicolor          3.0         1.1
+## 100   100          5.7         2.8 versicolor          4.1         1.3
+## 101   101          6.3         3.3  virginica          6.0         2.5
+## 102   102          5.8         2.7  virginica          5.1         1.9
+## 103   103          7.1         3.0  virginica          5.9         2.1
+## 104   104          6.3         2.9  virginica          5.6         1.8
+## 105   105          6.5         3.0  virginica          5.8         2.2
+## 106   106          7.6         3.0  virginica          6.6         2.1
+## 107   107          4.9         2.5  virginica          4.5         1.7
+## 108   108          7.3         2.9  virginica          6.3         1.8
+## 109   109          6.7         2.5  virginica          5.8         1.8
+## 110   110          7.2         3.6  virginica          6.1         2.5
+## 111   111          6.5         3.2  virginica          5.1         2.0
+## 112   112          6.4         2.7  virginica          5.3         1.9
+## 113   113          6.8         3.0  virginica          5.5         2.1
+## 114   114          5.7         2.5  virginica          5.0         2.0
+## 115   115          5.8         2.8  virginica          5.1         2.4
+## 116   116          6.4         3.2  virginica          5.3         2.3
+## 117   117          6.5         3.0  virginica          5.5         1.8
+## 118   118          7.7         3.8  virginica          6.7         2.2
+## 119   119          7.7         2.6  virginica          6.9         2.3
+## 120   120          6.0         2.2  virginica          5.0         1.5
+## 121   121          6.9         3.2  virginica          5.7         2.3
+## 122   122          5.6         2.8  virginica          4.9         2.0
+## 123   123          7.7         2.8  virginica          6.7         2.0
+## 124   124          6.3         2.7  virginica          4.9         1.8
+## 125   125          6.7         3.3  virginica          5.7         2.1
+## 126   126          7.2         3.2  virginica          6.0         1.8
+## 127   127          6.2         2.8  virginica          4.8         1.8
+## 128   128          6.1         3.0  virginica          4.9         1.8
+## 129   129          6.4         2.8  virginica          5.6         2.1
+## 130   130          7.2         3.0  virginica          5.8         1.6
+## 131   131          7.4         2.8  virginica          6.1         1.9
+## 132   132          7.9         3.8  virginica          6.4         2.0
+## 133   133          6.4         2.8  virginica          5.6         2.2
+## 134   134          6.3         2.8  virginica          5.1         1.5
+## 135   135          6.1         2.6  virginica          5.6         1.4
+## 136   136          7.7         3.0  virginica          6.1         2.3
+## 137   137          6.3         3.4  virginica          5.6         2.4
+## 138   138          6.4         3.1  virginica          5.5         1.8
+## 139   139          6.0         3.0  virginica          4.8         1.8
+## 140   140          6.9         3.1  virginica          5.4         2.1
+## 141   141          6.7         3.1  virginica          5.6         2.4
+## 142   142          6.9         3.1  virginica          5.1         2.3
+## 143   143          5.8         2.7  virginica          5.1         1.9
+## 144   144          6.8         3.2  virginica          5.9         2.3
+## 145   145          6.7         3.3  virginica          5.7         2.5
+## 146   146          6.7         3.0  virginica          5.2         2.3
+## 147   147          6.3         2.5  virginica          5.0         1.9
+## 148   148          6.5         3.0  virginica          5.2         2.0
+## 149   149          6.2         3.4  virginica          5.4         2.3
+## 150   150          5.9         3.0  virginica          5.1         1.8</code></pre>
+</div>
+<div id="separate" class="section level3">
+<h3><span class="header-section-number">4.4.3</span> separate</h3>
+<p>Separates one column into multiple columns. By default it will split on non-alphanumeric characters (i.e. any character that is not a letter or number, like ‘/’)</p>
+<p>Take this dataset from tidyr:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">table3</code></pre></div>
+<pre><code>## # A tibble: 6 x 3
+##   country      year rate             
+## * &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;            
+## 1 Afghanistan  1999 745/19987071     
+## 2 Afghanistan  2000 2666/20595360    
+## 3 Brazil       1999 37737/172006362  
+## 4 Brazil       2000 80488/174504898  
+## 5 China        1999 212258/1272915272
+## 6 China        2000 213766/1280428583</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">table3 <span class="op">%&gt;%</span>
+<span class="kw">separate</span>(rate, <span class="dt">into =</span> <span class="kw">c</span>(<span class="st">&quot;cases&quot;</span>, <span class="st">&quot;population&quot;</span>))</code></pre></div>
+<pre><code>## # A tibble: 6 x 4
+##   country      year cases  population
+##   &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;     
+## 1 Afghanistan  1999 745    19987071  
+## 2 Afghanistan  2000 2666   20595360  
+## 3 Brazil       1999 37737  172006362 
+## 4 Brazil       2000 80488  174504898 
+## 5 China        1999 212258 1272915272
+## 6 China        2000 213766 1280428583</code></pre>
+<p><code>into</code> - lets you specify the new column names. <code>sep</code> - allows you specify on what character to separate. Formally it is a regex. <code>convert</code> - by default the function will leave the datatype of the new columns as what it was originally (in the single column), <code>convert = TRUE</code> converts the new columns.</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="data-wrangling-base-r.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="string-manipulation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/03-dw_tidyverse.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["R notes.pdf", "R notes.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

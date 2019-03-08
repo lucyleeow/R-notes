@@ -1,10 +1,4 @@
 base
-methods
-datasets
-utils
-grDevices
-graphics
-stats
 tidyverse
 ggplot2
 tibble
@@ -16,3 +10,8 @@ stringr
 forcats
 ggrepel
 GGally
+nycflights13
+data.table
+pheatmap
+futile.logger
+VennDiagram

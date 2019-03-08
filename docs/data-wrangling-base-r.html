@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Chapter 3 Data wrangling - base R | R notes</title>
+  <meta name="description" content="Guide to R.">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="Chapter 3 Data wrangling - base R | R notes" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Guide to R." />
+  <meta name="github-repo" content="lucyleeow/R_notes" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Data wrangling - base R | R notes" />
+  
+  <meta name="twitter:description" content="Guide to R." />
+  
+
+<meta name="author" content="Lucy Liu">
+
+
+<meta name="date" content="2019-03-08">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="introduction.html">
+<link rel="next" href="data-wrangling-tidyverse.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">R notes</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a></li>
+<li class="chapter" data-level="2" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>2</b> Introduction</a><ul>
+<li class="chapter" data-level="2.1" data-path="introduction.html"><a href="introduction.html#r-files"><i class="fa fa-check"></i><b>2.1</b> R files</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="introduction.html"><a href="introduction.html#memory"><i class="fa fa-check"></i><b>2.1.1</b> Memory</a></li>
+<li class="chapter" data-level="2.1.2" data-path="introduction.html"><a href="introduction.html#r-project"><i class="fa fa-check"></i><b>2.1.2</b> R project</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="introduction.html"><a href="introduction.html#packages"><i class="fa fa-check"></i><b>2.2</b> Packages</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="introduction.html"><a href="introduction.html#library"><i class="fa fa-check"></i><b>2.2.1</b> Library</a></li>
+<li class="chapter" data-level="2.2.2" data-path="introduction.html"><a href="introduction.html#bioconductor"><i class="fa fa-check"></i><b>2.2.2</b> Bioconductor</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="introduction.html"><a href="introduction.html#basics"><i class="fa fa-check"></i><b>2.3</b> Basics</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="introduction.html"><a href="introduction.html#arithmetic"><i class="fa fa-check"></i><b>2.3.1</b> Arithmetic</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="introduction.html"><a href="introduction.html#help"><i class="fa fa-check"></i><b>2.4</b> Help</a></li>
+<li class="chapter" data-level="2.5" data-path="introduction.html"><a href="introduction.html#data-types"><i class="fa fa-check"></i><b>2.5</b> Data types</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="introduction.html"><a href="introduction.html#numeric"><i class="fa fa-check"></i><b>2.5.1</b> Numeric</a></li>
+<li class="chapter" data-level="2.5.2" data-path="introduction.html"><a href="introduction.html#coercion"><i class="fa fa-check"></i><b>2.5.2</b> Coercion</a></li>
+<li class="chapter" data-level="2.5.3" data-path="introduction.html"><a href="introduction.html#factors"><i class="fa fa-check"></i><b>2.5.3</b> Factors</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="introduction.html"><a href="introduction.html#data-structures"><i class="fa fa-check"></i><b>2.6</b> Data structures</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="introduction.html"><a href="introduction.html#atomic-vector"><i class="fa fa-check"></i><b>2.6.1</b> Atomic vector</a></li>
+<li class="chapter" data-level="2.6.2" data-path="introduction.html"><a href="introduction.html#lists"><i class="fa fa-check"></i><b>2.6.2</b> Lists</a></li>
+<li class="chapter" data-level="2.6.3" data-path="introduction.html"><a href="introduction.html#matrix"><i class="fa fa-check"></i><b>2.6.3</b> Matrix</a></li>
+<li class="chapter" data-level="2.6.4" data-path="introduction.html"><a href="introduction.html#array"><i class="fa fa-check"></i><b>2.6.4</b> Array</a></li>
+<li class="chapter" data-level="2.6.5" data-path="introduction.html"><a href="introduction.html#dataframes"><i class="fa fa-check"></i><b>2.6.5</b> Dataframes</a></li>
+<li class="chapter" data-level="2.6.6" data-path="introduction.html"><a href="introduction.html#high-dimension-structures"><i class="fa fa-check"></i><b>2.6.6</b> High dimension structures</a></li>
+<li class="chapter" data-level="2.6.7" data-path="introduction.html"><a href="introduction.html#attributes"><i class="fa fa-check"></i><b>2.6.7</b> Attributes</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="introduction.html"><a href="introduction.html#nas"><i class="fa fa-check"></i><b>2.7</b> NAs</a></li>
+<li class="chapter" data-level="2.8" data-path="introduction.html"><a href="introduction.html#importing-exporting"><i class="fa fa-check"></i><b>2.8</b> Importing &amp; exporting</a></li>
+<li class="chapter" data-level="2.9" data-path="introduction.html"><a href="introduction.html#saving-objects"><i class="fa fa-check"></i><b>2.9</b> Saving objects</a><ul>
+<li class="chapter" data-level="2.9.1" data-path="introduction.html"><a href="introduction.html#feather"><i class="fa fa-check"></i><b>2.9.1</b> feather</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html"><i class="fa fa-check"></i><b>3</b> Data wrangling - base R</a><ul>
+<li class="chapter" data-level="3.1" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html#useful-functions"><i class="fa fa-check"></i><b>3.1</b> Useful functions</a></li>
+<li class="chapter" data-level="3.2" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html#subsetting"><i class="fa fa-check"></i><b>3.2</b> Subsetting</a></li>
+<li class="chapter" data-level="3.3" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html#apply-family"><i class="fa fa-check"></i><b>3.3</b> Apply family</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html#uses"><i class="fa fa-check"></i><b>3.3.1</b> Uses</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html#docall"><i class="fa fa-check"></i><b>3.4</b> do.call()</a></li>
+<li class="chapter" data-level="3.5" data-path="data-wrangling-base-r.html"><a href="data-wrangling-base-r.html#do.call-vs-lapply-vs-map"><i class="fa fa-check"></i><b>3.5</b> do.call vs lapply vs map</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html"><i class="fa fa-check"></i><b>4</b> Data wrangling - tidyverse</a><ul>
+<li class="chapter" data-level="4.1" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#tibbles"><i class="fa fa-check"></i><b>4.1</b> Tibbles</a></li>
+<li class="chapter" data-level="4.2" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#readr"><i class="fa fa-check"></i><b>4.2</b> readr</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#parsing"><i class="fa fa-check"></i><b>4.2.1</b> Parsing</a></li>
+<li class="chapter" data-level="4.2.2" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#exporting"><i class="fa fa-check"></i><b>4.2.2</b> Exporting</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#dplyr"><i class="fa fa-check"></i><b>4.3</b> dplyr</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#subsetting-1"><i class="fa fa-check"></i><b>4.3.1</b> Subsetting</a></li>
+<li class="chapter" data-level="4.3.2" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#the-pipe"><i class="fa fa-check"></i><b>4.3.2</b> The pipe %&gt;%</a></li>
+<li class="chapter" data-level="4.3.3" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#filter"><i class="fa fa-check"></i><b>4.3.3</b> filter</a></li>
+<li class="chapter" data-level="4.3.4" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#select"><i class="fa fa-check"></i><b>4.3.4</b> select</a></li>
+<li class="chapter" data-level="4.3.5" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#mutate"><i class="fa fa-check"></i><b>4.3.5</b> mutate</a></li>
+<li class="chapter" data-level="4.3.6" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#case_when"><i class="fa fa-check"></i><b>4.3.6</b> case_when</a></li>
+<li class="chapter" data-level="4.3.7" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#summarise"><i class="fa fa-check"></i><b>4.3.7</b> summarise</a></li>
+<li class="chapter" data-level="4.3.8" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#group_by"><i class="fa fa-check"></i><b>4.3.8</b> group_by</a></li>
+<li class="chapter" data-level="4.3.9" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#n_distinct"><i class="fa fa-check"></i><b>4.3.9</b> n_distinct</a></li>
+<li class="chapter" data-level="4.3.10" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#at-_all-_if-at-all-if"><i class="fa fa-check"></i><b>4.3.10</b> _at(), _all(), _if() {###at-all-if}</a></li>
+<li class="chapter" data-level="4.3.11" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#own-functions"><i class="fa fa-check"></i><b>4.3.11</b> Own functions</a></li>
+<li class="chapter" data-level="4.3.12" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#join"><i class="fa fa-check"></i><b>4.3.12</b> Join</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#tidyr"><i class="fa fa-check"></i><b>4.4</b> tidyr</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#gather"><i class="fa fa-check"></i><b>4.4.1</b> gather</a></li>
+<li class="chapter" data-level="4.4.2" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#spread"><i class="fa fa-check"></i><b>4.4.2</b> spread</a></li>
+<li class="chapter" data-level="4.4.3" data-path="data-wrangling-tidyverse.html"><a href="data-wrangling-tidyverse.html#separate"><i class="fa fa-check"></i><b>4.4.3</b> separate</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="string-manipulation.html"><a href="string-manipulation.html"><i class="fa fa-check"></i><b>5</b> String manipulation</a><ul>
+<li class="chapter" data-level="5.1" data-path="string-manipulation.html"><a href="string-manipulation.html#grep-family"><i class="fa fa-check"></i><b>5.1</b> Grep family</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="string-manipulation.html"><a href="string-manipulation.html#locating-pattern-within-string"><i class="fa fa-check"></i><b>5.1.1</b> Locating pattern within string</a></li>
+<li class="chapter" data-level="5.1.2" data-path="string-manipulation.html"><a href="string-manipulation.html#replacments"><i class="fa fa-check"></i><b>5.1.2</b> Replacments</a></li>
+<li class="chapter" data-level="5.1.3" data-path="string-manipulation.html"><a href="string-manipulation.html#backreferences"><i class="fa fa-check"></i><b>5.1.3</b> Backreferences</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="string-manipulation.html"><a href="string-manipulation.html#regular-expressions"><i class="fa fa-check"></i><b>5.2</b> Regular expressions</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="string-manipulation.html"><a href="string-manipulation.html#quantifiers"><i class="fa fa-check"></i><b>5.2.1</b> Quantifiers</a></li>
+<li class="chapter" data-level="5.2.2" data-path="string-manipulation.html"><a href="string-manipulation.html#position"><i class="fa fa-check"></i><b>5.2.2</b> Position</a></li>
+<li class="chapter" data-level="5.2.3" data-path="string-manipulation.html"><a href="string-manipulation.html#operators"><i class="fa fa-check"></i><b>5.2.3</b> Operators</a></li>
+<li class="chapter" data-level="5.2.4" data-path="string-manipulation.html"><a href="string-manipulation.html#character-classes"><i class="fa fa-check"></i><b>5.2.4</b> Character classes</a></li>
+<li class="chapter" data-level="5.2.5" data-path="string-manipulation.html"><a href="string-manipulation.html#examples"><i class="fa fa-check"></i><b>5.2.5</b> Examples</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="control-flow.html"><a href="control-flow.html"><i class="fa fa-check"></i><b>6</b> Control flow</a><ul>
+<li class="chapter" data-level="6.1" data-path="control-flow.html"><a href="control-flow.html#for-loops"><i class="fa fa-check"></i><b>6.1</b> For loops</a><ul>
+<li class="chapter" data-level="6.1.1" data-path="control-flow.html"><a href="control-flow.html#creating-empty-data-structures"><i class="fa fa-check"></i><b>6.1.1</b> Creating empty data structures</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i><b>7</b> Functions</a><ul>
+<li class="chapter" data-level="7.1" data-path="functions.html"><a href="functions.html#source-code"><i class="fa fa-check"></i><b>7.1</b> Source code</a></li>
+<li class="chapter" data-level="7.2" data-path="functions.html"><a href="functions.html#writing-functions"><i class="fa fa-check"></i><b>7.2</b> Writing functions</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="functions.html"><a href="functions.html#evaluation"><i class="fa fa-check"></i><b>7.2.1</b> Evaluation</a></li>
+<li class="chapter" data-level="7.2.2" data-path="functions.html"><a href="functions.html#checking-inputs"><i class="fa fa-check"></i><b>7.2.2</b> Checking inputs</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="functions.html"><a href="functions.html#messages"><i class="fa fa-check"></i><b>7.3</b> Messages</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="functions.html"><a href="functions.html#optional-arguments"><i class="fa fa-check"></i><b>7.3.1</b> Optional arguments</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="functions.html"><a href="functions.html#functions-with-dplyr"><i class="fa fa-check"></i><b>7.4</b> Functions with dplyr</a><ul>
+<li class="chapter" data-level="7.4.1" data-path="functions.html"><a href="functions.html#non-standard-evaluation"><i class="fa fa-check"></i><b>7.4.1</b> Non standard evaluation</a></li>
+<li class="chapter" data-level="7.4.2" data-path="functions.html"><a href="functions.html#writing-dplyr-functions"><i class="fa fa-check"></i><b>7.4.2</b> Writing dplyr functions</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="functions.html"><a href="functions.html#ggplot"><i class="fa fa-check"></i><b>7.5</b> ggplot</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="data-table.html"><a href="data-table.html"><i class="fa fa-check"></i><b>8</b> data.table</a><ul>
+<li class="chapter" data-level="8.1" data-path="data-table.html"><a href="data-table.html#fread"><i class="fa fa-check"></i><b>8.1</b> fread</a></li>
+<li class="chapter" data-level="8.2" data-path="data-table.html"><a href="data-table.html#subsetting-2"><i class="fa fa-check"></i><b>8.2</b> Subsetting</a><ul>
+<li class="chapter" data-level="8.2.1" data-path="data-table.html"><a href="data-table.html#rows"><i class="fa fa-check"></i><b>8.2.1</b> Rows</a></li>
+<li class="chapter" data-level="8.2.2" data-path="data-table.html"><a href="data-table.html#columns"><i class="fa fa-check"></i><b>8.2.2</b> Columns</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="data-table.html"><a href="data-table.html#functions-1"><i class="fa fa-check"></i><b>8.3</b> Functions</a></li>
+<li class="chapter" data-level="8.4" data-path="data-table.html"><a href="data-table.html#grouping"><i class="fa fa-check"></i><b>8.4</b> Grouping</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="data-table.html"><a href="data-table.html#expressions"><i class="fa fa-check"></i><b>8.4.1</b> Expressions</a></li>
+<li class="chapter" data-level="8.4.2" data-path="data-table.html"><a href="data-table.html#order"><i class="fa fa-check"></i><b>8.4.2</b> Order</a></li>
+<li class="chapter" data-level="8.4.3" data-path="data-table.html"><a href="data-table.html#functions-on-groups"><i class="fa fa-check"></i><b>8.4.3</b> Functions on groups</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="data-table.html"><a href="data-table.html#keys"><i class="fa fa-check"></i><b>8.5</b> Keys</a></li>
+<li class="chapter" data-level="8.6" data-path="data-table.html"><a href="data-table.html#set"><i class="fa fa-check"></i><b>8.6</b> set</a></li>
+<li class="chapter" data-level="8.7" data-path="data-table.html"><a href="data-table.html#reshaping"><i class="fa fa-check"></i><b>8.7</b> Reshaping</a></li>
+<li class="chapter" data-level="8.8" data-path="data-table.html"><a href="data-table.html#merge"><i class="fa fa-check"></i><b>8.8</b> Merge</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="plotting-in-r.html"><a href="plotting-in-r.html"><i class="fa fa-check"></i><b>9</b> Plotting in R</a><ul>
+<li class="chapter" data-level="9.1" data-path="plotting-in-r.html"><a href="plotting-in-r.html#base-r-plotting"><i class="fa fa-check"></i><b>9.1</b> Base R plotting</a></li>
+<li class="chapter" data-level="9.2" data-path="plotting-in-r.html"><a href="plotting-in-r.html#par"><i class="fa fa-check"></i><b>9.2</b> par</a></li>
+<li class="chapter" data-level="9.3" data-path="plotting-in-r.html"><a href="plotting-in-r.html#combining-plots"><i class="fa fa-check"></i><b>9.3</b> Combining plots</a></li>
+<li class="chapter" data-level="9.4" data-path="plotting-in-r.html"><a href="plotting-in-r.html#text"><i class="fa fa-check"></i><b>9.4</b> Text</a></li>
+<li class="chapter" data-level="9.5" data-path="plotting-in-r.html"><a href="plotting-in-r.html#lines"><i class="fa fa-check"></i><b>9.5</b> Lines</a></li>
+<li class="chapter" data-level="9.6" data-path="plotting-in-r.html"><a href="plotting-in-r.html#legend"><i class="fa fa-check"></i><b>9.6</b> Legend</a></li>
+<li class="chapter" data-level="9.7" data-path="plotting-in-r.html"><a href="plotting-in-r.html#two-axis"><i class="fa fa-check"></i><b>9.7</b> Two axis</a></li>
+<li class="chapter" data-level="9.8" data-path="plotting-in-r.html"><a href="plotting-in-r.html#palette"><i class="fa fa-check"></i><b>9.8</b> Palette</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i><b>10</b> ggplot2</a><ul>
+<li class="chapter" data-level="10.1" data-path="ggplot2.html"><a href="ggplot2.html#introduction-1"><i class="fa fa-check"></i><b>10.1</b> Introduction</a><ul>
+<li class="chapter" data-level="10.1.1" data-path="ggplot2.html"><a href="ggplot2.html#geoms"><i class="fa fa-check"></i><b>10.1.1</b> geoms</a></li>
+<li class="chapter" data-level="10.1.2" data-path="ggplot2.html"><a href="ggplot2.html#layering"><i class="fa fa-check"></i><b>10.1.2</b> Layering</a></li>
+<li class="chapter" data-level="10.1.3" data-path="ggplot2.html"><a href="ggplot2.html#aesthetics"><i class="fa fa-check"></i><b>10.1.3</b> Aesthetics</a></li>
+<li class="chapter" data-level="10.1.4" data-path="ggplot2.html"><a href="ggplot2.html#syntax"><i class="fa fa-check"></i><b>10.1.4</b> Syntax</a></li>
+<li class="chapter" data-level="10.1.5" data-path="ggplot2.html"><a href="ggplot2.html#stat"><i class="fa fa-check"></i><b>10.1.5</b> Stat</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="ggplot2.html"><a href="ggplot2.html#geom_point"><i class="fa fa-check"></i><b>10.2</b> geom_point</a><ul>
+<li class="chapter" data-level="10.2.1" data-path="ggplot2.html"><a href="ggplot2.html#jitter"><i class="fa fa-check"></i><b>10.2.1</b> Jitter</a></li>
+<li class="chapter" data-level="10.2.2" data-path="ggplot2.html"><a href="ggplot2.html#labels"><i class="fa fa-check"></i><b>10.2.2</b> Labels</a></li>
+<li class="chapter" data-level="10.2.3" data-path="ggplot2.html"><a href="ggplot2.html#colour-points"><i class="fa fa-check"></i><b>10.2.3</b> Colour points</a></li>
+<li class="chapter" data-level="10.2.4" data-path="ggplot2.html"><a href="ggplot2.html#matrix-of-plots"><i class="fa fa-check"></i><b>10.2.4</b> Matrix of plots</a></li>
+<li class="chapter" data-level="10.2.5" data-path="ggplot2.html"><a href="ggplot2.html#adding-lines"><i class="fa fa-check"></i><b>10.2.5</b> Adding lines</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="ggplot2.html"><a href="ggplot2.html#bar-graphs-histograms"><i class="fa fa-check"></i><b>10.3</b> Bar graphs &amp; histograms</a></li>
+<li class="chapter" data-level="10.4" data-path="ggplot2.html"><a href="ggplot2.html#geom_boxplot"><i class="fa fa-check"></i><b>10.4</b> geom_boxplot</a></li>
+<li class="chapter" data-level="10.5" data-path="ggplot2.html"><a href="ggplot2.html#facets"><i class="fa fa-check"></i><b>10.5</b> Facets</a></li>
+<li class="chapter" data-level="10.6" data-path="ggplot2.html"><a href="ggplot2.html#reordering-factors"><i class="fa fa-check"></i><b>10.6</b> Reordering factors</a></li>
+<li class="chapter" data-level="10.7" data-path="ggplot2.html"><a href="ggplot2.html#coordinate-systems"><i class="fa fa-check"></i><b>10.7</b> Coordinate systems</a></li>
+<li class="chapter" data-level="10.8" data-path="ggplot2.html"><a href="ggplot2.html#reference-lines"><i class="fa fa-check"></i><b>10.8</b> Reference lines</a></li>
+<li class="chapter" data-level="10.9" data-path="ggplot2.html"><a href="ggplot2.html#error-bars"><i class="fa fa-check"></i><b>10.9</b> Error bars</a></li>
+<li class="chapter" data-level="10.10" data-path="ggplot2.html"><a href="ggplot2.html#appearance"><i class="fa fa-check"></i><b>10.10</b> Appearance</a><ul>
+<li class="chapter" data-level="10.10.1" data-path="ggplot2.html"><a href="ggplot2.html#scales"><i class="fa fa-check"></i><b>10.10.1</b> Scales</a></li>
+</ul></li>
+<li class="chapter" data-level="10.11" data-path="ggplot2.html"><a href="ggplot2.html#dplyr-ggplot2"><i class="fa fa-check"></i><b>10.11</b> dplyr &amp; ggplot2</a></li>
+<li class="chapter" data-level="10.12" data-path="ggplot2.html"><a href="ggplot2.html#saving-graphs"><i class="fa fa-check"></i><b>10.12</b> Saving graphs</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="other-visualisation-packages.html"><a href="other-visualisation-packages.html"><i class="fa fa-check"></i><b>11</b> Other visualisation packages</a><ul>
+<li class="chapter" data-level="11.1" data-path="other-visualisation-packages.html"><a href="other-visualisation-packages.html#pheatmap"><i class="fa fa-check"></i><b>11.1</b> pheatmap</a></li>
+<li class="chapter" data-level="11.2" data-path="other-visualisation-packages.html"><a href="other-visualisation-packages.html#venndiagram"><i class="fa fa-check"></i><b>11.2</b> VennDiagram</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="statistics.html"><a href="statistics.html"><i class="fa fa-check"></i><b>12</b> Statistics</a></li>
+<li class="chapter" data-level="13" data-path="rmarkdown.html"><a href="rmarkdown.html"><i class="fa fa-check"></i><b>13</b> Rmarkdown</a><ul>
+<li class="chapter" data-level="13.1" data-path="rmarkdown.html"><a href="rmarkdown.html#basics-1"><i class="fa fa-check"></i><b>13.1</b> Basics</a></li>
+<li class="chapter" data-level="13.2" data-path="rmarkdown.html"><a href="rmarkdown.html#knitr"><i class="fa fa-check"></i><b>13.2</b> Knitr</a><ul>
+<li class="chapter" data-level="13.2.1" data-path="rmarkdown.html"><a href="rmarkdown.html#yamal-header"><i class="fa fa-check"></i><b>13.2.1</b> YAMAL header</a></li>
+<li class="chapter" data-level="13.2.2" data-path="rmarkdown.html"><a href="rmarkdown.html#chunk-options"><i class="fa fa-check"></i><b>13.2.2</b> Chunk options</a></li>
+<li class="chapter" data-level="13.2.3" data-path="rmarkdown.html"><a href="rmarkdown.html#global-options"><i class="fa fa-check"></i><b>13.2.3</b> Global options</a></li>
+<li class="chapter" data-level="13.2.4" data-path="rmarkdown.html"><a href="rmarkdown.html#common-problems"><i class="fa fa-check"></i><b>13.2.4</b> Common problems</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="rmarkdown.html"><a href="rmarkdown.html#bookdown"><i class="fa fa-check"></i><b>13.3</b> Bookdown</a><ul>
+<li class="chapter" data-level="13.3.1" data-path="rmarkdown.html"><a href="rmarkdown.html#rendering"><i class="fa fa-check"></i><b>13.3.1</b> Rendering</a></li>
+<li class="chapter" data-level="13.3.2" data-path="rmarkdown.html"><a href="rmarkdown.html#structure"><i class="fa fa-check"></i><b>13.3.2</b> Structure</a></li>
+<li class="chapter" data-level="13.3.3" data-path="rmarkdown.html"><a href="rmarkdown.html#yamal-header-1"><i class="fa fa-check"></i><b>13.3.3</b> YAMAL header</a></li>
+</ul></li>
+<li class="chapter" data-level="13.4" data-path="rmarkdown.html"><a href="rmarkdown.html#html-on-github"><i class="fa fa-check"></i><b>13.4</b> HTML on Github</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="package-development.html"><a href="package-development.html"><i class="fa fa-check"></i><b>14</b> Package development</a><ul>
+<li class="chapter" data-level="14.1" data-path="package-development.html"><a href="package-development.html#naming"><i class="fa fa-check"></i><b>14.1</b> Naming</a></li>
+<li class="chapter" data-level="14.2" data-path="package-development.html"><a href="package-development.html#states"><i class="fa fa-check"></i><b>14.2</b> States</a><ul>
+<li class="chapter" data-level="14.2.1" data-path="package-development.html"><a href="package-development.html#source"><i class="fa fa-check"></i><b>14.2.1</b> Source</a></li>
+<li class="chapter" data-level="14.2.2" data-path="package-development.html"><a href="package-development.html#bundled"><i class="fa fa-check"></i><b>14.2.2</b> Bundled</a></li>
+<li class="chapter" data-level="14.2.3" data-path="package-development.html"><a href="package-development.html#binary-package"><i class="fa fa-check"></i><b>14.2.3</b> Binary package</a></li>
+<li class="chapter" data-level="14.2.4" data-path="package-development.html"><a href="package-development.html#installed"><i class="fa fa-check"></i><b>14.2.4</b> Installed</a></li>
+<li class="chapter" data-level="14.2.5" data-path="package-development.html"><a href="package-development.html#in-memory"><i class="fa fa-check"></i><b>14.2.5</b> In memory</a></li>
+<li class="chapter" data-level="14.2.6" data-path="package-development.html"><a href="package-development.html#summary"><i class="fa fa-check"></i><b>14.2.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="14.3" data-path="package-development.html"><a href="package-development.html#r-cmd-install"><i class="fa fa-check"></i><b>14.3</b> R CMD install</a></li>
+<li class="chapter" data-level="14.4" data-path="package-development.html"><a href="package-development.html#workflow"><i class="fa fa-check"></i><b>14.4</b> Workflow</a></li>
+<li class="chapter" data-level="14.5" data-path="package-development.html"><a href="package-development.html#file-structure"><i class="fa fa-check"></i><b>14.5</b> File structure</a></li>
+<li class="chapter" data-level="14.6" data-path="package-development.html"><a href="package-development.html#description"><i class="fa fa-check"></i><b>14.6</b> DESCRIPTION</a><ul>
+<li class="chapter" data-level="14.6.1" data-path="package-development.html"><a href="package-development.html#imports"><i class="fa fa-check"></i><b>14.6.1</b> Imports</a></li>
+<li class="chapter" data-level="14.6.2" data-path="package-development.html"><a href="package-development.html#suggests"><i class="fa fa-check"></i><b>14.6.2</b> Suggests</a></li>
+</ul></li>
+<li class="chapter" data-level="14.7" data-path="package-development.html"><a href="package-development.html#namespace"><i class="fa fa-check"></i><b>14.7</b> NAMESPACE</a><ul>
+<li class="chapter" data-level="14.7.1" data-path="package-development.html"><a href="package-development.html#search-paths"><i class="fa fa-check"></i><b>14.7.1</b> Search paths</a></li>
+<li class="chapter" data-level="14.7.2" data-path="package-development.html"><a href="package-development.html#file-syntax"><i class="fa fa-check"></i><b>14.7.2</b> File syntax</a></li>
+<li class="chapter" data-level="14.7.3" data-path="package-development.html"><a href="package-development.html#exporting-1"><i class="fa fa-check"></i><b>14.7.3</b> Exporting</a></li>
+<li class="chapter" data-level="14.7.4" data-path="package-development.html"><a href="package-development.html#importing"><i class="fa fa-check"></i><b>14.7.4</b> Importing</a></li>
+<li class="chapter" data-level="14.7.5" data-path="package-development.html"><a href="package-development.html#exporting-2"><i class="fa fa-check"></i><b>14.7.5</b> Exporting</a></li>
+</ul></li>
+<li class="chapter" data-level="14.8" data-path="package-development.html"><a href="package-development.html#documentation"><i class="fa fa-check"></i><b>14.8</b> Documentation</a><ul>
+<li class="chapter" data-level="14.8.1" data-path="package-development.html"><a href="package-development.html#roxygen2"><i class="fa fa-check"></i><b>14.8.1</b> Roxygen2</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R notes</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="data-wrangling---base-r" class="section level1">
+<h1><span class="header-section-number">Chapter 3</span> Data wrangling - base R</h1>
+<div id="useful-functions" class="section level2">
+<h2><span class="header-section-number">3.1</span> Useful functions</h2>
+<p><code>floor()</code> returns the largest integer not greater than the input number(s)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">floor</span>(<span class="fl">2.6</span>)</code></pre></div>
+<pre><code>## [1] 2</code></pre>
+<p><code>ceiling()</code> returns the smallest integer not less than the input number(s)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ceiling</span>(<span class="fl">2.6</span>)</code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<p><code>sort()</code> returns sorted vector. Sorts alphabetically/numerically, depending on the data type. <code>decreasing</code> lets you inverse order.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sort</span>(iris<span class="op">$</span>Sepal.Length[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>])</code></pre></div>
+<pre><code>##  [1] 4.4 4.6 4.6 4.7 4.9 4.9 5.0 5.0 5.1 5.4</code></pre>
+<p><code>order()</code> gives the indicies of the vector in sorted order. For example, if you wanted to sort a dataframe according to the values in one column you can use:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(
+iris[<span class="kw">order</span>(iris<span class="op">$</span>Sepal.Length),]
+)</code></pre></div>
+<pre><code>##    Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 14          4.3         3.0          1.1         0.1  setosa
+## 9           4.4         2.9          1.4         0.2  setosa
+## 39          4.4         3.0          1.3         0.2  setosa
+## 43          4.4         3.2          1.3         0.2  setosa
+## 42          4.5         2.3          1.3         0.3  setosa
+## 4           4.6         3.1          1.5         0.2  setosa</code></pre>
+<p><code>match()</code> orders the 1st argument according to the 2nd argument.</p>
+<p>For example, if you wanted to order a vector of strings according to a specific order defined by another vector of strings:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># define vectors</span>
+a &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;a&quot;</span>,<span class="st">&quot;c&quot;</span>,<span class="st">&quot;b&quot;</span>) 
+b &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>) <span class="co"># the order we want</span>
+<span class="kw">match</span>(a,b)</code></pre></div>
+<pre><code>## [1] 1 3 2</code></pre>
+<p>Match says that in the vector “b”, the first element should be 1st, the second “c” should be 3rd and the last one “b” should be 2nd.</p>
+<p>If you wish to order <code>a</code> you can use:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">a[<span class="kw">match</span>(a,b)]</code></pre></div>
+<pre><code>## [1] &quot;a&quot; &quot;b&quot; &quot;c&quot;</code></pre>
+<p><code>%in%</code> finds matches in the RHS vector and returns a vector of logicals the same length as the LHS vector.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">5</span>) <span class="op">%in%</span><span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">3</span></code></pre></div>
+<pre><code>## [1]  TRUE  TRUE FALSE</code></pre>
+<p><code>intersect</code> finds the common elements in two vectors.</p>
+<p><code>setdiff()</code> looks for differences between two vectors. Order matters - e.g. <code>setdiff(a,b)</code> gives you things that are in <code>a</code> BUT not in <code>b</code>.</p>
+<p><code>merge()</code> joins two dataframes together, by common columns or rownames. Arguments:</p>
+<ul>
+<li><code>by</code> - name of the column(s) to merge by in BOTH dataframes (implies that both dataframes have the same column names).</li>
+<li><code>by.x</code>, <code>by.y</code> - name of the column(s) in the first dataframe (x) and the second dataframe (y) to merge by. Use this if the columns to merge by are named differently in the two dataframes.</li>
+<li><code>all</code> - should all the rows in both dataframes be kept? If there are rows in one dataframe but not the other, the missing data will be filled with NAs.</li>
+<li><code>all.x</code>, <code>all.y</code> - lets you specify if you want to keep all rows in either the first <code>x</code> or second <code>y</code> dataframe only.</li>
+</ul>
+<p><code>merge()</code> is a generic function in base R. It dispatches to either the merge.data.frame method or merge.data.table method depending on the class of its first argument (see <a href="http://127.0.0.1:11316/help/library/data.table/help/merge">link</a> for more details)</p>
+<p><code>aggregate()</code> ‘Splits the data into subsets, computes summary statistics for each, and returns the result in a convenient form’. It requires three things:</p>
+<ul>
+<li>The object to perform function on, e.g a dataframe. Note that if you do not specify the columns of interest, the function will be performed on all columns.</li>
+<li>What variables to group by. Must give as list e.g. <code>by = list(df$var1, df$var2)</code>.
+<ul>
+<li>If using a dataframe, the output dataframe will have a column for each grouping variable - to specify which grouping variable each row is. The default column name is group1, group2… If you wish to specify the name of the column use <code>by = list(mycolname = df$var1, df$var2)</code></li>
+</ul></li>
+<li>Function to perform. Any other arguments to be passed to function can be given after comma.</li>
+</ul>
+<p>Example:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">aggregate</span>(iris[,<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>], <span class="dt">by =</span> <span class="kw">list</span>(<span class="dt">Species2 =</span> iris<span class="op">$</span>Species), 
+          mean, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>##     Species2 Sepal.Length Sepal.Width Petal.Length Petal.Width
+## 1     setosa        5.006       3.428        1.462       0.246
+## 2 versicolor        5.936       2.770        4.260       1.326
+## 3  virginica        6.588       2.974        5.552       2.026</code></pre>
+<p><code>complete.case()</code> gives you a logical vector, the same length as the number of rows of your dataframe/matrix, telling you if there is a NA in your row.</p>
+<p><code>is.finite()</code> tells you if it is finite (e.g. will return false for Inf, -Inf, NaN, NA)</p>
+</div>
+<div id="subsetting" class="section level2">
+<h2><span class="header-section-number">3.2</span> Subsetting</h2>
+<p>Useful references: <a href="http://adv-r.had.co.nz/Subsetting.html">Advanced R</a>, <a href="https://cran.r-project.org/doc/manuals/R-lang.html#Indexing">R manual</a></p>
+<ul>
+<li><code>[ ]</code> - Returns an object that is of the same type as original UNLESS the one exception is when your subset only has one result). The default is to reduce results to the lowest dimension. E.g. taking a subset of 1 column in a df returns a vector. You can override this to return a df by using argument drop=false (<code>iris[ , &quot;Petal.Length&quot;, drop=FALSE ]</code>). For arrays, it will return array with lowest possible dimensionality. You can also use it to obtain a vector longer than the original. E.g:</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">a &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;black&quot;</span>, <span class="st">&quot;red&quot;</span>)
+a[<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">1</span>)]</code></pre></div>
+<pre><code>## [1] &quot;black&quot; &quot;red&quot;   &quot;black&quot; &quot;black&quot;</code></pre>
+<ul>
+<li><code>[[ ]]</code> Extracts one element. For vector = single value, df = column, list = one element. Result is not necessarily the same data structure as the original. Important for list as using <code>[ ]</code> on a list returns a list. E.g. for a list of dataframes, <code>list1[1]</code> returns a list with one element - a dataframe, <code>list1[[1]]</code> returns a dataframe.
+<ul>
+<li>As <code>[[ ]]</code> can only return a single value, it must be used with single positive integer or string (name). With <code>[ ]</code> you can input a vector and get several elements of the container.</li>
+</ul></li>
+<li><code>$</code> Can be used for recursive objects - lists and pairlists. Can only give it a character or symbol as the index</li>
+</ul>
+<p>The following are difference ways to subset:</p>
+<ul>
+<li><strong>Positive integer</strong> returns elements at the specific positions. If index duplicated, will return element twice. If decimal number given, will be silently truncated (NOT rounded) to integer.</li>
+<li><strong>Negative integer</strong> omits the specified elements. You can’t mix positive and negative integers, will return an error.</li>
+<li><strong>Logical vector</strong> selects for element where corresponding boolean is <code>TRUE</code>. Will be recycled if shorter than vector.</li>
+<li><strong>Character vector</strong> can be used if the vector is named. Names matched exactly.</li>
+<li><strong>NA</strong> - an NA in the index will either return an NA value at a NA index:</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris[<span class="kw">c</span>(<span class="ot">NA</span>,<span class="dv">2</span>,<span class="ot">NA</span>,<span class="dv">4</span>),<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]</code></pre></div>
+<pre><code>##      Sepal.Length Sepal.Width
+## NA             NA          NA
+## 2             4.9         3.0
+## NA.1           NA          NA
+## 4             4.6         3.1</code></pre>
+<p>or if only one NA is used, will return an object the same length, completely filled with NAs. Below there are 150 rows (the same number in the original iris data) and each row is a NA.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(
+  iris[<span class="ot">NA</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]
+)</code></pre></div>
+<pre><code>##      Sepal.Length Sepal.Width
+## NA             NA          NA
+## NA.1           NA          NA
+## NA.2           NA          NA
+## NA.3           NA          NA
+## NA.4           NA          NA
+## NA.5           NA          NA</code></pre>
+</div>
+<div id="apply-family" class="section level2">
+<h2><span class="header-section-number">3.3</span> Apply family</h2>
+<p>The <code>apply()</code> functions do not actually offer improved performance over loops, except <code>lapply()</code> which can be a little faster because it does more work in C than in R.</p>
+<p>Use apply family for clarity (NOT performance) and because it has no side effects (e.g. does not alter the the input dataframe). See <a href="https://stackoverflow.com/questions/2275896/is-rs-apply-family-more-than-syntactic-sugar">this</a> question on SO for more.</p>
+<p><a href="https://www.datacamp.com/community/tutorials/r-tutorial-apply-family#gs.5vHYLC8">Datacamp</a> has a nice tutorial on the apply family.</p>
+<ul>
+<li><code>apply()</code> - applies a function to either all the rows (<code>MARGIN = 1</code>) or all the columns (<code>MARGIN = 2</code>).
+<ul>
+<li>Returns vector, array or list depending on the output of the function on the row/column.</li>
+</ul></li>
+<li><code>by()</code> - splits a dataframe by row by by the values of one or more factors and applies a function to each subset.</li>
+<li><code>eapply()</code> applies a function to the named values from an environment and returns results as list. This is primative (internally implemented) function.</li>
+<li><code>lapply()</code> ‘list apply’ - returns list of the same length as input function. Each element is result of applying a function to the input object.</li>
+<li><code>sapply()</code> ‘simplify apply’ - same as <code>lapply()</code> but returns a vector or matrix. (<code>sapply()</code> and <code>lapply()</code> are essentially the same however, lapply always returns a list and sapply tries to simplify.)
+<ul>
+<li>Do not have to specify index as you do in apply</li>
+<li>Returns named vector, <code>USE.NAMES = FALSE</code> if you don’t want <code>sapply()</code> to use character values as names for the result.</li>
+</ul></li>
+<li><code>vapply()</code> - returns specified type of value.</li>
+<li><code>mapply()</code> ‘multivariate apply’ - allows input of more than one argument.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mapply</span>(min, iris<span class="op">$</span>Sepal.Length, iris<span class="op">$</span>Sepal.Width)</code></pre></div>
+<pre><code>##   [1] 3.5 3.0 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 3.7 3.4 3.0 3.0 4.0 4.4 3.9
+##  [18] 3.5 3.8 3.8 3.4 3.7 3.6 3.3 3.4 3.0 3.4 3.5 3.4 3.2 3.1 3.4 4.1 4.2
+##  [35] 3.1 3.2 3.5 3.6 3.0 3.4 3.5 2.3 3.2 3.5 3.8 3.0 3.8 3.2 3.7 3.3 3.2
+##  [52] 3.2 3.1 2.3 2.8 2.8 3.3 2.4 2.9 2.7 2.0 3.0 2.2 2.9 2.9 3.1 3.0 2.7
+##  [69] 2.2 2.5 3.2 2.8 2.5 2.8 2.9 3.0 2.8 3.0 2.9 2.6 2.4 2.4 2.7 2.7 3.0
+##  [86] 3.4 3.1 2.3 3.0 2.5 2.6 3.0 2.6 2.3 2.7 3.0 2.9 2.9 2.5 2.8 3.3 2.7
+## [103] 3.0 2.9 3.0 3.0 2.5 2.9 2.5 3.6 3.2 2.7 3.0 2.5 2.8 3.2 3.0 3.8 2.6
+## [120] 2.2 3.2 2.8 2.8 2.7 3.3 3.2 2.8 3.0 2.8 3.0 2.8 3.8 2.8 2.8 2.6 3.0
+## [137] 3.4 3.1 3.0 3.1 3.1 3.1 2.7 3.2 3.3 3.0 2.5 3.0 3.4 3.0</code></pre>
+<p>The function <code>min()</code>, which can take several arguments, is applied to two columns of <code>iris</code>. The result is a matrix with one column and the same number of rows as in <code>iris</code>.</p>
+<p>For more complex functions, this syntax can also be used. Notice how the two arguments to the function are given at the end.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mapply</span>(<span class="cf">function</span>(x,y){
+  <span class="kw">funct</span>(x,y)},
+  input1, input2)</code></pre></div>
+<ul>
+<li><code>rapply()</code> ‘recursive apply’ - applies functions to lists in different ways depending on arguments supplied. E.g. apply to each value in the list or apply to each list.</li>
+</ul>
+<p>Arguments to the function can usually be given in two different ways:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sapply</span>(data, <span class="cf">function</span>(x) <span class="kw">my_funct</span>(x, <span class="dt">arg =</span> <span class="ot">TRUE</span>))
+<span class="kw">sapply</span>(data, my_funct, <span class="dt">arg =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>I would suggest to use the first syntax for clarity.</p>
+<div id="uses" class="section level3">
+<h3><span class="header-section-number">3.3.1</span> Uses</h3>
+<p><code>apply()</code> can be used to perform a function on every ‘n’ rows of every column in matrix:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris_sub &lt;-<span class="st"> </span>iris[<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>]
+iris_sub</code></pre></div>
+<pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width
+## 1          5.1         3.5          1.4         0.2
+## 2          4.9         3.0          1.4         0.2
+## 3          4.7         3.2          1.3         0.2
+## 4          4.6         3.1          1.5         0.2</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">matrix</span>(iris_sub<span class="op">$</span>Sepal.Length, <span class="dt">nrow =</span> <span class="dv">2</span>)</code></pre></div>
+<pre><code>##      [,1] [,2]
+## [1,]  5.1  4.7
+## [2,]  4.9  4.6</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colMeans</span>(<span class="kw">matrix</span>(iris_sub<span class="op">$</span>Sepal.Length, <span class="dt">nrow =</span> <span class="dv">2</span>))</code></pre></div>
+<pre><code>## [1] 5.00 4.65</code></pre>
+<p>The mean of every two rows of the <code>Sepal.Length</code> column is being calculated. The result of our function is a vector.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">apply</span>(iris_sub, <span class="dv">2</span>, <span class="cf">function</span>(x) <span class="kw">colMeans</span>(<span class="kw">matrix</span>(x, <span class="dt">nrow =</span> <span class="dv">2</span>)))</code></pre></div>
+<pre><code>##      Sepal.Length Sepal.Width Petal.Length Petal.Width
+## [1,]         5.00        3.25          1.4         0.2
+## [2,]         4.65        3.15          1.4         0.2</code></pre>
+<p><code>apply()</code> gives the function a column of the dataframe each ‘iteration’. The result of the function is a vector (see above) and <code>apply()</code> puts these vectors together into a matrix. See <a href="https://stackoverflow.com/questions/25150892/stats-on-every-n-rows-for-each-column?rq=1">this</a> SO question for more.</p>
+<p><code>mapply()</code> can be used to apply a function to groups of columns.</p>
+<p>First, create a list of the columns we want to perform our function on.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>, <span class="dv">3</span><span class="op">:</span><span class="dv">4</span>)
+x</code></pre></div>
+<pre><code>## [[1]]
+## [1] 1 2
+## 
+## [[2]]
+## [1] 3 4</code></pre>
+<p>Using <code>iris_sub</code> from above:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rowMeans</span>( iris_sub[, x[[<span class="dv">1</span>]] ] )</code></pre></div>
+<pre><code>##    1    2    3    4 
+## 4.30 3.95 3.95 3.85</code></pre>
+<p>This is performing <code>rowMeans()</code> the first two columns (<code>x[[1]]</code> = 1,2) of <code>iris_sub</code> for each row.</p>
+<p>We can use <code>lapply()</code> to perform this on the other elements in <code>x</code>. <code>x</code> is a list of the column indices we wish to perform the function on. The function is performed on columns 1 &amp; 2 and 3 &amp; 4 as per <code>x</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lapply</span>(x, <span class="cf">function</span>(i) <span class="kw">rowMeans</span>( iris_sub[, i ] ))</code></pre></div>
+<pre><code>## [[1]]
+##    1    2    3    4 
+## 4.30 3.95 3.95 3.85 
+## 
+## [[2]]
+##    1    2    3    4 
+## 0.80 0.80 0.75 0.85</code></pre>
+<p>This can also be combined this together into a matrix (see below for more on <code>do.call()</code>).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">do.call</span>(cbind,
+        <span class="kw">lapply</span>(x, <span class="cf">function</span>(i) <span class="kw">rowMeans</span>( iris_sub[, i ] )))</code></pre></div>
+<pre><code>##   [,1] [,2]
+## 1 4.30 0.80
+## 2 3.95 0.80
+## 3 3.95 0.75
+## 4 3.85 0.85</code></pre>
+<p>See <a href="https://stackoverflow.com/questions/10661295/apply-a-function-over-groups-of-columns">this</a> question on SO for more.</p>
+</div>
+</div>
+<div id="docall" class="section level2">
+<h2><span class="header-section-number">3.4</span> do.call()</h2>
+<p>This function lets you call any function and give it arguments via a list.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">lapply</span>(iris, class)
+<span class="kw">str</span>(x)</code></pre></div>
+<pre><code>## List of 5
+##  $ Sepal.Length: chr &quot;numeric&quot;
+##  $ Sepal.Width : chr &quot;numeric&quot;
+##  $ Petal.Length: chr &quot;numeric&quot;
+##  $ Petal.Width : chr &quot;numeric&quot;
+##  $ Species     : chr &quot;factor&quot;</code></pre>
+<p><code>lapply()</code> is performing <code>class()</code> on all columns of the dataframe <code>iris</code>. The result is a list where each element is the class of each column.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">do.call</span>(c, x)</code></pre></div>
+<pre><code>## Sepal.Length  Sepal.Width Petal.Length  Petal.Width      Species 
+##    &quot;numeric&quot;    &quot;numeric&quot;    &quot;numeric&quot;    &quot;numeric&quot;     &quot;factor&quot;</code></pre>
+<p>Here the <code>do.call()</code> function is giving the <code>c()</code> function five arguments, with each argument being an element of the list <code>x</code>. The list ‘x’ is turing into a vector.</p>
+<p>Further, notice how <code>x</code> is a named list. The output of <code>do.call()</code> was a name vector.</p>
+<p>Let’s look at a paste example for clarity.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">a &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">a =</span> <span class="st">&quot;a&quot;</span>, <span class="dt">b =</span> <span class="st">&quot;b&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;.&quot;</span>)
+<span class="kw">do.call</span>(paste, <span class="kw">as.list</span>(a))</code></pre></div>
+<pre><code>## [1] &quot;a.b&quot;</code></pre>
+<p>What <code>do.call()</code> is actually executing is:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">paste</span>(<span class="dt">a =</span> <span class="st">&quot;a&quot;</span>, <span class="dt">b =</span> <span class="st">&quot;b&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;.&quot;</span>)</code></pre></div>
+<p>The <code>what</code> argument of <code>do.call()</code> can take ‘either a function or a non-empty character string naming the function to be called’.</p>
+<p>When you give it the function name - it will take the default function with that name. If you wish to specify which environment to take the function from - you must give the function name in quotes and specify the environment using the <code>envir</code> argument.</p>
+<p>See <a href="https://www.stat.berkeley.edu/~s133/Docall.html">this</a> <code>do.call()</code> guide for more.</p>
+</div>
+<div id="do.call-vs-lapply-vs-map" class="section level2">
+<h2><span class="header-section-number">3.5</span> do.call vs lapply vs map</h2>
+<table style="width:96%;">
+<colgroup>
+<col width="31%" />
+<col width="31%" />
+<col width="31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center"><strong>do.call()</strong></th>
+<th align="center"><strong>lapply()</strong></th>
+<th align="center"><strong>Map</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">There is one function call. Applies a given function to the list as a whole.</td>
+<td align="center">There are n function calls, where n is the length of the list/vector.</td>
+<td align="center">Simple wrapper to <code>mapply()</code>. Does not attempt to simplify the result.</td>
+</tr>
+<tr class="even">
+<td align="center">Often used to assemble lists into simpler structures.</td>
+<td align="center">Returns a list of the same length as your list/vector.</td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introduction.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="data-wrangling-tidyverse.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/02-dw_base.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["R notes.pdf", "R notes.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
