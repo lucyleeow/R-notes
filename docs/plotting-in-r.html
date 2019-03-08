@@ -9,7 +9,7 @@
   <meta name="description" content="Guide to R.">
   <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="Chapter 9 Plotting in R | R notes />
+  <meta property="og:title" content="Chapter 9 Plotting in R | R notes" />
   <meta property="og:type" content="book" />
   
   
@@ -17,7 +17,7 @@
   <meta name="github-repo" content="lucyleeow/R_notes" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 9 Plotting in R | R notes />
+  <meta name="twitter:title" content="Chapter 9 Plotting in R | R notes" />
   
   <meta name="twitter:description" content="Guide to R." />
   
@@ -25,7 +25,7 @@
 <meta name="author" content="Lucy Liu">
 
 
-<meta name="date" content="2019-01-09">
+<meta name="date" content="2019-03-08">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -208,16 +208,19 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="8.4.3" data-path="data-table.html"><a href="data-table.html#functions-on-groups"><i class="fa fa-check"></i><b>8.4.3</b> Functions on groups</a></li>
 </ul></li>
 <li class="chapter" data-level="8.5" data-path="data-table.html"><a href="data-table.html#keys"><i class="fa fa-check"></i><b>8.5</b> Keys</a></li>
-<li class="chapter" data-level="8.6" data-path="data-table.html"><a href="data-table.html#reshaping"><i class="fa fa-check"></i><b>8.6</b> Reshaping</a></li>
-<li class="chapter" data-level="8.7" data-path="data-table.html"><a href="data-table.html#merge"><i class="fa fa-check"></i><b>8.7</b> Merge</a></li>
+<li class="chapter" data-level="8.6" data-path="data-table.html"><a href="data-table.html#set"><i class="fa fa-check"></i><b>8.6</b> set</a></li>
+<li class="chapter" data-level="8.7" data-path="data-table.html"><a href="data-table.html#reshaping"><i class="fa fa-check"></i><b>8.7</b> Reshaping</a></li>
+<li class="chapter" data-level="8.8" data-path="data-table.html"><a href="data-table.html#merge"><i class="fa fa-check"></i><b>8.8</b> Merge</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="plotting-in-r.html"><a href="plotting-in-r.html"><i class="fa fa-check"></i><b>9</b> Plotting in R</a><ul>
 <li class="chapter" data-level="9.1" data-path="plotting-in-r.html"><a href="plotting-in-r.html#base-r-plotting"><i class="fa fa-check"></i><b>9.1</b> Base R plotting</a></li>
-<li class="chapter" data-level="9.2" data-path="plotting-in-r.html"><a href="plotting-in-r.html#plot"><i class="fa fa-check"></i><b>9.2</b> Plot</a></li>
-<li class="chapter" data-level="9.3" data-path="plotting-in-r.html"><a href="plotting-in-r.html#par"><i class="fa fa-check"></i><b>9.3</b> par</a><ul>
-<li class="chapter" data-level="9.3.1" data-path="plotting-in-r.html"><a href="plotting-in-r.html#combining-plots"><i class="fa fa-check"></i><b>9.3.1</b> Combining plots</a></li>
-</ul></li>
-<li class="chapter" data-level="9.4" data-path="plotting-in-r.html"><a href="plotting-in-r.html#palette"><i class="fa fa-check"></i><b>9.4</b> Palette</a></li>
+<li class="chapter" data-level="9.2" data-path="plotting-in-r.html"><a href="plotting-in-r.html#par"><i class="fa fa-check"></i><b>9.2</b> par</a></li>
+<li class="chapter" data-level="9.3" data-path="plotting-in-r.html"><a href="plotting-in-r.html#combining-plots"><i class="fa fa-check"></i><b>9.3</b> Combining plots</a></li>
+<li class="chapter" data-level="9.4" data-path="plotting-in-r.html"><a href="plotting-in-r.html#text"><i class="fa fa-check"></i><b>9.4</b> Text</a></li>
+<li class="chapter" data-level="9.5" data-path="plotting-in-r.html"><a href="plotting-in-r.html#lines"><i class="fa fa-check"></i><b>9.5</b> Lines</a></li>
+<li class="chapter" data-level="9.6" data-path="plotting-in-r.html"><a href="plotting-in-r.html#legend"><i class="fa fa-check"></i><b>9.6</b> Legend</a></li>
+<li class="chapter" data-level="9.7" data-path="plotting-in-r.html"><a href="plotting-in-r.html#two-axis"><i class="fa fa-check"></i><b>9.7</b> Two axis</a></li>
+<li class="chapter" data-level="9.8" data-path="plotting-in-r.html"><a href="plotting-in-r.html#palette"><i class="fa fa-check"></i><b>9.8</b> Palette</a></li>
 </ul></li>
 <li class="chapter" data-level="10" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i><b>10</b> ggplot2</a><ul>
 <li class="chapter" data-level="10.1" data-path="ggplot2.html"><a href="ggplot2.html#introduction-1"><i class="fa fa-check"></i><b>10.1</b> Introduction</a><ul>
@@ -319,7 +322,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h1><span class="header-section-number">Chapter 9</span> Plotting in R</h1>
 <p>Useful references:</p>
 <ul>
-<li>Roger Peng’s <a href="https://rstudio-pubs-static.s3.amazonaws.com/84527_6b8334fd3d9348579681b24d156e7e9d.html">guide</a> ()</li>
+<li>Roger Peng’s <a href="https://rstudio-pubs-static.s3.amazonaws.com/84527_6b8334fd3d9348579681b24d156e7e9d.html">guide</a> (much of the notes at the beginning are copied from here)</li>
+<li><a href="https://rstudio-pubs-static.s3.amazonaws.com/7953_4e3efd5b9415444ca065b1167862c349.html">Idiot’s Guide</a></li>
 </ul>
 <p>The core plotting and graphics engine in R is encapsulated in the following packages:</p>
 <ul>
@@ -332,7 +336,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>lattice - usually constructed in a single function call, so all of the graphics parameters have to be specified at once. This allows R to automatically calculate the necessary spacings and font sizes.</li>
 <li>ggplot2 - combines concepts from both base and lattice but uses an independent implementation.</li>
 </ul>
-<p>These generally cannot be mixed. ggplot2 will be discussed in the next chapter.</p>
+<p>These generally cannot be mixed. This chapter will discuss base R plotting. ggplot2 will be discussed in the next chapter.</p>
 <div id="base-r-plotting" class="section level2">
 <h2><span class="header-section-number">9.1</span> Base R plotting</h2>
 <p>There are two ‘phases’ to making a plot:</p>
@@ -344,25 +348,44 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>)</code></pre></div>
 <p><img src="R_notes_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <p>The default method for <code>plot()</code> is creates a scatter plot and will be used unless the R object input is of some special class.</p>
-</div>
-<div id="plot" class="section level2">
-<h2><span class="header-section-number">9.2</span> Plot</h2>
-<p>Base plotting functions (e.g. <code>plot()</code> and <code>boxplot()</code>) share a set of parameters. Here are some ones.</p>
+<p>Base plotting functions (e.g. <code>plot()</code> and <code>boxplot()</code>) share a set of parameters. Here are some useful ones:</p>
 <ul>
-<li><code>pch</code>: the plotting symbol (default is open circle). The differnet symbols and their corresponding number are shown here:</li>
+<li><code>pch</code>: the plotting symbol (default is open circle). The different symbols and their corresponding number are shown here:</li>
 </ul>
 <div class="figure">
 <img src="Images/shapes-1.png" />
 
 </div>
-<p>You can also set <code>pch</code> to a letter, and that letter will be shown at each point. * <code>lty</code>: the line type (default is solid line), can be dashed, dotted, etc. * <code>lwd</code>: the line width, specified as an integer multiple. * <code>col</code>: the plotting color, specified as a number, string, or hex code; the colors() function gives you a vector of colors by name. * <code>xlab</code>: character string for the x-axis label. * <code>ylab</code>: character string for the y-axis label. * <code>main</code>: title of the plot. * <code>type</code>: what type of plot should be drawn e.g. <code>'p'</code> for points, <code>'b'</code> for both.</p>
+<p>You can also set <code>pch</code> to a letter, and that letter will be shown at each point.</p>
+<ul>
+<li><code>lty</code>: the line type (default is solid line), can be dashed, dotted, etc.</li>
+<li><code>lwd</code>: the line width, specified as an integer multiple.</li>
+<li><code>col</code>: the plotting color, specified as a number, string, or hex code; the colors() function gives you a vector of colors by name.</li>
+<li><code>xlab</code>: character string for the x-axis label.</li>
+<li><code>ylab</code>: character string for the y-axis label.</li>
+<li><code>main</code>: title of the plot.</li>
+<li><code>type</code>: what type of plot should be drawn e.g. <code>'p'</code> for points, <code>'b'</code> for both.</li>
+<li><code>cex</code>: size of points.</li>
+</ul>
 <p>Scatter plot with appearance changes.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dt">type =</span> <span class="st">&#39;b&#39;</span>, <span class="dt">pch =</span> <span class="dv">0</span>, <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">main =</span> <span class="st">&quot;title&quot;</span>,
      <span class="dt">col =</span> <span class="st">&quot;darkgreen&quot;</span>)</code></pre></div>
 <p><img src="R_notes_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>You can also colour the points according to a factor vector of the same length as the number of data points, by setting <code>col</code> to be this vector. Default colours will be used.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(iris<span class="op">$</span>Sepal.Length, iris<span class="op">$</span>Petal.Length, <span class="dt">col =</span> iris<span class="op">$</span>Species, 
+     <span class="dt">pch =</span> <span class="dv">15</span>)</code></pre></div>
+<p><img src="R_notes_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>You can also provide <code>col</code> with a character vector of colour names the same length as the number of data points.</p>
+<p>The <code>col</code> argument actually sets the colour of the border of each point. <code>bg</code> sets the colour of the ‘backgroud’ of each point. This can only be set for point shapes that are ‘empty’ in the middle.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(iris<span class="op">$</span>Sepal.Length, iris<span class="op">$</span>Petal.Length, <span class="dt">col =</span> iris<span class="op">$</span>Species, 
+     <span class="dt">pch =</span> <span class="dv">21</span>)</code></pre></div>
+<p><img src="R_notes_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(iris<span class="op">$</span>Sepal.Length, iris<span class="op">$</span>Petal.Length, <span class="dt">col =</span> iris<span class="op">$</span>Species, 
+     <span class="dt">pch =</span> <span class="dv">21</span>, <span class="dt">bg =</span> <span class="st">&quot;blue&quot;</span>)</code></pre></div>
+<p><img src="R_notes_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 </div>
 <div id="par" class="section level2">
-<h2><span class="header-section-number">9.3</span> par</h2>
+<h2><span class="header-section-number">9.2</span> par</h2>
 <p>The <code>par()</code> function specifies global parameters that affect all plots in an R session. Of course these parameters</p>
 <ul>
 <li><code>las</code>: the orientation of the axis labels on the plot.</li>
@@ -372,21 +395,22 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>mfrow</code>: layout of plots using syntax <code>mfrow=c(nrows, ncols)</code>, plots are filled row-wise.</li>
 <li><code>mfcol</code>: layout of plots using syntax <code>mfcol=c(nrows, ncols)</code>, plots are filled column-wise.</li>
 </ul>
-<div id="combining-plots" class="section level3">
-<h3><span class="header-section-number">9.3.1</span> Combining plots</h3>
+</div>
+<div id="combining-plots" class="section level2">
+<h2><span class="header-section-number">9.3</span> Combining plots</h2>
 <p>This can be done using the arguments <code>mfrow</code> or <code>mfcol</code> in <code>par()</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">1</span>))
 
 <span class="kw">plot</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>)
 <span class="kw">plot</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>)</code></pre></div>
-<p><img src="R_notes_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="R_notes_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p>The <code>layout()</code> function gives you more flexibility. This function takes a matrix, which specifies the location of the figures to plot</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">layout</span>(<span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>), <span class="dv">2</span>, <span class="dv">2</span>, <span class="dt">byrow =</span> <span class="ot">TRUE</span>))
 
 <span class="kw">hist</span>(mtcars<span class="op">$</span>wt)
 <span class="kw">hist</span>(mtcars<span class="op">$</span>mpg)
 <span class="kw">hist</span>(mtcars<span class="op">$</span>disp)</code></pre></div>
-<p><img src="R_notes_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="R_notes_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>The matrix above looks like this:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>), <span class="dv">2</span>, <span class="dv">2</span>, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>##      [,1] [,2]
@@ -400,7 +424,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="kw">hist</span>(mtcars<span class="op">$</span>wt)
 <span class="kw">hist</span>(mtcars<span class="op">$</span>mpg)
 <span class="kw">hist</span>(mtcars<span class="op">$</span>disp)</code></pre></div>
-<p><img src="R_notes_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="R_notes_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <p>You can also manipulate plot arrangement using <code>fig</code> in <code>par()</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">fig=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="fl">0.8</span>,<span class="dv">0</span>,<span class="fl">0.8</span>))
 <span class="kw">plot</span>(mtcars<span class="op">$</span>wt, mtcars<span class="op">$</span>mpg, <span class="dt">xlab=</span><span class="st">&quot;Car Weight&quot;</span>,
@@ -410,12 +434,34 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="kw">par</span>(<span class="dt">fig=</span><span class="kw">c</span>(<span class="fl">0.65</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="fl">0.8</span>),<span class="dt">new=</span><span class="ot">TRUE</span>)
 <span class="kw">boxplot</span>(mtcars<span class="op">$</span>mpg, <span class="dt">axes=</span><span class="ot">FALSE</span>)
 <span class="kw">mtext</span>(<span class="st">&quot;Enhanced Scatterplot&quot;</span>, <span class="dt">side=</span><span class="dv">3</span>, <span class="dt">outer=</span><span class="ot">TRUE</span>, <span class="dt">line=</span><span class="op">-</span><span class="dv">3</span>) </code></pre></div>
-<p><img src="R_notes_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="R_notes_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>First think of the full graph as going from (0,0) on the lower left corner to (1,1) on the top right hand corner.</p>
+<p>The first <code>fig=c(0,0.8,0,0.8)</code> specifies the size of the scatter plot. The syntax of the four numbers is <code>c(x1,x2,y1,y2)</code>. On the horizontal axis, the plot goes from 0 to 0.8. On the vertical axies, the plot goes from 0 to 0.8.</p>
+<p>The top boxplot goes from 0 to 0.8 on the horizontal axis. On the vertical axis, the top boxplot goes from 0.45 to 1. These figures usually require some trial and error to find the ones needed for the desired appearance. Note that this boxplot was located differently when run in the console vs when using knitr.</p>
+<p>Setting <code>new=TRUE</code> tells R to make the next plot without cleaning the graphics device.</p>
 <p>Reference: <a href="https://www.statmethods.net/advgraphs/layout.html">Quick-R</a></p>
 </div>
+<div id="text" class="section level2">
+<h2><span class="header-section-number">9.4</span> Text</h2>
+<p>The <code>text()</code> function allows you to add text to your plot.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>)
+<span class="kw">text</span>(<span class="dt">x =</span> <span class="fl">1.5</span>, <span class="dt">y =</span> <span class="dv">4</span>, <span class="dt">labels =</span> <span class="st">&quot;R2 = 0.896</span><span class="ch">\n</span><span class="st">P = 2.615e-15&quot;</span>)</code></pre></div>
+<p><img src="R_notes_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>The <code>x</code> and <code>y</code> arguments specify where on the axis (as determined by the y and x axis of the graph) the text should be. Including <code>&quot;\n&quot;</code> in the text will insert a new line.</p>
+</div>
+<div id="lines" class="section level2">
+<h2><span class="header-section-number">9.5</span> Lines</h2>
+<p>The function <code>abline()</code> lets you add a new line</p>
+</div>
+<div id="legend" class="section level2">
+<h2><span class="header-section-number">9.6</span> Legend</h2>
+</div>
+<div id="two-axis" class="section level2">
+<h2><span class="header-section-number">9.7</span> Two axis</h2>
+<p><a href="https://stackoverflow.com/questions/6142944/how-can-i-plot-with-2-different-y-axes" class="uri">https://stackoverflow.com/questions/6142944/how-can-i-plot-with-2-different-y-axes</a></p>
 </div>
 <div id="palette" class="section level2">
-<h2><span class="header-section-number">9.4</span> Palette</h2>
+<h2><span class="header-section-number">9.8</span> Palette</h2>
 <p>Colour blind friendly palette - 15 hues:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pal &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;#000000&quot;</span>,<span class="st">&quot;#004949&quot;</span>,<span class="st">&quot;#009292&quot;</span>,<span class="st">&quot;#ff6db6&quot;</span>,<span class="st">&quot;#ffb6db&quot;</span>,
  <span class="st">&quot;#490092&quot;</span>,<span class="st">&quot;#006ddb&quot;</span>,<span class="st">&quot;#b66dff&quot;</span>,<span class="st">&quot;#6db6ff&quot;</span>,<span class="st">&quot;#b6dbff&quot;</span>,
