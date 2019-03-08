@@ -657,7 +657,7 @@ iris %>%
 
 Note that you can ONLY use functions which return a single length vector, as the aim of the `summarise-` functions is to summarise into 1 value. For example, you could not use `log()`:
 
-```{r, error=FALSE}
+```{r, error=TRUE}
 iris %>%
   summarise_at(vars(starts_with("Petal")), log)
 ```
