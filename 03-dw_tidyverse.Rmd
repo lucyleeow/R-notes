@@ -264,7 +264,7 @@ For the above functions, you can only input one string (NOT a vector of strings)
 * `one_of()` - selects column names that are from a vector consisting of characters. 
 * `everything()` - all remaining columns. This is useful for reordering your columns.
 
-See [dplyr documentation](https://dplyr.tidyverse.org/reference/select_helpers.html) for more details.
+See [dplyr documentation](https://dplyr.tidyverse.org/reference/select.htm) for more details.
 
 
 ### mutate
