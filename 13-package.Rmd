@@ -495,6 +495,42 @@ Remember to add `#’ @keywords internal` above the helper function so users can
 
 See [this](https://stackoverflow.com/questions/5249673/how-should-i-handle-helper-functions-in-an-r-package) SO question for more on how to handle helper functions.
 
+## Data
+
+There are a number of ways to include data in your package:
+
+* In `/data` folder, best for example data.
+* Internal data, stored in `R/sysdata.rda`. Not available to users
+* Raw data. To show examples of loading/parsing raw data. Put in `inst/extdata`.
+
+Only the first option will be discussed in more detail:
+
+* Each file in the `/data` directory should be a `.RData` file created by `save()` and contains a single object. The name of the object should be the same name as the file. You can use `devtools::use_data()` to create an object that adheres to these rules.
+* If your data file is large, you can compress it using the `compress` argument of `save()`
+* If `DESCRIPTION` contains `LazyData: true` the datasets will not occupy memory until they are used.
+
+Data should also be documented. Objects in `data/` are always effectively exported. Save the file as `data/R` within `R/`. NEVER `@export` a data set.
+
+```
+#' Prices of 50,000 round cut diamonds.
+#'
+#' A dataset containing the prices and other attributes of almost 54,000
+#' diamonds.
+#'
+#' @format A data frame with 53940 rows and 10 variables:
+#' \describe{
+#'   \item{price}{price, in US dollars}
+#'   \item{carat}{weight of the diamond, in carats}
+#'   ...
+#' }
+#' @source \url{http://www.diamondse.info/}
+"diamonds"
+```
+
+See the [ggplot Github](https://github.com/tidyverse/ggplot2/blob/master/R/data.R) for an example of how data in the ggplot package is documented.
+
+
+
 
 
 
