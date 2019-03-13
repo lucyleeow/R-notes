@@ -18,7 +18,7 @@ str(flights_dt)
 
 ## fread
 
-Memory mapping - instead of reading in data, map the content of the file to a pointer. Very fast as the data on disk mapped directly to memory without coping. This is more likely to cause bus error though. This is what python does.
+Memory mapping - instead of reading in data, map the content of the file to a pointer. Very fast as the data on disk mapped directly to memory without copying. This is more likely to cause bus error though. This is what python does.
 
 * The advantage is that it makes reading in files a lots faster but there may be differences in performance in subsequent wrangling.
 * The memory mapping works row wise (in python and C so probably in `fread()` too).
