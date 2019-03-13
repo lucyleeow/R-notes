@@ -390,6 +390,8 @@ Special characters:
 * `%` - marks start of a latex comment. `\%` to insert literal '%'.
 * `\` - marks start of latex escaping. Use `\\` to insert literal '\'.
 
+Be careful of these symbols within web links, as you may get a 'mismatched braces' error if there is a symbol in your link. \href{https://github.com/klutometis/roxygen/issues/407}{This} old Github issue provides some detail.
+
 To manually insert a new line use `\cr` (See [this](https://stackoverflow.com/questions/18835365/roxygen2-manually-insert-line-breaks) SO question for more.)
 
 
