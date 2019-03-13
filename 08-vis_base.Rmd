@@ -176,7 +176,7 @@ The function `abline()` lets you add a new line
 
 ## Legend
 
-## Two axis
+## Two axes
 
 https://stackoverflow.com/questions/6142944/how-can-i-plot-with-2-different-y-axes
 
