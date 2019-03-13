@@ -261,6 +261,38 @@ Note 'blob' needs to be deleted from the first url as well.
 Reference [SO](https://stackoverflow.com/questions/8446218/how-to-see-an-html-page-on-github-as-a-normal-rendered-html-page-to-see-preview).
 
 
+# Word
+
+Sometimes it is unavoidable to knit to word (though I suggest trying to find a new job/supervisor/collaborator/partner first).
+
+There are problems with specifying figure size. Apparently pandoc link attributes is a new feature not yet supported by knitr. Without link attributes "the fallback is to look at the image resolution and the dpi metadata embedded in the image file" to determine image size. While this feature is yet to be implemented, there is a work around:
+
+```{r, eval=FALSE}
+default_plot_hook <- knitr::knit_hooks$get('plot')
+
+knitr::knit_hooks$set(plot = function(x, options) {
+  default_md <- default_plot_hook(x, options)
+  link_attr <- sprintf("{width=%sin height=%sin}", options$fig.width, options$fig.height)
+  sub("(!\\[.*]\\(.*\\))", paste0("\\1", link_attr), default_md)
+})
+```
+
+The knitr hook changes this:
+```
+![](myreport_files/figure-docx/unnamed-chunk-1-1.png)<!-- -->
+```
+
+to this:
+
+```
+![](myreport_files/figure-docx/unnamed-chunk-1-1.png){width=5in height=4in}<!-- -->
+```
+
+
+
+Thank you to [this SO](https://stackoverflow.com/questions/50855815/rmarkdown-plot-inserted-into-word-with-101-width-and-height) post for the information.
+
+
 
 
 
